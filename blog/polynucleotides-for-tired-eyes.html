@@ -14,23 +14,25 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="../assets/css/site.css">
+<script>(function(){try{var d=document.documentElement;d.className=d.className.replace('no-js','');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('anim');if(sessionStorage.getItem('bc-pt')==='1')d.classList.add('pt-in');if(sessionStorage.getItem('bc-intro'))d.classList.add('intro-seen');setTimeout(function(){d.classList.remove('anim')},3000)}catch(e){}})()</script>
 </head>
 <body>
 <canvas id="bgfx" aria-hidden="true"></canvas>
 <div id="pt" aria-hidden="true"><svg class="plus" viewBox="0 0 64 64"><path d="M32 10v44M10 32h44"/></svg></div>
 <header class="site-head" id="head">
   <a class="brand" href="../index.html" aria-label="Balance Clinic Spa Beauty, home"><img src="../assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"></a>
-  <nav class="site-nav" aria-label="Primary"><a href="../treatments/index.html">Treatments</a><a href="../about/index.html">About</a><a href="../price-list.html">Price List</a><a href="../shop/index.html">Shop</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../contact.html">Contact</a></nav>
+  <nav class="site-nav" aria-label="Primary"><a href="../treatments/index.html">Treatments</a><a href="../results/index.html">Results</a><a href="../about/index.html">About</a><a href="../price-list.html">Price List</a><a href="../shop/index.html">Shop</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../contact.html">Contact</a></nav>
   <div class="head-cta">
     <a class="btn btn-moss" href="../book/index.html">Book now</a>
     <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i><i></i><i></i></button>
   </div>
 </header>
-<div class="menu" id="menu">
+<div class="menu" id="menu" data-lenis-prevent>
   <div class="inner">
     <nav class="primary" aria-label="Menu">
       <a href="../index.html">Home</a>
       <a href="../treatments/index.html">Treatments<i>16</i></a>
+      <a href="../results/index.html">Results</a>
       <a href="../about/index.html">About</a>
       <a href="../price-list.html">Price List</a>
       <a href="../shop/index.html">Shop</a>
@@ -52,13 +54,13 @@
     
   </div>
 </section>
-<section class="article"><div class="inner"><p class="eyebrow">Skin · 5 min read</p><div class="vidbox" data-video="../assets/video/lumadoc.mp4" data-poster="../assets/img/lumadoc-poster.jpg" data-title="Polynucleotides for tired eyes" role="button" tabindex="0" aria-label="Play video"><video muted loop playsinline preload="metadata" poster="../assets/img/lumadoc-poster.jpg" src="../assets/video/lumadoc.mp4" data-reel></video><div class="ply"><span><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span></div></div><div class="ba" data-reveal>
+<section class="article"><div class="inner"><p class="eyebrow">Skin · 5 min read</p><div class="vidbox" data-video="../assets/video/lumadoc.mp4" data-poster="../assets/img/lumadoc-poster.jpg" data-title="Polynucleotides for tired eyes" role="button" tabindex="0" aria-label="Play video"><video muted loop playsinline preload="metadata" poster="../assets/img/lumadoc-poster.jpg" src="../assets/video/lumadoc.mp4" data-reel></video><div class="ply"><span><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span></div></div><div class="ba" data-reveal style="aspect-ratio:1000/629">
   <img class="after" src="../assets/img/undereye-after.jpg" alt="After: Under-eye darkness" loading="lazy">
   <img class="before" src="../assets/img/undereye-before.jpg" alt="Before: Under-eye darkness" loading="lazy">
-  <div class="ticks"></div>
   <div class="scan"></div>
   <div class="grip"><svg viewBox="0 0 24 24"><path d="M8 6l-5 6 5 6"/></svg>Drag<svg viewBox="0 0 24 24"><path d="M16 6l5 6-5 6"/></svg></div>
-  <span class="cap">Under-eye darkness</span><span class="lab l">Before</span><span class="lab r">After</span>
+  <span class="cap">Under-eye darkness</span>
+  <button class="full" type="button" data-image="../assets/img/undereye-full.jpg" data-title="Under-eye darkness" aria-label="View the full photo"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
   <input type="range" min="0" max="100" value="50" id="ba-undereye-9" aria-label="Compare before and after: Under-eye darkness">
 </div><p>The skin under the eye is the thinnest on the body. It loses collagen early, shows every shadow and reacts badly to aggressive treatment. For years the options were concealer or filler.</p><h2>Repair, not volume</h2><p>Polynucleotides are purified DNA fragments that signal the skin to repair itself. Injected in a series of tiny deposits, they improve hydration, thickness and elasticity, so darkness lifts and the crepey texture smooths. The LumaDoc protocol we use is designed for this delicate area.</p><p>Most clients have two to three sessions, three weeks apart, and see the change build over two months.</p><p><a class="link" href="../book/online-consultation.html">Book an online consultation <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></p></div></section><section class="visit">
   <div class="card">
@@ -83,7 +85,7 @@
     <div><h4>Body</h4><ul><li><a href="../treatments/laser-hair-removal.html">Laser Hair Removal</a></li><li><a href="../treatments/body-contouring.html">Body Contouring</a></li><li><a href="../treatments/waxing.html">Waxing</a></li><li><a href="../treatments/massage.html">Massage</a></li></ul></div>
     <div><h4>Skin</h4><ul><li><a href="../treatments/alumier-md-peels.html">Alumier MD Peels</a></li><li><a href="../treatments/dermalogica-treatments.html">Dermalogica Treatments</a></li><li><a href="../treatments/lumenis-stellar-m22-ipl.html">Lumenis Stellar M22 IPL</a></li><li><a href="../treatments/microneedling.html">Microneedling</a></li><li><a href="../treatments/microneedling-with-exosomes.html">Microneedling with Exosomes</a></li><li><a href="../treatments/idenel-liquid-microneedling.html">Idenel Liquid Microneedling</a></li></ul></div>
     <div><h4>Clinic</h4><ul>
-      <li><a href="../about/index.html">About</a></li><li><a href="../about/team.html">Meet the team</a></li><li><a href="../price-list.html">Price list</a></li>
+      <li><a href="../results/index.html">Results</a></li><li><a href="../about/index.html">About</a></li><li><a href="../about/team.html">Meet the team</a></li><li><a href="../price-list.html">Price list</a></li>
       <li><a href="../shop/gift-vouchers.html">Gift vouchers</a></li><li><a href="../book/index.html">Book a treatment</a></li><li><a href="../book/online-consultation.html">Online consultation</a></li>
       <li><a href="../contact.html">Contact</a></li><li><a href="../blog/index.html">Blog</a></li></ul></div>
   </div>
@@ -91,8 +93,8 @@
   <div class="giant" aria-hidden="true">Balance</div>
 </footer>
 <a class="fab" id="fab" href="../book/index.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</a>
-<div id="lb" aria-hidden="true" role="dialog" aria-label="Video player">
-  <div class="box"><video playsinline controls preload="none"></video><button class="x" aria-label="Close video"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="t"></div></div>
+<div id="lb" aria-hidden="true" role="dialog" aria-label="Media viewer" data-lenis-prevent>
+  <div class="box"><video playsinline controls preload="none"></video><img alt="" hidden><button class="x" aria-label="Close video"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="t"></div></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>

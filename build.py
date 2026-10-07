@@ -198,6 +198,7 @@ RESULTS = [
     ("texture", "Texture & pigmentation", "Peels and microneedling for texture"),
     ("lips", "Lip hydration", "Hydrated, defined lips"),
 ]
+RATIO = {"jaw": "603/1395", "rosacea": "591/1000", "undereye": "1000/629", "eyes": "1000/631", "texture": "1000/633", "lips": "1000/627"}
 REELS = [
     ("microneedling.mp4", "microneedling-poster.jpg", "Why microneedling works", "It is all about collagen. Tiny channels tell the skin to rebuild itself."),
     ("lumadoc.mp4", "lumadoc-poster.jpg", "Polynucleotides for tired eyes", "Dark circles and crepey skin under the eye, treated with LumaDoc."),
@@ -239,6 +240,7 @@ PRICES = [
 ]
 
 # ---------------------------------------------------------------- shared html
+PRE = """<script>(function(){try{var d=document.documentElement;d.className=d.className.replace('no-js','');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('anim');if(sessionStorage.getItem('bc-pt')==='1')d.classList.add('pt-in');if(sessionStorage.getItem('bc-intro'))d.classList.add('intro-seen');setTimeout(function(){d.classList.remove('anim')},3000)}catch(e){}})()</script>"""
 def head(title, desc, rel, extra=""):
     return f'''<!doctype html>
 <html lang="en" class="no-js">
@@ -256,6 +258,7 @@ def head(title, desc, rel, extra=""):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="{rel}assets/css/site.css">
+{PRE}
 {extra}</head>
 <body>
 <canvas id="bgfx" aria-hidden="true"></canvas>
@@ -276,7 +279,7 @@ def pt():
     return f'<div id="pt" aria-hidden="true"><svg class="plus" viewBox="0 0 64 64">{PLUS_PATH}</svg></div>\n'
 
 def header(rel, current):
-    nav = [("Treatments", "treatments/index.html", "treatments"), ("About", "about/index.html", "about"), ("Price List", "price-list.html", "prices"), ("Shop", "shop/index.html", "shop"), ("Blog", "blog/index.html", "blog"), ("Contact", "contact.html", "contact")]
+    nav = [("Treatments", "treatments/index.html", "treatments"), ("Results", "results/index.html", "results"), ("About", "about/index.html", "about"), ("Price List", "price-list.html", "prices"), ("Shop", "shop/index.html", "shop"), ("Blog", "blog/index.html", "blog"), ("Contact", "contact.html", "contact")]
     links = "".join(f'<a href="{rel}{h}"{" aria-current=\"page\"" if k == current else ""}>{t}</a>' for t, h, k in nav)
     groups = "".join(f'<div><h4>{g[1]}</h4>' + "".join(f'<a href="{rel}treatments/{t["slug"]}.html">{t["title"]}</a>' for t in T if t["group"] == g[0]) + "</div>" for g in GROUPS)
     return f'''<header class="site-head" id="head">
@@ -287,11 +290,12 @@ def header(rel, current):
     <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i><i></i><i></i></button>
   </div>
 </header>
-<div class="menu" id="menu">
+<div class="menu" id="menu" data-lenis-prevent>
   <div class="inner">
     <nav class="primary" aria-label="Menu">
       <a href="{rel}index.html">Home</a>
       <a href="{rel}treatments/index.html">Treatments<i>16</i></a>
+      <a href="{rel}results/index.html">Results</a>
       <a href="{rel}about/index.html">About</a>
       <a href="{rel}price-list.html">Price List</a>
       <a href="{rel}shop/index.html">Shop</a>
@@ -316,7 +320,7 @@ def footer(rel):
     <div><h4>Body</h4><ul>{body}</ul></div>
     <div><h4>Skin</h4><ul>{skin}</ul></div>
     <div><h4>Clinic</h4><ul>
-      <li><a href="{rel}about/index.html">About</a></li><li><a href="{rel}about/team.html">Meet the team</a></li><li><a href="{rel}price-list.html">Price list</a></li>
+      <li><a href="{rel}results/index.html">Results</a></li><li><a href="{rel}about/index.html">About</a></li><li><a href="{rel}about/team.html">Meet the team</a></li><li><a href="{rel}price-list.html">Price list</a></li>
       <li><a href="{rel}shop/gift-vouchers.html">Gift vouchers</a></li><li><a href="{rel}book/index.html">Book a treatment</a></li><li><a href="{rel}book/online-consultation.html">Online consultation</a></li>
       <li><a href="{rel}contact.html">Contact</a></li><li><a href="{rel}blog/index.html">Blog</a></li></ul></div>
   </div>
@@ -324,8 +328,8 @@ def footer(rel):
   <div class="giant" aria-hidden="true">Balance</div>
 </footer>
 <a class="fab" id="fab" href="{rel}book/index.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</a>
-<div id="lb" aria-hidden="true" role="dialog" aria-label="Video player">
-  <div class="box"><video playsinline controls preload="none"></video><button class="x" aria-label="Close video"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="t"></div></div>
+<div id="lb" aria-hidden="true" role="dialog" aria-label="Media viewer" data-lenis-prevent>
+  <div class="box"><video playsinline controls preload="none"></video><img alt="" hidden><button class="x" aria-label="Close video"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="t"></div></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -360,13 +364,13 @@ def phero(rel, crumbs, title_html, lead, img=None, word=None, ctas=""):
 '''
 
 def ba(rel, key, cap, idx):
-    return f'''<div class="ba" data-reveal>
+    return f'''<div class="ba" data-reveal style="aspect-ratio:{RATIO[key]}">
   <img class="after" src="{rel}assets/img/{key}-after.jpg" alt="After: {html.escape(cap)}" loading="lazy">
   <img class="before" src="{rel}assets/img/{key}-before.jpg" alt="Before: {html.escape(cap)}" loading="lazy">
-  <div class="ticks"></div>
   <div class="scan"></div>
   <div class="grip"><svg viewBox="0 0 24 24"><path d="M8 6l-5 6 5 6"/></svg>Drag<svg viewBox="0 0 24 24"><path d="M16 6l5 6-5 6"/></svg></div>
-  <span class="cap">{cap}</span><span class="lab l">Before</span><span class="lab r">After</span>
+  <span class="cap">{cap}</span>
+  <button class="full" type="button" data-image="{rel}assets/img/{key}-full.jpg" data-title="{html.escape(cap)}" aria-label="View the full photo"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
   <input type="range" min="0" max="100" value="50" id="ba-{key}-{idx}" aria-label="Compare before and after: {html.escape(cap)}">
 </div>'''
 
@@ -427,7 +431,6 @@ def home():
     reels = "".join(reel(rel, *r) for r in REELS)
     body = f'''<section class="hero grain">
   <div class="bgv"><video autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster.jpg" src="assets/video/hero.mp4" aria-label="Inside the clinic: an Alumier peel being prepared"></video></div>
-  <button class="play" type="button" data-video="assets/video/hero.mp4" data-poster="assets/img/hero-poster.jpg" data-title="Inside Balance" aria-label="Watch the clinic video">{PLAY}</button>
   <div class="content">
     <div>
       <p class="eyebrow">Navan, Co. Meath · Clinic, Spa &amp; Beauty</p>
@@ -480,6 +483,7 @@ def home():
 <section class="sec" id="results">
   <div class="sec-head"><div><p class="eyebrow">Real results</p><h2 data-split>Drag the scan to see the difference.</h2></div><p data-reveal>Clients of Balance, photographed in clinic. Results vary from person to person, so we always start with a consultation.</p></div>
   <div class="ba-grid">{results}</div>
+  <div style="display:flex;justify-content:center;margin-top:48px" data-reveal><a class="btn btn-moss" href="results/index.html">See all results {ARROW}</a></div>
 </section>
 
 <section class="sec sage" id="reels">
@@ -551,6 +555,18 @@ def treatment_page(t):
 <section class="related"><div class="inner"><h2 data-split>You may also like</h2><div class="row">{rel_cards}</div></div></section>
 {visit(rel)}'''
     return page(rel, f"{t['name']} · Balance Clinic", t["name"] + ". " + html.unescape(t["short"]), "treatments", body)
+
+def results():
+    rel = "../"
+    cards = "".join(ba(rel, k, c, i) for i, (k, c, _) in enumerate(RESULTS))
+    reels = "".join(reel(rel, *r) for r in REELS)
+    body = phero(rel, [("Home", "index.html")], "Real <em>results.</em>", "Clients of Balance, photographed in clinic before and after treatment. Drag the scan line across each photo, or open the full picture.", img="rosacea-after.jpg",
+                 ctas=f'<a class="btn btn-lime" href="{rel}book/index.html">Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="{rel}treatments/index.html">All treatments</a>')
+    body += f'''<section class="sec"><div class="sec-head"><div><p class="eyebrow">Before &amp; after</p><h2 data-split>Drag the scan to compare.</h2></div><p data-reveal>Results vary from person to person. Every plan starts with a consultation so we can tell you what to expect.</p></div><div class="ba-grid wide">{cards}</div></section>
+<section class="sec sage"><div class="sec-head"><div><p class="eyebrow">In motion</p><h2 data-split>From the treatment rooms.</h2></div><p data-reveal>Tap any clip to watch it full size with sound.</p></div><div class="reel-row">{reels}</div></section>
+<section class="reviews"><div class="num">0.0</div><div class="stars" aria-hidden="true">{"".join('<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.7 1.3 6.8L12 17.7 5.9 21l1.3-6.8-5-4.7 6.8-.8z"/></svg>' for _ in range(5))}</div><h2>Rated by <b data-count>0</b> clients on Google</h2><p class="sub">Read what people say in their own words.</p><div class="ctas"><a class="btn btn-moss" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read the reviews</a></div></section>
+{visit(rel)}'''
+    return page(rel, "Results · Balance Clinic", "Before and after photos from Balance Clinic Spa Beauty, Navan.", "results", body)
 
 def about():
     rel = "../"
@@ -703,6 +719,7 @@ if __name__ == "__main__":
     write("index.html", home())
     write("treatments/index.html", treatments_index())
     for t in T: write(f"treatments/{t['slug']}.html", treatment_page(t))
+    write("results/index.html", results())
     write("about/index.html", about()); write("about/team.html", team())
     write("price-list.html", price_list())
     write("shop/index.html", shop()); write("shop/gift-vouchers.html", gift_vouchers()); write("shop/january-sale.html", january_sale())

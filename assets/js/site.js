@@ -93,7 +93,7 @@
   function transitionIn() {
     if (!pt) return Promise.resolve();
     if (ss.get('bc-pt') !== '1' || reduce || !hasGsap) { pt.style.transform = 'translateY(101%)'; return Promise.resolve(); }
-    ss.set('bc-pt', '0');
+    ss.set('bc-pt', '0'); document.documentElement.classList.remove('pt-in');
     gsap.set(pt, { y: '0%', visibility: 'visible' });
     return new Promise(function (res) {
       gsap.to(pt, { y: '-101%', duration: .9, ease: 'expo.inOut', delay: .05, onComplete: function () { pt.style.visibility = 'hidden'; res(); } });
@@ -178,8 +178,8 @@
     if (words.length) tl.fromTo(words, { yPercent: 115 }, { yPercent: 0, duration: 1.2, ease: 'power4.out', stagger: .05 }, 0);
     var lines = hero.querySelectorAll('h1 .inner');
     if (lines.length) tl.fromTo(lines, { yPercent: 115 }, { yPercent: 0, duration: 1.3, ease: 'power4.out', stagger: .12 }, 0);
-    tl.from(hero.querySelectorAll('.eyebrow, .crumbs'), { opacity: 0, x: -20, duration: .9, ease: 'power3.out' }, .15)
-      .from(hero.querySelectorAll('[data-reveal]'), { opacity: 0, y: 28, duration: 1.1, ease: 'power3.out', stagger: .1 }, .45)
+    tl.fromTo(hero.querySelectorAll('.eyebrow, .crumbs'), { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: .9, ease: 'power3.out' }, .15)
+      .fromTo(hero.querySelectorAll('[data-reveal]'), { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out', stagger: .1 }, .45)
       .from(hero.querySelectorAll('.bgv, .bg'), { scale: 1.12, opacity: .4, duration: 2.2, ease: 'power2.out' }, 0);
     if (head) tl.from(head, { y: -30, opacity: 0, duration: 1, ease: 'power3.out' }, .3);
   }
@@ -234,8 +234,17 @@
     var r = ba.querySelector('input'); if (!r) return;
     function set() { ba.style.setProperty('--p', r.value + '%'); }
     r.addEventListener('input', set); set();
-    r.addEventListener('pointerdown', function () { ba.classList.add('dragging'); });
-    window.addEventListener('pointerup', function () { ba.classList.remove('dragging'); });
+    var active = false;
+    function fromX(x) { var rect = ba.getBoundingClientRect(); var v = Math.max(0, Math.min(100, (x - rect.left) / rect.width * 100)); r.value = v; set(); }
+    ba.addEventListener('pointerdown', function (e) {
+      if (e.target.closest('.full')) return;
+      active = true; ba.classList.add('dragging'); ba.setPointerCapture && ba.setPointerCapture(e.pointerId); fromX(e.clientX); e.preventDefault();
+    });
+    ba.addEventListener('pointermove', function (e) { if (active) fromX(e.clientX); });
+    function stop() { active = false; ba.classList.remove('dragging'); }
+    ba.addEventListener('pointerup', stop); ba.addEventListener('pointercancel', stop); ba.addEventListener('lostpointercapture', stop);
+    ba.addEventListener('touchstart', function (e) { if (!e.target.closest('.full')) { fromX(e.touches[0].clientX); } }, { passive: true });
+    ba.addEventListener('touchmove', function (e) { if (e.touches.length === 1) fromX(e.touches[0].clientX); }, { passive: true });
     if (hasST && !reduce) {
       ScrollTrigger.create({ trigger: ba, start: 'top 78%', once: true, onEnter: function () {
         var o = { v: 0 };
@@ -251,26 +260,30 @@
     var vio = new IntersectionObserver(function (entries) { entries.forEach(function (en) { var v = en.target; if (en.isIntersecting) v.play().catch(function () {}); else v.pause(); }); }, { threshold: .3 });
     reels.forEach(function (v) { vio.observe(v); });
   } else reels.forEach(function (v) { v.play().catch(function () {}); });
-  var lb = document.getElementById('lb'), lbv = lb && lb.querySelector('video'), lbt = lb && lb.querySelector('.t');
-  function openLb(src, title, poster) {
+  var lb = document.getElementById('lb'), lbv = lb && lb.querySelector('video'), lbi = lb && lb.querySelector('img'), lbt = lb && lb.querySelector('.t'), lbbox = lb && lb.querySelector('.box');
+  function openLb(src, title, poster, isImage) {
     if (!lb) return;
     reels.forEach(function (v) { v.pause(); });
-    lbv.src = src; if (poster) lbv.poster = poster; lbv.muted = false; lbv.controls = true;
+    lbbox.classList.toggle('pic', !!isImage);
+    if (isImage) { lbi.src = src; lbi.hidden = false; lbi.alt = title || ''; }
+    else { lbi.hidden = true; lbv.src = src; if (poster) lbv.poster = poster; lbv.muted = false; lbv.controls = true; }
     if (lbt) lbt.textContent = title || '';
     lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false');
     if (lenis) lenis.stop();
-    lbv.play().catch(function () {});
+    if (!isImage) lbv.play().catch(function () {});
   }
   function closeLb() {
     if (!lb || !lb.classList.contains('open')) return;
     lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true');
-    lbv.pause(); lbv.removeAttribute('src'); lbv.load();
+    lbv.pause(); lbv.removeAttribute('src'); lbv.load(); lbi.removeAttribute('src');
     if (lenis) lenis.start();
     reels.forEach(function (v) { var rect = v.getBoundingClientRect(); if (rect.top < window.innerHeight && rect.bottom > 0) v.play().catch(function () {}); });
   }
   document.addEventListener('click', function (e) {
     var t = e.target.closest('[data-video]');
     if (t) { e.preventDefault(); openLb(t.getAttribute('data-video'), t.getAttribute('data-title'), t.getAttribute('data-poster')); return; }
+    var im = e.target.closest('[data-image]');
+    if (im) { e.preventDefault(); e.stopPropagation(); openLb(im.getAttribute('data-image'), im.getAttribute('data-title'), null, true); return; }
     if (lb && (e.target === lb || e.target.closest('#lb .x'))) closeLb();
   });
 
@@ -324,10 +337,16 @@
   });
 
   /* ---------- boot ---------- */
+  var root = document.documentElement;
   if (hasGsap && !reduce) {
     var hero0 = document.querySelector('.hero, .phero');
-    if (hero0) gsap.set(hero0.querySelectorAll('[data-split] .wd i, h1 .inner'), { yPercent: 115 });
+    if (hero0) {
+      gsap.set(hero0.querySelectorAll('[data-split] .wd i, h1 .inner'), { yPercent: 115 });
+      gsap.set(hero0.querySelectorAll('h1'), { opacity: 1 });
+      gsap.set(hero0.querySelectorAll('[data-reveal], .eyebrow, .crumbs'), { opacity: 0 });
+    }
   }
+  root.classList.remove('anim');
   Promise.resolve().then(function () { return intro && !seen ? runIntro() : transitionIn(); }).then(function () {
     if (intro && seen) killIntro();
     heroIn(); scrollFx();
