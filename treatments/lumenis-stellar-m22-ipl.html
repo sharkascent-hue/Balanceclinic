@@ -17,6 +17,8 @@
 <script>(function(){try{var d=document.documentElement;d.className=d.className.replace('no-js','');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('anim');if(sessionStorage.getItem('bc-pt')==='1')d.classList.add('pt-in');if(sessionStorage.getItem('bc-intro'))d.classList.add('intro-seen');setTimeout(function(){d.classList.remove('anim')},3000)}catch(e){}})()</script>
 </head>
 <body>
+<video class="bgvid" autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1" src="../assets/video/bg.mp4"></video>
+<div class="bgveil" aria-hidden="true"></div>
 <canvas id="bgfx" aria-hidden="true"></canvas>
 <div id="pt" aria-hidden="true"><svg class="plus" viewBox="0 0 64 64"><path d="M32 10v44M10 32h44"/></svg></div>
 <header class="site-head" id="head">

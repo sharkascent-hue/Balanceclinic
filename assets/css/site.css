@@ -66,7 +66,10 @@ ul{margin:0;padding:0;list-style:none}
 .link:hover svg{transform:translateX(5px)}
 
 /* ---------- living background ---------- */
-#bgfx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.bgvid{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;opacity:.62;transform:scale(1.08)}
+.bgveil{position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,rgba(244,246,240,.62) 0%,rgba(244,246,240,.5) 50%,rgba(244,246,240,.7) 100%)}
+#bgfx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;mix-blend-mode:multiply;opacity:.9}
+@media (prefers-reduced-motion:reduce){.bgvid{display:none}}
 .page{position:relative;z-index:1}
 section{position:relative}
 
@@ -234,7 +237,7 @@ html.anim .hero h1,html.anim .phero h1,html.anim .hero [data-reveal],html.anim .
 .sec-head p{max-width:44ch;color:var(--ink-2)}
 .dark{background:var(--moss);color:#fff}
 .dark .sec-head p{color:rgba(255,255,255,.75)}
-.sage{background:var(--sage)}
+.sage{background:rgba(225,234,213,.55);backdrop-filter:blur(2px)}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,7vw,120px);align-items:center;max-width:1520px;margin-inline:auto}
 .split .img{border-radius:var(--r);overflow:hidden;aspect-ratio:3/4;position:relative;max-width:600px;background:var(--sage)}
 .split .img img{width:100%;height:118%;object-fit:cover;will-change:transform}

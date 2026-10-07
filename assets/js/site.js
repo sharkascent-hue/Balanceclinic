@@ -17,10 +17,10 @@
     var ctx = c.getContext('2d'); if (!ctx) return;
     var W, H, S = 0.25, t = 0, motes = [], raf, running = true;
     var blobs = [
-      { col: [225, 234, 213], r: .55, ax: .12, ay: .18, sx: .8, sy: .6, a: .9 },
-      { col: [169, 213, 110], r: .38, ax: .85, ay: .75, sx: 1.1, sy: .7, a: .45 },
-      { col: [247, 228, 220], r: .34, ax: .6,  ay: .2,  sx: .7, sy: 1.2, a: .7 },
-      { col: [141, 195, 75],  r: .3,  ax: .2,  ay: .9,  sx: .9, sy: .9, a: .28 }
+      { col: [225, 234, 213], r: .55, ax: .12, ay: .18, sx: .8, sy: .6, a: .55 },
+      { col: [169, 213, 110], r: .38, ax: .85, ay: .75, sx: 1.1, sy: .7, a: .35 },
+      { col: [247, 228, 220], r: .34, ax: .6,  ay: .2,  sx: .7, sy: 1.2, a: .5 },
+      { col: [141, 195, 75],  r: .3,  ax: .2,  ay: .9,  sx: .9, sy: .9, a: .22 }
     ];
     function size() {
       W = Math.max(1, Math.floor(window.innerWidth * S)); H = Math.max(1, Math.floor(window.innerHeight * S));
@@ -29,8 +29,8 @@
       for (var i = 0; i < 26; i++) motes.push({ x: Math.random() * W, y: Math.random() * H, r: .4 + Math.random() * 1.1, v: .03 + Math.random() * .08, p: Math.random() * 6.28 });
     }
     function draw() {
-      ctx.fillStyle = '#F4F6F0'; ctx.fillRect(0, 0, W, H);
-      ctx.globalCompositeOperation = 'lighter';
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'source-over';
       blobs.forEach(function (b, i) {
         var x = (b.ax + Math.sin(t * .00022 * b.sx + i) * .14) * W;
         var y = (b.ay + Math.cos(t * .00019 * b.sy + i * 2) * .14) * H;
