@@ -66,10 +66,7 @@ ul{margin:0;padding:0;list-style:none}
 .link:hover svg{transform:translateX(5px)}
 
 /* ---------- living background ---------- */
-.bgvid{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;opacity:.62;transform:scale(1.08)}
-.bgveil{position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,rgba(244,246,240,.62) 0%,rgba(244,246,240,.5) 50%,rgba(244,246,240,.7) 100%)}
-#bgfx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;mix-blend-mode:multiply;opacity:.9}
-@media (prefers-reduced-motion:reduce){.bgvid{display:none}}
+#bgfx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .page{position:relative;z-index:1}
 section{position:relative}
 

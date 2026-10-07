@@ -261,8 +261,6 @@ def head(title, desc, rel, extra=""):
 {PRE}
 {extra}</head>
 <body>
-<video class="bgvid" autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1" src="{rel}assets/video/bg.mp4"></video>
-<div class="bgveil" aria-hidden="true"></div>
 <canvas id="bgfx" aria-hidden="true"></canvas>
 '''
 
