@@ -198,7 +198,7 @@ RESULTS = [
     ("texture", "Texture & pigmentation", "Peels and microneedling for texture"),
     ("lips", "Lip hydration", "Hydrated, defined lips"),
 ]
-RATIO = {"jaw": "603/1395", "rosacea": "591/1000", "undereye": "1000/629", "eyes": "1000/631", "texture": "1000/633", "lips": "1000/627"}
+RATIO = {"jaw": "603/1395", "rosacea": "603/935", "undereye": "1000/629", "eyes": "1000/631", "texture": "1000/633", "lips": "1000/627"}
 REELS = [
     ("microneedling.mp4", "microneedling-poster.jpg", "Why microneedling works", "It is all about collagen. Tiny channels tell the skin to rebuild itself."),
     ("lumadoc.mp4", "lumadoc-poster.jpg", "Polynucleotides for tired eyes", "Dark circles and crepey skin under the eye, treated with LumaDoc."),
