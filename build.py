@@ -1,20 +1,13 @@
 #!/usr/bin/env python3
-"""Generates every page of the Perfect Clinic site from the data below.
+"""Generates every page of the Balance Clinic site from the data below.
 Run `python3 build.py` after editing copy, treatments, prices or posts."""
 import os, re, html
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-# ---- brand and contact placeholders: replace with the real client's details
-NAME = "Perfect"
-PHONE = "(01) 000 0000"
-PHONE_PLAIN = "01 000 0000"
-ADDR1 = "Main Street"
-ADDR2 = "Your Town"
-ADDRESS = f"{ADDR1}, {ADDR2}"
-MAPS = ""            # Google Maps link for "Get directions"
-GOOGLE_REVIEWS = ""  # Google reviews link; buttons hide while empty
-HERO_VIDEO = None    # e.g. ("hero.mp4", "hero-poster.jpg") once the Higgsfield clip is added
-LOGO = '<span class="logo"><span class="w"><i>+</i>PERFECT</span><small>Clinic · Spa · Beauty</small></span>'
+PHONE = "(046) 906 0333"
+ADDRESS = "8 Trimgate Street, Townparks, Navan, Co. Meath, C15 DHE9"
+MAPS = "https://www.google.com/maps/search/?api=1&query=Balance+Clinic+Spa+Beauty+8+Trimgate+St+Navan"
+GOOGLE_REVIEWS = "https://www.google.com/search?q=Balance+Clinic+Spa+Beauty+Navan+reviews"
 WEB3FORMS_KEY = "YOUR_WEB3FORMS_ACCESS_KEY"   # paste the key from web3forms.com to switch the forms on
 
 ARROW = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h11M9 4l4 4-4 4"/></svg>'
@@ -49,7 +42,8 @@ treatment(slug="body-contouring", group="body", title="Body Contouring", em="Con
     benefits=["Reduces the appearance of cellulite", "Tightens loose skin after weight change or pregnancy", "Contours abdomen, thighs, arms and glutes", "Comfortable, with no recovery time"],
     steps=[("Consultation", "We map the areas you want to treat and photograph them for progress."), ("Course", "A course of 6 to 8 weekly sessions gives the best result."), ("Review", "We compare photos at the end of the course and plan maintenance.")],
     facts=[("Sessions", "6 to 8"), ("Time", "30 to 60 min"), ("Downtime", "None"), ("Feels like", "A warm massage")],
-    faqs=[("When do results show?", "Skin often looks smoother after the first few sessions, with the full effect developing over the 3 months that follow a course."), ("Is it safe?", "Venus Legacy is a non-invasive, clinically established technology. We check your medical history at consultation."), ("Can I exercise afterwards?", "Yes. Drink plenty of water and carry on as normal.")])
+    faqs=[("When do results show?", "Skin often looks smoother after the first few sessions, with the full effect developing over the 3 months that follow a course."), ("Is it safe?", "Venus Legacy is a non-invasive, clinically established technology. We check your medical history at consultation."), ("Can I exercise afterwards?", "Yes. Drink plenty of water and carry on as normal.")],
+    compare="jaw")
 
 treatment(slug="waxing", group="body", title="Waxing", em="Waxing", img="beauty.jpg",
     short="Fast, clean waxing with gentle hot and strip wax.",
@@ -87,7 +81,8 @@ treatment(slug="anti-ageing-hydration", group="skin-concerns", title="Anti-Agein
     benefits=["Fine lines and loss of firmness", "Dull, dehydrated or uneven skin", "Pigmentation and sun damage", "Tailored home care to hold the result"],
     steps=[("Skin analysis", "We look at texture, hydration, pigmentation and lines."), ("Course", "Typically 3 to 6 treatments, 2 to 4 weeks apart."), ("Maintain", "A facial every 4 to 6 weeks and the right products at home.")],
     facts=[("Approach", "Course then maintain"), ("Options", "Peels, needling, CACI"), ("Downtime", "0 to 2 days"), ("Home care", "Alumier MD, Dermalogica")],
-    faqs=[("Where do I start?", "Book a skin consultation. We will recommend one treatment to begin with and build from there."), ("Can treatments be combined?", "Yes. Many of our best results come from pairing a collagen treatment with a hydrating facial.")])
+    faqs=[("Where do I start?", "Book a skin consultation. We will recommend one treatment to begin with and build from there."), ("Can treatments be combined?", "Yes. Many of our best results come from pairing a collagen treatment with a hydrating facial.")],
+    compare="texture")
 
 treatment(slug="nails-manicure", group="beauty", title="Nails & Manicure", em="Nails", img=None,
     short="Classic, gel and luxury manicures with immaculate finish.",
@@ -125,7 +120,7 @@ treatment(slug="expert-brows-lashes", group="beauty", title="Expert Brows & Lash
     facts=[("Time", "30 to 60 min"), ("Tint lasts", "4 to 6 weeks"), ("Lamination", "6 to 8 weeks"), ("Patch test", "Required for tint")],
     faqs=[("What is brow lamination?", "A treatment that sets brow hairs in place so they look fuller and more uniform for up to 8 weeks."), ("Will you change my shape?", "Only with you. Mapping shows the options before anything is removed.")])
 
-treatment(slug="alumier-md-peels", group="skin", title="Alumier MD Peels", em="Peels", img="skin.jpg",
+treatment(slug="alumier-md-peels", group="skin", title="Alumier MD Peels", em="Peels", img="hero-poster.jpg",
     short="Medical-grade chemical peels for pigmentation, acne and texture.",
     intro="Alumier MD peels are medical-grade resurfacing treatments that lift away dull, damaged surface cells and prompt the skin to renew. Pigmentation fades, breakouts calm and texture smooths.",
     body=["Each peel is chosen for your concern: Glow Peel for radiance and tone, Lactic for dehydrated skin, Salicylic for oily and breakout-prone skin. Peels are only available from clinics with trained Alumier MD professionals.",
@@ -133,7 +128,8 @@ treatment(slug="alumier-md-peels", group="skin", title="Alumier MD Peels", em="P
     benefits=["Pigmentation, sun damage and uneven tone", "Acne, congestion and post-breakout marks", "Rough texture and fine lines", "Light flaking for a few days, then noticeably brighter skin"],
     steps=[("Prep", "Two weeks on Alumier home care so the peel works evenly."), ("Peel", "30 to 45 minutes in clinic. Expect tingling, not pain."), ("Renew", "Light flaking on days 2 to 4. Skin looks clearer by day 7.")],
     facts=[("Course", "3 peels"), ("Time", "30 to 45 min"), ("Downtime", "2 to 4 days light flaking"), ("Home care", "Alumier MD")],
-    faqs=[("Will my skin peel visibly?", "Usually light flaking, like after a day in the sun. Not everyone flakes at all."), ("Can I have a peel in summer?", "Yes, with daily SPF. We use a lower strength if you are in the sun a lot.")])
+    faqs=[("Will my skin peel visibly?", "Usually light flaking, like after a day in the sun. Not everyone flakes at all."), ("Can I have a peel in summer?", "Yes, with daily SPF. We use a lower strength if you are in the sun a lot.")],
+    video=("reset.mp4", "reset-poster.jpg", "Your skin deserves a reset"))
 
 treatment(slug="dermalogica-treatments", group="skin", title="Dermalogica Treatments", em="Dermalogica", img="skin.jpg",
     short="Pro skin facials mapped to your skin, with professional-only actives.",
@@ -144,7 +140,7 @@ treatment(slug="dermalogica-treatments", group="skin", title="Dermalogica Treatm
     facts=[("Time", "30 or 60 min"), ("Downtime", "None"), ("Frequency", "Every 4 to 6 weeks"), ("Products", "Dermalogica")],
     faqs=[("Which facial should I book?", "ProSkin 60 for a first visit. It gives time for a full analysis and treatment."), ("Is it suitable for sensitive skin?", "Yes. The treatment adapts to what Face Mapping shows.")])
 
-treatment(slug="lumenis-stellar-m22-ipl", group="skin", title="Lumenis Stellar M22 IPL", em="IPL", img=None,
+treatment(slug="lumenis-stellar-m22-ipl", group="skin", title="Lumenis Stellar M22 IPL", em="IPL", img="rosacea-after.jpg",
     short="Intense pulsed light for redness, rosacea, pigmentation and thread veins.",
     intro="The Lumenis Stellar M22 is a medical-grade IPL platform. Filtered light is absorbed by redness, pigment and broken capillaries, which fade over the weeks after treatment while the surrounding skin is unharmed.",
     body=["It is our treatment of choice for rosacea and facial redness, sun spots and pigmentation, thread veins on the face and legs, and overall photo-rejuvenation.",
@@ -152,7 +148,8 @@ treatment(slug="lumenis-stellar-m22-ipl", group="skin", title="Lumenis Stellar M
     benefits=["Rosacea and facial redness", "Sun damage and age spots", "Thread veins and broken capillaries", "Skin rejuvenation and tone"],
     steps=[("Consultation and patch test", "We confirm suitability and test the settings."), ("Treatment", "20 to 40 minutes. Expect a warm snap with each pulse."), ("Fade", "Redness settles in hours, pigment darkens then flakes off within 1 to 2 weeks.")],
     facts=[("Sessions", "1 to 3"), ("Time", "20 to 40 min"), ("Downtime", "Minimal"), ("Patch test", "Required")],
-    faqs=[("Does IPL hurt?", "Each pulse feels like a warm flick. Cooling gel and the M22 sapphire tip keep it comfortable."), ("Can I have IPL with a tan?", "No. Skin must be free of tan, real or fake, for four weeks before treatment.")])
+    faqs=[("Does IPL hurt?", "Each pulse feels like a warm flick. Cooling gel and the M22 sapphire tip keep it comfortable."), ("Can I have IPL with a tan?", "No. Skin must be free of tan, real or fake, for four weeks before treatment.")],
+    compare="rosacea")
 
 treatment(slug="microneedling", group="skin", title="Microneedling", em="Microneedling", img="nonsurgical.jpg",
     short="Collagen induction for scarring, texture, pores and fine lines.",
@@ -162,18 +159,20 @@ treatment(slug="microneedling", group="skin", title="Microneedling", em="Microne
     benefits=["Acne scarring and enlarged pores", "Fine lines and loss of firmness", "Uneven texture and tone", "Stretch marks on the body"],
     steps=[("Numb", "Topical anaesthetic for 20 to 30 minutes."), ("Needle", "The pen passes over each area at the depth it needs."), ("Recover", "Pink for 24 to 48 hours, then glowing.")],
     facts=[("Sessions", "3 to 6"), ("Time", "60 min"), ("Downtime", "1 to 2 days"), ("Results", "Build over 3 months")],
-    faqs=[("Does microneedling hurt?", "With numbing cream most clients describe it as a vibration. Some areas, like the forehead, feel more than others."), ("How soon can I wear make-up?", "After 24 hours. Use mineral make-up for the first few days.")])
+    faqs=[("Does microneedling hurt?", "With numbing cream most clients describe it as a vibration. Some areas, like the forehead, feel more than others."), ("How soon can I wear make-up?", "After 24 hours. Use mineral make-up for the first few days.")],
+    video=("microneedling.mp4", "microneedling-poster.jpg", "Why microneedling works"))
 
-treatment(slug="microneedling-with-exosomes", group="skin", title="Microneedling with Exosomes", em="Exosomes", img=None,
+treatment(slug="microneedling-with-exosomes", group="skin", title="Microneedling with Exosomes", em="Exosomes", img="undereye-after.jpg",
     short="Needling boosted with exosomes for faster repair and deeper renewal.",
     intro="Exosomes are the messengers cells use to tell each other to repair. Applied while microneedling channels are open, they amplify the renewal signal, calm inflammation and speed recovery.",
     body=["The result is a stronger version of microneedling: less redness afterwards, faster healing and a more noticeable change in texture, tone and firmness after each session."],
     benefits=["Faster recovery than standard needling", "Stronger improvement in texture and firmness", "Calms redness and inflammation", "Ideal for scarring, ageing and dull skin"],
     steps=[("Numb", "Topical anaesthetic."), ("Needle and infuse", "Exosome serum applied during and after needling."), ("Recover", "Mild pinkness for about a day.")],
     facts=[("Sessions", "3"), ("Time", "60 to 75 min"), ("Downtime", "About 1 day"), ("Boost", "Exosome serum")],
-    faqs=[("What are exosomes made from?", "Lab-cultured, cell-derived vesicles that are purified and sterile. They contain no live cells."), ("Is it worth the upgrade?", "If you want faster recovery and a stronger result per session, yes.")])
+    faqs=[("What are exosomes made from?", "Lab-cultured, cell-derived vesicles that are purified and sterile. They contain no live cells."), ("Is it worth the upgrade?", "If you want faster recovery and a stronger result per session, yes.")],
+    compare="undereye")
 
-treatment(slug="idenel-liquid-microneedling", group="skin", title="Idenel Liquid Microneedling", em="Idenel", img=None, new=True,
+treatment(slug="idenel-liquid-microneedling", group="skin", title="Idenel Liquid Microneedling", em="Idenel", img="eyes-after.jpg", new=True,
     short="Needle-free renewal: the results of microneedling with no needles at all.",
     intro="Idenel is a new liquid microneedling treatment. A patented formula creates micro-channels in the skin the way needles would, delivering actives deep into the skin with no device, no bleeding and no numbing.",
     body=["It suits clients who want the lift and glow of needling without the needles, and delicate areas such as the eyes, neck and hands.",
@@ -181,7 +180,8 @@ treatment(slug="idenel-liquid-microneedling", group="skin", title="Idenel Liquid
     benefits=["No needles, no numbing cream", "Delicate areas: eyes, neck, hands", "Brightens, tightens and smooths", "Can be combined with facials and peels"],
     steps=[("Cleanse", "Skin is prepared and the formula applied."), ("Activate", "A warm, tingling sensation for 10 to 15 minutes."), ("Glow", "Flushed for a few hours, brighter by the next day.")],
     facts=[("Sessions", "3 to 4"), ("Time", "45 min"), ("Downtime", "A few hours"), ("Needles", "None")],
-    faqs=[("Is it as effective as needling?", "For brightening, tightening and hydration it is close. Deep scarring still responds best to the pen."), ("Can I have it before an event?", "Yes, two to three days before.")])
+    faqs=[("Is it as effective as needling?", "For brightening, tightening and hydration it is close. Deep scarring still responds best to the pen."), ("Can I have it before an event?", "Yes, two to three days before.")],
+    compare="eyes")
 
 for _t in T:
     _t["name"] = _t["title"]                      # plain text
@@ -189,36 +189,41 @@ for _t in T:
     _t["short"] = html.escape(_t["short"], quote=False)
 TMAP = {t["slug"]: t for t in T}
 
-# ---------------------------------------------------------------- gallery, reels, posts
-GALLERY = [   # interim photos; swap for the Higgsfield images
-    ("skin.jpg", "The facial ritual"),
-    ("massage.jpg", "Hot stone massage"),
-    ("laser.jpg", "Laser hair removal"),
-    ("nonsurgical.jpg", "Microneedling"),
-    ("beauty.jpg", "Waxing & beauty"),
-    ("body.jpg", "Body contouring"),
+# ---------------------------------------------------------------- results, reels, posts
+RESULTS = [
+    ("jaw", "Jawline & neck tightening", "Venus Legacy skin tightening, profile view"),
+    ("undereye", "Under-eye darkness", "Polynucleotide treatment under the eye"),
+    ("rosacea", "Redness · after 1 treatment", "Lumenis M22 IPL for rosacea"),
+    ("eyes", "Eye area rejuvenation", "Brighter, firmer under-eyes"),
+    ("texture", "Texture & pigmentation", "Peels and microneedling for texture"),
+    ("lips", "Lip hydration", "Hydrated, defined lips"),
 ]
-REELS = []   # (video, poster, title, text) once the Higgsfield clips are added
+RATIO = {"jaw": "603/1395", "rosacea": "603/935", "undereye": "1000/629", "eyes": "1000/631", "texture": "1000/633", "lips": "1000/627"}
+REELS = [
+    ("microneedling.mp4", "microneedling-poster.jpg", "Why microneedling works", "It is all about collagen. Tiny channels tell the skin to rebuild itself."),
+    ("lumadoc.mp4", "lumadoc-poster.jpg", "Polynucleotides for tired eyes", "Dark circles and crepey skin under the eye, treated with LumaDoc."),
+    ("reset.mp4", "reset-poster.jpg", "Your skin deserves a reset", "Dull skin, uneven texture, stubborn pigmentation and post-breakout marks."),
+]
 POSTS = [
-    dict(slug="why-microneedling-works", title="Why microneedling works", date="Skin · 4 min read", img="nonsurgical.jpg",
+    dict(slug="why-microneedling-works", title="Why microneedling works", date="Skin · 4 min read", img="microneedling-poster.jpg", video=("microneedling.mp4", "microneedling-poster.jpg"),
          summary="It is all about collagen. Here is what happens under the skin after a treatment.",
          body=["<p>Collagen is the scaffolding that keeps skin firm, smooth and plump. From our mid twenties we lose about one percent of it a year, and sun, stress and breakouts speed that up. Fine lines settle in, pores look larger and old scars stop fading.</p>",
                "<h2>Stimulating it again</h2><p>Microneedling creates thousands of microscopic channels in the skin. Each one is a tiny, controlled injury, and the body answers injury with repair. Growth factors flood the area, fibroblasts switch on and new collagen and elastin are laid down over the following weeks.</p>",
                "<p>Because the channels are so small, the surface heals within a day or two. The remodelling underneath carries on for about three months, which is why results keep improving long after you leave the clinic.</p>",
                "<h2>What it is best for</h2><p>Acne scarring, enlarged pores, uneven texture and early lines respond best. A course of three to six sessions, four to six weeks apart, gives the strongest result. Adding exosomes speeds recovery and deepens the response.</p>",
-               '<p><a class="link" href="../treatments/microneedling.html">Read about microneedling at Perfect ' + ARROW + '</a></p>']),
-    dict(slug="your-skin-deserves-a-reset", title="Your skin deserves a reset", date="Skin · 3 min read", img="skin.jpg",
+               '<p><a class="link" href="../treatments/microneedling.html">Read about microneedling at Balance ' + ARROW + '</a></p>']),
+    dict(slug="your-skin-deserves-a-reset", title="Your skin deserves a reset", date="Skin · 3 min read", img="reset-poster.jpg", video=("reset.mp4", "reset-poster.jpg"),
          summary="Dull skin, uneven texture, stubborn pigmentation, post-breakout marks. A peel is where we start.",
          body=["<p>Skin that looks tired usually has one thing in common: a build-up of dead cells on the surface. Light scatters off it instead of bouncing back, pigment sits in it, and products cannot get through it.</p>",
                "<h2>Resurfacing, properly</h2><p>An Alumier MD peel dissolves that layer in a controlled way and signals the skin to renew. Pigmentation lifts, post-breakout marks fade and texture smooths. Downtime is a few days of light flaking, not a week indoors.</p>",
                "<p>We prepare your skin with two weeks of home care first so the peel works evenly, then book a course of three, spaced two to four weeks apart.</p>",
                '<p><a class="link" href="../treatments/alumier-md-peels.html">See Alumier MD peels ' + ARROW + '</a></p>']),
-    dict(slug="polynucleotides-for-tired-eyes", title="Polynucleotides for tired eyes", date="Skin · 5 min read", img="laser.jpg",
+    dict(slug="polynucleotides-for-tired-eyes", title="Polynucleotides for tired eyes", date="Skin · 5 min read", img="undereye-after.jpg", video=("lumadoc.mp4", "lumadoc-poster.jpg"),
          summary="Dark circles and crepey skin under the eye are hard to treat. Polynucleotides change that.",
          body=["<p>The skin under the eye is the thinnest on the body. It loses collagen early, shows every shadow and reacts badly to aggressive treatment. For years the options were concealer or filler.</p>",
                "<h2>Repair, not volume</h2><p>Polynucleotides are purified DNA fragments that signal the skin to repair itself. Injected in a series of tiny deposits, they improve hydration, thickness and elasticity, so darkness lifts and the crepey texture smooths. The LumaDoc protocol we use is designed for this delicate area.</p>",
                "<p>Most clients have two to three sessions, three weeks apart, and see the change build over two months.</p>",
-               '<p><a class="link" href="../book/online-consultation.html">Book an online consultation ' + ARROW + '</a></p>']),
+               '<p><a class="link" href="../book/online-consultation.html">Book an online consultation ' + ARROW + '</a></p>'], compare="undereye"),
     dict(slug="what-cellulite-really-is", title="What cellulite really is", date="Body · 3 min read", img="contour.jpg",
          summary="It is not about weight. It is about the bands under the skin, and radio frequency reaches them.",
          body=["<p>Cellulite affects around nine in ten women at every size. It appears when fat cells push up against the fibrous bands that anchor skin to muscle, puckering the surface between them.</p>",
@@ -247,7 +252,7 @@ def head(title, desc, rel, extra=""):
 <meta name="theme-color" content="#1C3A2A">
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(desc)}">
-<meta property="og:image" content="{rel}assets/img/skin.jpg">
+<meta property="og:image" content="{rel}assets/img/hero-poster.jpg">
 <link rel="icon" href="{rel}assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -265,7 +270,7 @@ def intro():
   <div class="slats"><div class="slat"></div><div class="slat"></div><div class="slat"></div><div class="slat"></div><div class="slat"></div><div class="slat"></div></div>
   <div class="mark">
     <svg class="plus" viewBox="0 0 64 64">{PLUS_PATH}</svg>
-    <div class="word">{LOGO}</div>
+    <div class="word"><img src="ASSETS/img/logo-white.png" alt=""></div>
     <div class="tag">Clinic · Spa · Beauty</div>
   </div>
 </div>
@@ -274,11 +279,11 @@ def pt():
     return f'<div id="pt" aria-hidden="true"><svg class="plus" viewBox="0 0 64 64">{PLUS_PATH}</svg></div>\n'
 
 def header(rel, current):
-    nav = [("Treatments", "treatments/index.html", "treatments"), ("Gallery", "gallery/index.html", "gallery"), ("About", "about/index.html", "about"), ("Price List", "price-list.html", "prices"), ("Shop", "shop/index.html", "shop"), ("Blog", "blog/index.html", "blog"), ("Contact", "contact.html", "contact")]
+    nav = [("Treatments", "treatments/index.html", "treatments"), ("Results", "results/index.html", "results"), ("About", "about/index.html", "about"), ("Price List", "price-list.html", "prices"), ("Shop", "shop/index.html", "shop"), ("Blog", "blog/index.html", "blog"), ("Contact", "contact.html", "contact")]
     links = "".join(f'<a href="{rel}{h}"{" aria-current=\"page\"" if k == current else ""}>{t}</a>' for t, h, k in nav)
     groups = "".join(f'<div><h4>{g[1]}</h4>' + "".join(f'<a href="{rel}treatments/{t["slug"]}.html">{t["title"]}</a>' for t in T if t["group"] == g[0]) + "</div>" for g in GROUPS)
     return f'''<header class="site-head" id="head">
-  <a class="brand" href="{rel}index.html" aria-label="{NAME} Clinic Spa Beauty, home">{LOGO}</a>
+  <a class="brand" href="{rel}index.html" aria-label="Balance Clinic Spa Beauty, home"><img src="{rel}assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"></a>
   <nav class="site-nav" aria-label="Primary">{links}</nav>
   <div class="head-cta">
     <a class="btn btn-moss" href="{rel}book/index.html">Book now</a>
@@ -290,7 +295,7 @@ def header(rel, current):
     <nav class="primary" aria-label="Menu">
       <a href="{rel}index.html">Home</a>
       <a href="{rel}treatments/index.html">Treatments<i>16</i></a>
-      <a href="{rel}gallery/index.html">Gallery</a>
+      <a href="{rel}results/index.html">Results</a>
       <a href="{rel}about/index.html">About</a>
       <a href="{rel}price-list.html">Price List</a>
       <a href="{rel}shop/index.html">Shop</a>
@@ -311,16 +316,16 @@ def footer(rel):
     return f'''</div>
 <footer>
   <div class="inner">
-    <div class="brand">{LOGO}<p>{ADDRESS}<br>{PHONE}</p></div>
+    <div class="brand"><img src="{rel}assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"><p>{ADDRESS}<br>{PHONE}</p></div>
     <div><h4>Body</h4><ul>{body}</ul></div>
     <div><h4>Skin</h4><ul>{skin}</ul></div>
     <div><h4>Clinic</h4><ul>
-      <li><a href="{rel}gallery/index.html">Gallery</a></li><li><a href="{rel}about/index.html">About</a></li><li><a href="{rel}about/team.html">Meet the team</a></li><li><a href="{rel}price-list.html">Price list</a></li>
+      <li><a href="{rel}results/index.html">Results</a></li><li><a href="{rel}about/index.html">About</a></li><li><a href="{rel}about/team.html">Meet the team</a></li><li><a href="{rel}price-list.html">Price list</a></li>
       <li><a href="{rel}shop/gift-vouchers.html">Gift vouchers</a></li><li><a href="{rel}book/index.html">Book a treatment</a></li><li><a href="{rel}book/online-consultation.html">Online consultation</a></li>
       <li><a href="{rel}contact.html">Contact</a></li><li><a href="{rel}blog/index.html">Blog</a></li></ul></div>
   </div>
-  <div class="bottom"><span>© <span id="yr">2026</span> {NAME} Clinic · Spa · Beauty</span><span>4.9 ★ average rating</span></div>
-  <div class="giant" aria-hidden="true">{NAME}</div>
+  <div class="bottom"><span>© <span id="yr">2026</span> Balance Clinic · Spa · Beauty</span><span><a href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">4.9 ★ on Google</a></span></div>
+  <div class="giant" aria-hidden="true">Balance</div>
 </footer>
 <a class="fab" id="fab" href="{rel}book/index.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</a>
 <div id="lb" aria-hidden="true" role="dialog" aria-label="Media viewer" data-lenis-prevent>
@@ -358,17 +363,16 @@ def phero(rel, crumbs, title_html, lead, img=None, word=None, ctas=""):
 </section>
 '''
 
-def gal(rel, f, cap):
-    c = html.escape(cap)
-    return f'<figure class="gal reveal-img" data-image="{rel}assets/img/{f}" data-title="{c}" role="button" tabindex="0" aria-label="Open photo: {c}"><img src="{rel}assets/img/{f}" alt="{c}" loading="lazy"><figcaption>{c}</figcaption></figure>'
-
-def reels_section(rel):
-    if not REELS: return ""
-    reels = "".join(reel(rel, *r) for r in REELS)
-    return f'<section class="sec sage" id="reels"><div class="sec-head"><div><p class="eyebrow">Inside the clinic</p><h2 data-split>See it in motion.</h2></div><p data-reveal>Tap any clip to watch it full size with sound.</p></div><div class="reel-row">{reels}</div></section>'
-
-def reviews_btn():
-    return f'{reviews_btn()}' if GOOGLE_REVIEWS else ""
+def ba(rel, key, cap, idx):
+    return f'''<div class="ba" data-reveal style="aspect-ratio:{RATIO[key]}">
+  <img class="after" src="{rel}assets/img/{key}-after.jpg" alt="After: {html.escape(cap)}" loading="lazy">
+  <img class="before" src="{rel}assets/img/{key}-before.jpg" alt="Before: {html.escape(cap)}" loading="lazy">
+  <div class="scan"></div>
+  <div class="grip"><svg viewBox="0 0 24 24"><path d="M8 6l-5 6 5 6"/></svg>Drag<svg viewBox="0 0 24 24"><path d="M16 6l5 6-5 6"/></svg></div>
+  <span class="cap">{cap}</span>
+  <button class="full" type="button" data-image="{rel}assets/img/{key}-full.jpg" data-title="{html.escape(cap)}" aria-label="View the full photo"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+  <input type="range" min="0" max="100" value="50" id="ba-{key}-{idx}" aria-label="Compare before and after: {html.escape(cap)}">
+</div>'''
 
 def reel(rel, src, poster, title, text):
     return f'''<div class="reel" data-reveal>
@@ -379,18 +383,18 @@ def reel(rel, src, poster, title, text):
   <p><b>{title}</b>{text}</p>
 </div>'''
 
-def visit(rel, title_html="Your hour<br><em>starts here.</em>", lead="Book online or call, and we will have your room ready. Gift vouchers are available for every treatment on the menu."):
+def visit(rel, title_html="Trimgate Street,<br><em>Navan.</em>", lead="Walk in from the town centre, or book online and we will have your room ready. Gift vouchers are available for every treatment on the menu."):
     return f'''<section class="visit">
   <div class="card">
     <div>
       <p class="eyebrow">Visit us</p>
       <h2 data-split>{title_html}</h2>
       <p class="lead" data-reveal>{lead}</p>
-      <div class="ctas" data-reveal><a class="btn btn-lime" href="{rel}book/index.html">Book online {ARROW}</a><a class="btn btn-ghost-light" href="{MAPS or rel + 'contact.html'}"{' target="_blank" rel="noopener"' if MAPS else ''}>{'Get directions' if MAPS else 'Contact us'}</a></div>
+      <div class="ctas" data-reveal><a class="btn btn-lime" href="{rel}book/index.html">Book online {ARROW}</a><a class="btn btn-ghost-light" href="{MAPS}" target="_blank" rel="noopener">Get directions</a></div>
     </div>
     <div class="details" data-reveal>
-      <div><span>Address</span><div><strong>{ADDR1}</strong><small>{ADDR2}</small></div></div>
-      <div><span>Phone</span><div><strong>{PHONE}</strong><button class="copy" type="button" data-copy="{PHONE_PLAIN}">Copy</button><small>Call for today's opening hours</small></div></div>
+      <div><span>Address</span><div><strong>8 Trimgate Street, Townparks</strong><small>Navan, Co. Meath, C15 DHE9</small></div></div>
+      <div><span>Phone</span><div><strong>{PHONE}</strong><button class="copy" type="button" data-copy="046 906 0333">Copy</button><small>Call for today's opening hours</small></div></div>
       <div><span>Hours</span><div><strong>Late opening until 8pm</strong><small>Evening appointments available</small></div></div>
       <div><span>Online</span><div><strong><a href="{rel}book/index.html">Book a treatment</a></strong><small>Or an online consultation</small></div></div>
     </div>
@@ -414,7 +418,7 @@ def home():
     strip = [
         ("Medical Grade Laser", "Hair removal, rejuvenation and thread veins.", "laser.jpg", "treatments/laser-hair-removal.html", ["Hair removal", "Thread veins"]),
         ("Body Treatments", "Venus Legacy contouring, cellulite and skin tightening.", "contour.jpg", "treatments/body-contouring.html", ["Venus Legacy", "Cellulite"]),
-        ("Skin Treatments", "Alumier peels, IPL, microneedling and exosomes.", "skin.jpg", "treatments/alumier-md-peels.html", ["Peels", "IPL", "Needling"]),
+        ("Skin Treatments", "Alumier peels, IPL, microneedling and exosomes.", "hero-poster.jpg", "treatments/alumier-md-peels.html", ["Peels", "IPL", "Needling"]),
         ("Non Surgical", "Microneedling, Idenel and CACI for lift without surgery.", "nonsurgical.jpg", "treatments/microneedling.html", ["Microneedling", "Idenel"]),
         ("Massage", "Swedish, deep tissue, hot stone, Indian head and pregnancy.", "massage.jpg", "treatments/massage.html", ["Hot stone", "Deep tissue"]),
         ("Beauty", "Nails, lashes, brows, tanning and waxing.", "beauty.jpg", "treatments/index.html#beauty", ["Lashes", "Brows", "Nails"]),
@@ -423,18 +427,19 @@ def home():
         cards += f'''<a class="hcard" href="{href}"><img src="assets/img/{img}" alt="" loading="lazy"><span class="n">0{i+1}</span><span class="arrow"><svg viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span><div><h3>{t}</h3><p>{d}</p><div class="tags">{"".join(f"<span>{x}</span>" for x in tags)}</div></div></a>'''
     cards += '''<a class="hcard cta" href="treatments/index.html"><div><h3>All 16 treatments</h3><p>Browse the full menu and book online.</p><div class="tags" style="justify-content:center"><span>View all</span></div></div></a>'''
     marquee = "".join(f"<span>{x}</span>" for x in ["Laser Hair Removal", "Microneedling", "Venus Legacy", "Lumenis M22 IPL", "Hot Stone Massage", "Alumier MD Peels", "Idenel Liquid Microneedling", "Lashes & Brows", "Gift Vouchers"] * 2)
-    gallery = "".join(gal(rel, f, c) for f, c in GALLERY)
-    body = f'''<section class="hero grain{'' if HERO_VIDEO else ' silk'}">
-  {('<div class="bgv"><video autoplay muted loop playsinline preload="auto" poster="assets/img/' + HERO_VIDEO[1] + '" src="assets/video/' + HERO_VIDEO[0] + '" aria-hidden="true"></video></div>') if HERO_VIDEO else ''}
+    results = "".join(ba(rel, k, c, i) for i, (k, c, _) in enumerate(RESULTS))
+    reels = "".join(reel(rel, *r) for r in REELS)
+    body = f'''<section class="hero grain">
+  <div class="bgv"><video autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster.jpg" src="assets/video/hero.mp4" aria-label="Inside the clinic: an Alumier peel being prepared"></video></div>
   <div class="content">
     <div>
-      <p class="eyebrow">Clinic · Spa &amp; Beauty</p>
-      <h1><span class="line"><span class="inner">Your skin,</span></span><span class="line"><span class="inner"><em>perfected.</em></span></span></h1>
+      <p class="eyebrow">Navan, Co. Meath · Clinic, Spa &amp; Beauty</p>
+      <h1><span class="line"><span class="inner">Find your</span></span><span class="line"><span class="inner"><em>balance.</em></span></span></h1>
     </div>
     <div class="side">
-      <p data-reveal>Medical-grade laser, advanced skin treatments, body contouring, massage and beauty under one roof.</p>
+      <p data-reveal>Medical-grade laser, advanced skin treatments, body contouring, massage and beauty under one roof on Trimgate Street.</p>
       <div class="ctas" data-reveal><a class="btn btn-lime" href="book/index.html">Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="treatments/index.html">Explore treatments</a></div>
-      <span class="rating" data-reveal aria-label="4.9 star average rating"><span class="stars" aria-hidden="true">★★★★★</span><span><b>4.9</b> · 800+ client reviews</span></span>
+      <a class="rating" data-reveal href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener" aria-label="4.9 stars from over 800 Google reviews"><span class="g">G</span><span class="stars" aria-hidden="true">★★★★★</span><span><b>4.9</b> · 800+ Google reviews</span></a>
     </div>
   </div>
   <div class="cue" aria-hidden="true"><i></i>Scroll</div>
@@ -444,7 +449,7 @@ def home():
 
 <section class="statement">
   <div class="inner">
-    <p class="eyebrow" style="margin-bottom:34px">The {NAME} experience</p>
+    <p class="eyebrow" style="margin-bottom:34px">The Balance experience</p>
     <p class="big">Take a step into our world and find the balance between <em>rejuvenation</em> and <em>relaxation</em>. Signature treatments, expert hands and results you can see.</p>
     <div class="row" data-reveal><a class="link" href="about/index.html">Our story {ARROW}</a><a class="link" href="about/team.html">Meet the team {ARROW}</a></div>
   </div>
@@ -475,19 +480,23 @@ def home():
   <div class="bigword" aria-hidden="true">Legacy</div>
 </section>
 
-<section class="sec" id="gallery">
-  <div class="sec-head"><div><p class="eyebrow">Gallery</p><h2 data-split>Inside the clinic.</h2></div><p data-reveal>Treatment rooms, rituals and the small details of a visit. Tap any photo to see it full size.</p></div>
-  <div class="gal-grid">{gallery}</div>
-  <div style="display:flex;justify-content:center;margin-top:48px" data-reveal><a class="btn btn-moss" href="gallery/index.html">Open the gallery {ARROW}</a></div>
+<section class="sec" id="results">
+  <div class="sec-head"><div><p class="eyebrow">Real results</p><h2 data-split>Drag the scan to see the difference.</h2></div><p data-reveal>Clients of Balance, photographed in clinic. Results vary from person to person, so we always start with a consultation.</p></div>
+  <div class="ba-grid">{results}</div>
+  <div style="display:flex;justify-content:center;margin-top:48px" data-reveal><a class="btn btn-moss" href="results/index.html">See all results {ARROW}</a></div>
 </section>
-{reels_section(rel)}
+
+<section class="sec sage" id="reels">
+  <div class="sec-head"><div><p class="eyebrow">Inside the clinic</p><h2 data-split>See it in motion.</h2></div><p data-reveal>Short clips from the treatment rooms. Tap any one to watch it full size with sound.</p></div>
+  <div class="reel-row">{reels}</div>
+</section>
 
 <section class="reviews" id="reviews">
   <div class="num">0.0</div>
   <div class="stars" aria-hidden="true">{"".join('<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.7 1.3 6.8L12 17.7 5.9 21l1.3-6.8-5-4.7 6.8-.8z"/></svg>' for _ in range(5))}</div>
-  <h2>Rated by <b data-count>0</b> happy clients</h2>
-  <p class="sub">Built review by review, by people who sat in our treatment rooms.</p>
-  <div class="ctas">{reviews_btn()}<a class="btn btn-ghost" href="book/index.html">Book now</a></div>
+  <h2>Rated by <b data-count>0</b> clients on Google</h2>
+  <p class="sub">The highest-rated clinic of its kind in Meath, built review by review. Read what people say in their own words.</p>
+  <div class="ctas"><a class="btn btn-moss" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read the reviews</a><a class="btn btn-ghost" href="book/index.html">Book now</a></div>
   <div class="pillars">
     <div class="pillar" data-reveal><div class="ic"><svg viewBox="0 0 48 48"><path d="M10 38C14 18 26 10 40 8c-2 14-10 26-30 30z"/><path d="M12 36c6-8 14-14 22-20"/></svg></div><h3>Relax</h3><p>Massage, warm towels and time that is only yours.</p></div>
     <div class="pillar" data-reveal><div class="ic"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="3.5"/><ellipse cx="24" cy="12" rx="4" ry="8"/><ellipse cx="24" cy="36" rx="4" ry="8"/><ellipse cx="12" cy="24" rx="8" ry="4"/><ellipse cx="36" cy="24" rx="8" ry="4"/></svg></div><h3>Rejuvenate</h3><p>Laser, peels and microneedling that work with your skin.</p></div>
@@ -496,7 +505,7 @@ def home():
   </div>
 </section>
 {visit(rel)}'''
-    return page(rel, f"{NAME} Clinic Spa Beauty", "Medical-grade laser, skin treatments, body contouring, massage and beauty under one roof.", "home", body, show_intro=True)
+    return page(rel, "Balance Clinic Spa Beauty, Navan", "Medical-grade laser, skin treatments, body contouring, massage and beauty in Navan, Co. Meath. Rated 4.9 by over 800 Google reviewers.", "home", body, show_intro=True)
 
 def treatments_index():
     rel = "../"
@@ -507,7 +516,7 @@ def treatments_index():
     body = phero(rel, [("Home", "index.html")], "Treatments", "Sixteen treatments across body, skin and beauty, each starting with a consultation.", img="nonsurgical.jpg",
                  ctas=f'<a class="btn btn-lime" href="{rel}book/index.html">Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="{rel}price-list.html">Price list</a>')
     body += groups + visit(rel)
-    return page(rel, "Treatments · Perfect Clinic", "Laser, skin, body and beauty treatments at Perfect Clinic Spa Beauty.", "treatments", body)
+    return page(rel, "Treatments · Balance Clinic", "Laser, skin, body and beauty treatments at Balance Clinic Spa Beauty, Navan.", "treatments", body)
 
 def treatment_page(t):
     rel = "../"
@@ -519,6 +528,12 @@ def treatment_page(t):
     facts = "".join(f"<div><span>{a}</span><span>{b}</span></div>" for a, b in t["facts"])
     faqs = "".join(f"<details><summary>{q}<i></i></summary><div class=\"a\">{a}</div></details>" for q, a in t["faqs"])
     media = ""
+    if t.get("video"):
+        v, p, cap = t["video"]
+        media = f'<div class="media" data-video="{rel}assets/video/{v}" data-poster="{rel}assets/img/{p}" data-title="{html.escape(cap)}" role="button" tabindex="0" aria-label="Play video: {html.escape(cap)}"><video muted loop playsinline preload="metadata" poster="{rel}assets/img/{p}" src="{rel}assets/video/{v}" data-reel></video><div class="ply"><span>{PLAY}</span></div></div>'
+    elif t.get("compare"):
+        cap = dict((k, c) for k, c, _ in RESULTS)[t["compare"]]
+        media = ba(rel, t["compare"], cap, 0)
     related = [x for x in T if x["group"] == t["group"] and x["slug"] != t["slug"]][:3]
     if len(related) < 3: related += [x for x in T if x["group"] != t["group"]][:3 - len(related)]
     rel_cards = "".join(tcard(rel, x) for x in related)
@@ -539,45 +554,46 @@ def treatment_page(t):
 <section class="sec" style="padding-top:0"><div class="faq"><h2 data-split>Questions, answered.</h2><div data-reveal>{faqs}</div></div></section>
 <section class="related"><div class="inner"><h2 data-split>You may also like</h2><div class="row">{rel_cards}</div></div></section>
 {visit(rel)}'''
-    return page(rel, f"{t['name']} · Perfect Clinic", t["name"] + ". " + html.unescape(t["short"]), "treatments", body)
+    return page(rel, f"{t['name']} · Balance Clinic", t["name"] + ". " + html.unescape(t["short"]), "treatments", body)
 
-def gallery_page():
+def results():
     rel = "../"
-    cards = "".join(gal(rel, f, c) for f, c in GALLERY)
-    body = phero(rel, [("Home", "index.html")], "The <em>gallery.</em>", "Treatment rooms, rituals and details from a visit. Tap any photo to open it full size.", word="Gallery",
-                 ctas=f'<a class="btn btn-lime" href="{rel}book/index.html">Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="{rel}treatments/index.html">All treatments</a>')
-    body += f'''<section class="sec"><div class="sec-head"><div><p class="eyebrow">Gallery</p><h2 data-split>A look inside.</h2></div><p data-reveal>Every room is set up fresh for each client, with warm towels and a calm, quiet space.</p></div><div class="gal-grid wide">{cards}</div></section>
-{reels_section(rel)}
-<section class="reviews"><div class="num">0.0</div><div class="stars" aria-hidden="true">{"".join('<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.7 1.3 6.8L12 17.7 5.9 21l1.3-6.8-5-4.7 6.8-.8z"/></svg>' for _ in range(5))}</div><h2>Rated by <b data-count>0</b> happy clients</h2><p class="sub">Built review by review.</p><div class="ctas">{reviews_btn()}<a class="btn btn-ghost" href="{rel}book/index.html">Book now</a></div></section>
+    cards = "".join(ba(rel, k, c, i) for i, (k, c, _) in enumerate(RESULTS))
+    reels = "".join(reel(rel, *r) for r in REELS)
+    body = phero(rel, [("Home", "index.html")], "Real <em>results.</em>", "Clients of Balance, photographed in clinic before and after treatment. Drag the scan line across each photo, or open the full picture.", img="rosacea-after.jpg",
+                 ctas=f'<a class="btn btn-lime" href="{rel}book/index.html">Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="{rel}treatments/index.html">All treatments</a>')
+    body += f'''<section class="sec"><div class="sec-head"><div><p class="eyebrow">Before &amp; after</p><h2 data-split>Drag the scan to compare.</h2></div><p data-reveal>Results vary from person to person. Every plan starts with a consultation so we can tell you what to expect.</p></div><div class="ba-grid wide">{cards}</div></section>
+<section class="sec sage"><div class="sec-head"><div><p class="eyebrow">In motion</p><h2 data-split>From the treatment rooms.</h2></div><p data-reveal>Tap any clip to watch it full size with sound.</p></div><div class="reel-row">{reels}</div></section>
+<section class="reviews"><div class="num">0.0</div><div class="stars" aria-hidden="true">{"".join('<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.7 1.3 6.8L12 17.7 5.9 21l1.3-6.8-5-4.7 6.8-.8z"/></svg>' for _ in range(5))}</div><h2>Rated by <b data-count>0</b> clients on Google</h2><p class="sub">Read what people say in their own words.</p><div class="ctas"><a class="btn btn-moss" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read the reviews</a></div></section>
 {visit(rel)}'''
-    return page(rel, f"Gallery · {NAME} Clinic", f"Inside {NAME} Clinic Spa Beauty.", "gallery", body)
+    return page(rel, "Results · Balance Clinic", "Before and after photos from Balance Clinic Spa Beauty, Navan.", "results", body)
 
 def about():
     rel = "../"
-    body = phero(rel, [("Home", "index.html")], "Clinic, spa and <em>beauty.</em>", "One address where medical-grade technology meets a spa that knows how to slow you down.", word=NAME)
-    body += f'''<section class="statement"><div class="inner"><p class="eyebrow" style="margin-bottom:34px">Our story</p><p class="big">{NAME} started with a simple idea: treatments that <em>work</em>, delivered by people who <em>care</em>, in a room you never want to leave.</p></div></section>
+    body = phero(rel, [("Home", "index.html")], "Clinic, spa and <em>beauty.</em>", "One address on Trimgate Street where medical-grade technology meets a spa that knows how to slow you down.", img="room.jpg")
+    body += f'''<section class="statement"><div class="inner"><p class="eyebrow" style="margin-bottom:34px">Our story</p><p class="big">Balance started with a simple idea: treatments that <em>work</em>, delivered by people who <em>care</em>, in a room you never want to leave.</p></div></section>
 <section class="sec dark"><div class="sec-head"><div><p class="eyebrow">What we stand for</p><h2 data-split>Three promises.</h2></div></div>
   <div class="values">
     <div class="value" data-reveal><b>01</b><h3>Honest advice</h3><p>If a treatment will not help you, we say so. Every plan starts with a consultation and a conversation.</p></div>
     <div class="value" data-reveal><b>02</b><h3>Medical grade</h3><p>Lumenis Stellar M22, Venus Legacy, Alumier MD and Dermalogica professional. Technology chosen for results, not trends.</p></div>
-    <div class="value" data-reveal><b>03</b><h3>Time to breathe</h3><p>Warm towels, quiet rooms and therapists who never rush. The spa side of {NAME} is not an afterthought.</p></div>
+    <div class="value" data-reveal><b>03</b><h3>Time to breathe</h3><p>Warm towels, quiet rooms and therapists who never rush. The spa side of Balance is not an afterthought.</p></div>
   </div>
-  <div class="bigword" aria-hidden="true">{NAME}</div>
+  <div class="bigword" aria-hidden="true">Balance</div>
 </section>
 <section class="sec"><div class="split">
-  <div><p class="eyebrow">By the numbers</p><h2 data-split>Rated <em>4.9</em> by more than 800 people.</h2><p class="lead" data-reveal>Every review was written by a client who sat in one of our rooms.</p><div class="ctas" data-reveal>{reviews_btn()}<a class="btn btn-ghost" href="{rel}about/team.html">Meet the team {ARROW}</a></div></div>
-  <div class="img reveal-img" style="aspect-ratio:1/1"><img src="{rel}assets/img/massage.jpg" alt="A treatment at {NAME}" loading="lazy"></div>
+  <div><p class="eyebrow">By the numbers</p><h2 data-split>Rated <em>4.9</em> by more than 800 people.</h2><p class="lead" data-reveal>We are the highest-rated clinic of our kind in Meath, and every review was written by a client who sat in one of our rooms.</p><div class="ctas" data-reveal><a class="btn btn-moss" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read the reviews</a><a class="btn btn-ghost" href="{rel}about/team.html">Meet the team {ARROW}</a></div></div>
+  <div class="img reveal-img" style="aspect-ratio:4/3"><img src="{rel}assets/img/room.jpg" alt="A treatment room at Balance" loading="lazy"></div>
 </div></section>
 {visit(rel)}'''
-    return page(rel, "About · Perfect Clinic", "The story of Perfect Clinic Spa Beauty .", "about", body)
+    return page(rel, "About · Balance Clinic", "The story of Balance Clinic Spa Beauty in Navan.", "about", body)
 
 def team():
     rel = "../"
     members = [("Clinic Director", "Leads the clinic and consults on advanced skin and laser treatments."), ("Senior Skin Therapist", "Alumier MD, Dermalogica, microneedling and IPL."), ("Laser Specialist", "Medical-grade laser hair removal and thread vein removal."), ("Massage Therapist", "Swedish, deep tissue, hot stone and pregnancy massage."), ("Beauty Therapist", "Lashes, brows, nails and waxing."), ("Body Specialist", "Venus Legacy contouring and skin tightening."), ("Front of House", "The first voice you hear and the person who finds you the right slot."), ("Online Consultations", "Answers your questions before you visit.")]
     cards = "".join(f'<div class="member" data-reveal><div class="pic">{r.split()[0][0]}</div><div class="txt"><h3>{r}</h3><p>{d}</p></div></div>' for r, d in members)
-    body = phero(rel, [("Home", "index.html"), ("About", "about/index.html")], "Meet the <em>team.</em>", "Trained, certified and genuinely kind. The people who make {NAME} what it is.", word="Team")
+    body = phero(rel, [("Home", "index.html"), ("About", "about/index.html")], "Meet the <em>team.</em>", "Trained, certified and genuinely kind. The people who make Balance what it is.", word="Team")
     body += f'<section class="sec"><div class="sec-head"><div><p class="eyebrow">Our people</p><h2 data-split>Expert hands.</h2></div><p data-reveal>Every therapist is certified on the technology they use and keeps training as it moves on.</p></div><div class="team">{cards}</div></section>{visit(rel)}'
-    return page(rel, "Meet the Team · Perfect Clinic", "The therapists and specialists at Perfect Clinic Spa Beauty.", "about", body)
+    return page(rel, "Meet the Team · Balance Clinic", "The therapists and specialists at Balance Clinic Spa Beauty, Navan.", "about", body)
 
 def price_list():
     rel = ""
@@ -585,7 +601,7 @@ def price_list():
     body = phero(rel, [("Home", "index.html")], "Price <em>list.</em>", "Our full treatment menu. Courses are priced with a saving, and every treatment can be bought as a gift voucher.", word="Prices",
                  ctas=f'<a class="btn btn-lime" href="book/index.html">Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="shop/gift-vouchers.html">Gift vouchers</a>')
     body += f'<section class="sec"><div class="prices">{groups}</div><div class="pnote">Prices are confirmed at booking and at consultation. Call {PHONE} for a quote on a course or a package.</div></section>{visit(rel)}'
-    return page(rel, "Price List · Perfect Clinic", "Treatment prices at Perfect Clinic Spa Beauty.", "prices", body)
+    return page(rel, "Price List · Balance Clinic", "Treatment prices at Balance Clinic Spa Beauty, Navan.", "prices", body)
 
 def shop():
     rel = "../"
@@ -593,9 +609,9 @@ def shop():
     body += f'''<section class="sec"><div class="shop-grid">
   <a class="voucher" href="{rel}shop/gift-vouchers.html" data-reveal><div><b>Gift vouchers</b><p>Any amount, any treatment. Posted or emailed the same day.</p></div><span class="link">Buy a voucher {ARROW}</span></a>
   <a class="voucher alt" href="{rel}shop/january-sale.html" data-reveal><div><b>January sale</b><p>Our biggest savings of the year on courses and packages.</p></div><span class="link">See the offers {ARROW}</span></a>
-  <a class="voucher blush" href="{rel}contact.html" data-reveal><div><b>Skincare</b><p>Alumier MD, Dermalogica and Elemis, available from the clinic.</p></div><span class="link">Shop skincare {ARROW}</span></a>
+  <a class="voucher blush" href="https://balanceclinic.ie/" target="_blank" rel="noopener" data-reveal><div><b>Skincare</b><p>Alumier MD, Dermalogica and Elemis, available from the clinic.</p></div><span class="link">Shop skincare {ARROW}</span></a>
 </div></section>{visit(rel)}'''
-    return page(rel, "Shop · Perfect Clinic", "Gift vouchers, offers and skincare from Perfect Clinic Spa Beauty.", "shop", body)
+    return page(rel, "Shop · Balance Clinic", "Gift vouchers, offers and skincare from Balance Clinic Spa Beauty.", "shop", body)
 
 def gift_vouchers():
     rel = "../"
@@ -603,25 +619,25 @@ def gift_vouchers():
     body += f'''<section class="sec"><div class="split">
   <div><p class="eyebrow">How it works</p><h2 data-split>Give someone an hour that is only theirs.</h2><p class="lead" data-reveal>Vouchers can be for any value or any treatment on the menu, from a massage to a course of laser. We post them in a gift wallet or email them within the hour.</p>
     <div class="steps" data-reveal><div><div><b>Choose</b>An amount, or a treatment from the price list.</div></div><div><div><b>Order</b>Call {PHONE}, drop into the clinic or order online.</div></div><div><div><b>Deliver</b>Posted, emailed or collected, ready to give.</div></div></div>
-    <div class="ctas" data-reveal><a class="btn btn-lime" href="{rel}book/index.html">Order a voucher {ARROW}</a><a class="btn btn-ghost" href="{rel}contact.html">Ask us</a></div></div>
+    <div class="ctas" data-reveal><a class="btn btn-lime" href="https://balanceclinic.ie/" target="_blank" rel="noopener">Order online {ARROW}</a><a class="btn btn-ghost" href="{rel}contact.html">Ask us</a></div></div>
   <div class="shop-grid" style="grid-template-columns:1fr;max-width:420px">
     <div class="voucher" data-reveal><div><b>Any amount</b><p>From a treat to a full course.</p></div></div>
     <div class="voucher alt" data-reveal><div><b>A treatment</b><p>Massage, facial, laser, lashes. You name it.</p></div></div>
   </div>
 </div></section>{visit(rel)}'''
-    return page(rel, "Gift Vouchers · Perfect Clinic", "Gift vouchers for any treatment at Perfect Clinic Spa Beauty.", "shop", body)
+    return page(rel, "Gift Vouchers · Balance Clinic", "Gift vouchers for any treatment at Balance Clinic Spa Beauty, Navan.", "shop", body)
 
 def january_sale():
     rel = "../"
     body = phero(rel, [("Home", "index.html"), ("Shop", "shop/index.html")], "January <em>sale.</em>", "Every January we take our biggest savings of the year off courses and packages. Start the year with skin you are glad to see.", word="Sale")
     body += f'''<section class="sec"><div class="sale"><div><p class="eyebrow" style="color:var(--moss)">Limited time</p><h2 data-split>Courses, packages, savings.</h2><p class="lead" data-reveal style="color:var(--moss)">Laser courses, Venus Legacy packages, peel and microneedling courses and massage bundles. Offers run for the month of January, or while appointments last.</p><div class="ctas" data-reveal style="margin-top:28px"><a class="btn btn-moss" href="{rel}book/index.html">Book a sale treatment {ARROW}</a><a class="btn btn-white" href="{rel}contact.html">Ask about an offer</a></div></div><div class="big" aria-hidden="true">Jan</div></div></section>{visit(rel)}'''
-    return page(rel, "January Sale · Perfect Clinic", "January offers on courses and packages at Perfect Clinic Spa Beauty.", "shop", body)
+    return page(rel, "January Sale · Balance Clinic", "January offers on courses and packages at Balance Clinic Spa Beauty.", "shop", body)
 
 def form(rel, kind):
     opts = "".join(f'<option>{t["title"]}</option>' for t in T)
     typ = '<option value="treatment">Book a treatment</option><option value="consultation">Online consultation</option>' if kind == "book" else ""
     return f'''<form class="form" id="bookform" data-form method="post" action="https://api.web3forms.com/submit" novalidate>
-  <input type="hidden" name="access_key" value="{WEB3FORMS_KEY}"><input type="hidden" name="subject" value="{NAME} Clinic website: {('booking request' if kind=='book' else 'message')}">
+  <input type="hidden" name="access_key" value="{WEB3FORMS_KEY}"><input type="hidden" name="subject" value="Balance Clinic website: {('booking request' if kind=='book' else 'message')}">
   <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
   {('<label>I would like to<select id="type" name="type">' + typ + '</select></label>') if typ else ''}
   <div class="row"><label>Name<input type="text" name="name" id="f-name" required autocomplete="name"></label><label>Phone<input type="tel" name="phone" id="f-phone" required autocomplete="tel"></label></div>
@@ -642,9 +658,9 @@ def book():
     <a class="opt" href="{rel}book/online-consultation.html" data-reveal><span class="k">Option 02</span><h3>Book an online consultation</h3><p>Not sure where to start? A short video call with a therapist to plan your treatment.</p></a>
   </div>
   <div class="split" style="align-items:start"><div>{form(rel, "book")}</div>
-  <aside class="aside"><div class="box" data-reveal><h3>Prefer to talk?</h3><p>Call the clinic on {PHONE}. Late opening until 8pm.</p><button class="btn btn-lime copy" type="button" data-copy="{PHONE_PLAIN}" style="margin:0">Copy number</button></div><div class="facts" data-reveal><div><span>Address</span><span>{ADDRESS}</span></div><div><span>Hours</span><span>Late opening until 8pm</span></div><div><span>Consult</span><span>Included with every course</span></div><div><span>Vouchers</span><span>Accepted on all treatments</span></div></div></aside></div>
+  <aside class="aside"><div class="box" data-reveal><h3>Prefer to talk?</h3><p>Call the clinic on {PHONE}. Late opening until 8pm.</p><button class="btn btn-lime copy" type="button" data-copy="046 906 0333" style="margin:0">Copy number</button></div><div class="facts" data-reveal><div><span>Address</span><span>8 Trimgate St, Navan</span></div><div><span>Hours</span><span>Late opening until 8pm</span></div><div><span>Consult</span><span>Included with every course</span></div><div><span>Vouchers</span><span>Accepted on all treatments</span></div></div></aside></div>
 </section>{visit(rel)}'''
-    return page(rel, "Book a Treatment · Perfect Clinic", "Book a treatment at Perfect Clinic Spa Beauty.", "book", body)
+    return page(rel, "Book a Treatment · Balance Clinic", "Book a treatment at Balance Clinic Spa Beauty, Navan.", "book", body)
 
 def consultation():
     rel = "../"
@@ -655,7 +671,7 @@ def consultation():
     <div style="margin-top:36px">{form(rel, "consult")}</div></div>
   <aside class="aside"><div class="box" data-reveal><h3>Good for</h3><p>Skin concerns, laser suitability, body contouring plans, or simply choosing between two treatments.</p><a class="btn btn-lime" href="{rel}treatments/index.html">Browse treatments {ARROW}</a></div><div class="facts" data-reveal><div><span>Length</span><span>About 15 min</span></div><div><span>Format</span><span>Video call</span></div><div><span>Cost</span><span>Ask when booking</span></div></div></aside>
 </div></section>{visit(rel)}'''
-    return page(rel, "Online Consultation · Perfect Clinic", "Book an online consultation with Perfect Clinic Spa Beauty.", "book", body)
+    return page(rel, "Online Consultation · Balance Clinic", "Book an online consultation with Balance Clinic Spa Beauty.", "book", body)
 
 def contact():
     rel = ""
@@ -663,20 +679,20 @@ def contact():
     body += f'''<section class="sec" style="padding-top:clamp(50px,6vw,80px)"><div class="split" style="align-items:start">
   <div>{form(rel, "contact")}</div>
   <div class="details" data-reveal style="color:var(--ink)">
-    <div style="border-color:var(--line)"><span style="color:var(--moss)">Address</span><div><strong>{ADDR1}</strong><small style="color:var(--ink-2)">{ADDR2}</small></div></div>
-    <div style="border-color:var(--line)"><span style="color:var(--moss)">Phone</span><div><strong>{PHONE}</strong><button class="copy" type="button" data-copy="{PHONE_PLAIN}" style="color:var(--moss);border-color:var(--line)">Copy</button><small style="color:var(--ink-2)">Call for today's opening hours</small></div></div>
+    <div style="border-color:var(--line)"><span style="color:var(--moss)">Address</span><div><strong>8 Trimgate Street, Townparks</strong><small style="color:var(--ink-2)">Navan, Co. Meath, C15 DHE9</small></div></div>
+    <div style="border-color:var(--line)"><span style="color:var(--moss)">Phone</span><div><strong>{PHONE}</strong><button class="copy" type="button" data-copy="046 906 0333" style="color:var(--moss);border-color:var(--line)">Copy</button><small style="color:var(--ink-2)">Call for today's opening hours</small></div></div>
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Hours</span><div><strong>Late opening until 8pm</strong><small style="color:var(--ink-2)">Evening appointments available</small></div></div>
-    <div style="border-color:var(--line)"><span style="color:var(--moss)">Find us</span><div><strong>{'<a href="' + MAPS + '" target="_blank" rel="noopener" style="border-color:var(--line)">Open in Google Maps</a>' if MAPS else ADDRESS}</strong><small style="color:var(--ink-2)">Parking nearby</small></div></div>
+    <div style="border-color:var(--line)"><span style="color:var(--moss)">Find us</span><div><strong><a href="{MAPS}" target="_blank" rel="noopener" style="border-color:var(--line)">Open in Google Maps</a></strong><small style="color:var(--ink-2)">Town centre, minutes from parking</small></div></div>
   </div>
 </div></section>{visit(rel)}'''
-    return page(rel, "Contact · Perfect Clinic", "Contact Perfect Clinic Spa Beauty.", "contact", body)
+    return page(rel, "Contact · Balance Clinic", "Contact Balance Clinic Spa Beauty, 8 Trimgate Street, Navan.", "contact", body)
 
 def blog_index():
     rel = "../"
     cards = "".join(f'''<a class="post" href="{rel}blog/{p["slug"]}.html" data-reveal><div class="pic"><img src="{rel}assets/img/{p["img"]}" alt="" loading="lazy">{'<span class="vid">Video</span>' if p.get("video") else ''}</div><div class="txt"><span class="meta">{p["date"]}</span><h3>{p["title"]}</h3><p>{p["summary"]}</p></div></a>''' for p in POSTS)
     body = phero(rel, [("Home", "index.html")], "The <em>journal.</em>", "Skin science, treatment explainers and what is new in the clinic.", word="Blog")
     body += f'<section class="sec"><div class="posts">{cards}</div></section>{visit(rel)}'
-    return page(rel, "Blog · Perfect Clinic", "Skin and treatment articles from Perfect Clinic Spa Beauty.", "blog", body)
+    return page(rel, "Blog · Balance Clinic", "Skin and treatment articles from Balance Clinic Spa Beauty.", "blog", body)
 
 def post_page(p):
     rel = "../"
@@ -684,9 +700,12 @@ def post_page(p):
     if p.get("video"):
         v, po = p["video"]
         media = f'<div class="vidbox" data-video="{rel}assets/video/{v}" data-poster="{rel}assets/img/{po}" data-title="{html.escape(p["title"])}" role="button" tabindex="0" aria-label="Play video"><video muted loop playsinline preload="metadata" poster="{rel}assets/img/{po}" src="{rel}assets/video/{v}" data-reel></video><div class="ply"><span>{PLAY}</span></div></div>'
+    if p.get("compare"):
+        cap = dict((k, c) for k, c, _ in RESULTS)[p["compare"]]
+        media += ba(rel, p["compare"], cap, 9)
     body = phero(rel, [("Home", "index.html"), ("Blog", "blog/index.html")], p["title"], p["summary"], img=p["img"])
     body += f'<section class="article"><div class="inner"><p class="eyebrow">{p["date"]}</p>{media}{"".join(p["body"])}</div></section>{visit(rel)}'
-    return page(rel, f"{p['title']} · Perfect Clinic", p["summary"], "blog", body)
+    return page(rel, f"{p['title']} · Balance Clinic", p["summary"], "blog", body)
 
 # ---------------------------------------------------------------- write
 def write(path, content):
@@ -700,7 +719,7 @@ if __name__ == "__main__":
     write("index.html", home())
     write("treatments/index.html", treatments_index())
     for t in T: write(f"treatments/{t['slug']}.html", treatment_page(t))
-    write("gallery/index.html", gallery_page())
+    write("results/index.html", results())
     write("about/index.html", about()); write("about/team.html", team())
     write("price-list.html", price_list())
     write("shop/index.html", shop()); write("shop/gift-vouchers.html", gift_vouchers()); write("shop/january-sale.html", january_sale())

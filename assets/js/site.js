@@ -103,7 +103,7 @@
       function finish() { if (done) return; done = true; killIntro(); if (lenis) lenis.start(); res(); }
       var tl = gsap.timeline({ onComplete: finish });
       tl.to(intro.querySelector('.plus path'), { strokeDashoffset: 0, duration: .9, ease: 'power3.inOut' }, 0)
-        .to(intro.querySelector('.word .logo'), { y: 0, duration: 1, ease: 'power4.out' }, .35)
+        .to(intro.querySelector('.word img'), { y: 0, duration: 1, ease: 'power4.out' }, .35)
         .to(intro.querySelector('.tag'), { opacity: 1, duration: .6, ease: 'power2.out' }, .8)
         .to(intro.querySelector('.mark'), { opacity: 0, y: -24, duration: .5, ease: 'power2.in' }, 1.55)
         .to(intro.querySelectorAll('.slat'), { scaleY: 0, duration: .9, ease: 'expo.inOut', stagger: { each: .06, from: 'start' } }, 1.7);
@@ -146,8 +146,8 @@
     document.addEventListener('mouseleave', function () { cur.classList.add('hide'); });
     document.addEventListener('mouseenter', function () { cur.classList.remove('hide'); });
     (function tick() { cx += (tx - cx) * .22; cy += (ty - cy) * .22; cur.style.transform = 'translate(' + cx + 'px,' + cy + 'px) translate(-50%,-50%)'; requestAnimationFrame(tick); })();
-    document.addEventListener('mouseover', function (e) { if (e.target.closest('a,button,.gal,.phone,.media,.vidbox,summary,label')) cur.classList.add('hover'); });
-    document.addEventListener('mouseout', function (e) { if (e.target.closest('a,button,.gal,.phone,.media,.vidbox,summary,label')) cur.classList.remove('hover'); });
+    document.addEventListener('mouseover', function (e) { if (e.target.closest('a,button,.ba,.phone,.media,.vidbox,summary,label')) cur.classList.add('hover'); });
+    document.addEventListener('mouseout', function (e) { if (e.target.closest('a,button,.ba,.phone,.media,.vidbox,summary,label')) cur.classList.remove('hover'); });
     document.querySelectorAll('.btn').forEach(function (b) {
       b.addEventListener('mousemove', function (e) {
         var r = b.getBoundingClientRect(), x = e.clientX - r.left - r.width / 2, y = e.clientY - r.top - r.height / 2;
@@ -302,7 +302,6 @@
     if (lenis) lenis.start();
     reels.forEach(function (v) { var rect = v.getBoundingClientRect(); if (rect.top < window.innerHeight && rect.bottom > 0) v.play().catch(function () {}); });
   }
-  document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[data-image],[data-video]')) { e.preventDefault(); e.target.click(); } });
   document.addEventListener('click', function (e) {
     var t = e.target.closest('[data-video]');
     if (t) { e.preventDefault(); openLb(t.getAttribute('data-video'), t.getAttribute('data-title'), t.getAttribute('data-poster')); return; }
