@@ -431,6 +431,7 @@ def home():
     reels = "".join(reel(rel, *r) for r in REELS)
     body = f'''<section class="hero grain">
   <div class="bgv"><video autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster.jpg" src="assets/video/hero.mp4" aria-label="Inside the clinic: an Alumier peel being prepared"></video></div>
+  <div class="hero-frame" aria-hidden="true"><video muted loop playsinline preload="none" poster="assets/img/hero-poster.jpg" data-src="assets/video/hero.mp4"></video></div>
   <div class="content">
     <div>
       <p class="eyebrow">Navan, Co. Meath · Clinic, Spa &amp; Beauty</p>

@@ -167,6 +167,21 @@
     if (fab) fab.classList.toggle('show', y > 500);
   }
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  /* hero: on wide screens play the sharp framed clip and keep the blurred copy in step */
+  (function heroFrame() {
+    var fr = document.querySelector('.hero-frame video'), bg = document.querySelector('.hero .bgv video');
+    if (!fr) return;
+    var mq = window.matchMedia('(min-width: 901px)');
+    function apply() {
+      if (!mq.matches) { fr.pause(); return; }
+      if (!fr.getAttribute('src')) fr.src = fr.getAttribute('data-src');
+      fr.play().catch(function () {});
+    }
+    apply();
+    if (mq.addEventListener) mq.addEventListener('change', apply); else if (mq.addListener) mq.addListener(apply);
+    setInterval(function () { if (mq.matches && bg && !fr.paused && Math.abs(bg.currentTime - fr.currentTime) > .3) bg.currentTime = fr.currentTime; }, 1500);
+  })();
   function closeMenu() { if (!document.body.classList.contains('menu-open')) return; document.body.classList.remove('menu-open'); if (burger) { burger.setAttribute('aria-expanded', 'false'); burger.setAttribute('aria-label', 'Open menu'); } if (lenis) lenis.start(); }
   if (burger) burger.addEventListener('click', function () {
     var open = document.body.classList.toggle('menu-open');
@@ -204,11 +219,15 @@
       .fromTo(hero.querySelectorAll('[data-reveal]'), { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out', stagger: .1 }, .45)
       .from(hero.querySelectorAll('.bgv, .bg'), { scale: 1.12, opacity: .4, duration: 2.2, ease: 'power2.out' }, 0);
     if (head) tl.from(head, { y: -30, opacity: 0, duration: 1, ease: 'power3.out' }, .3);
+    var frm = hero.querySelector('.hero-frame');
+    if (frm && getComputedStyle(frm).display !== 'none') tl.fromTo(frm, { opacity: 0, y: 90, scale: .94 }, { opacity: 1, y: 0, scale: 1, duration: 1.6, ease: 'expo.out' }, .35);
   }
   function scrollFx() {
     if (!hasST || reduce) return;
     var hero = document.querySelector('.hero, .phero');
     if (hero) {
+      var frm2 = hero.querySelector('.hero-frame');
+      if (frm2) gsap.to(frm2, { yPercent: -10, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
       var bgEl = hero.querySelector('.bgv video, .bg img, .bg video, .bg.typo span');
       if (bgEl) gsap.to(bgEl, { yPercent: 18, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
       gsap.to(hero.querySelector('.content'), { y: 90, opacity: .25, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
