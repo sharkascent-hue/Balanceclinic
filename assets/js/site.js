@@ -84,7 +84,8 @@
   }
   function scrollToEl(el, offset) {
     if (!el) return;
-    if (lenis) lenis.scrollTo(el, { offset: offset || -80, duration: 1.4 });
+    if (!offset) offset = -(parseFloat(getComputedStyle(el).scrollMarginTop) || 80);
+    if (lenis) lenis.scrollTo(el, { offset: offset, duration: 1.4 });
     else { var y = el.getBoundingClientRect().top + window.scrollY + (offset || -80); window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' }); }
   }
 
@@ -167,6 +168,43 @@
     if (fab) fab.classList.toggle('show', y > 500);
   }
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  /* price list: live search and active section chip */
+  (function priceList() {
+    var inp = document.getElementById('price-search'); if (!inp) return;
+    var empty = document.querySelector('.pempty'), secs = document.querySelectorAll('.psec');
+    inp.addEventListener('input', function () {
+      var q = inp.value.trim().toLowerCase(), any = false;
+      secs.forEach(function (sec) {
+        var secAny = false;
+        sec.querySelectorAll('.pgroup').forEach(function (g) {
+          var gname = g.querySelector('h3').textContent.toLowerCase(), gAny = false;
+          g.querySelectorAll('tr').forEach(function (tr) {
+            var hit = !q || gname.indexOf(q) > -1 || tr.textContent.toLowerCase().indexOf(q) > -1;
+            tr.hidden = !hit; if (hit) gAny = true;
+          });
+          g.hidden = !gAny; if (gAny) { secAny = true; g.style.opacity = ''; g.style.transform = ''; }
+        });
+        sec.hidden = !secAny; if (secAny) any = true;
+      });
+      if (empty) empty.hidden = any;
+      if (hasST) ScrollTrigger.refresh();
+    });
+    var chips = document.querySelectorAll('.pchips a');
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          chips.forEach(function (c) {
+            var on = c.getAttribute('href') === '#' + en.target.id;
+            c.classList.toggle('on', on);
+            if (on && c.scrollIntoView) { var bar = c.parentElement; bar.scrollTo({ left: c.offsetLeft - bar.clientWidth / 2 + c.clientWidth / 2, behavior: 'smooth' }); }
+          });
+        });
+      }, { rootMargin: '-40% 0px -55% 0px' });
+      secs.forEach(function (s) { io.observe(s); });
+    }
+  })();
 
   /* hero: on wide screens play the sharp framed clip and keep the blurred copy in step */
   (function heroFrame() {

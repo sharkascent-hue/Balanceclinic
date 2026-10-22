@@ -232,11 +232,44 @@ POSTS = [
                '<p><a class="link" href="../treatments/what-is-cellulite.html">More on cellulite ' + ARROW + '</a></p>']),
 ]
 
-PRICES = [
-    ("Medical Grade Laser", [("Laser hair removal, small area", "Lip, chin or underarm"), ("Laser hair removal, medium area", "Bikini, half leg or half arm"), ("Laser hair removal, large area", "Full leg, back or chest"), ("Laser skin rejuvenation", ""), ("Thread vein removal", "")]),
-    ("Skin Treatments", [("Alumier MD peel", "Course of 3 available"), ("Dermalogica ProSkin 30", ""), ("Dermalogica ProSkin 60", ""), ("Lumenis Stellar M22 IPL", "Face"), ("Microneedling", "Course of 3 available"), ("Microneedling with exosomes", ""), ("Idenel liquid microneedling", "New")]),
-    ("Body Treatments", [("Venus Legacy body contouring", "Per area, courses available"), ("Venus Legacy facial skin tightening", ""), ("Swedish massage", "30 / 60 min"), ("Deep tissue massage", "30 / 60 min"), ("Hot stone massage", "60 min"), ("Indian head massage", ""), ("Pregnancy massage", "60 min")]),
-    ("Beauty", [("Manicure", "Classic / gel"), ("Pedicure", "Classic / gel"), ("Lash lift and tint", ""), ("Lash extensions", "Classic / hybrid / volume"), ("Brow shape and tint", ""), ("Million Dollar Brows", ""), ("Waxing", "From lip to full leg"), ("Spray tan", "")]),
+PRICES = [   # (section id, section title, [(group, note, [(treatment, detail, price in euro)])])
+    ("skin", "Skin & face", [
+        ("CACI", "", [("CACI Eye", "", 65), ("CACI Healing Booster", "", 119), ("CACI Ultimate Anti-Ageing", "", 135), ("CACI Neck + Jowl Lift", "", 69)]),
+        ("Microneedling", "", [("BioPen Microneedling", "", 130), ("Microneedling", "", 160), ("Idenel Liquid Needling", "", 239)]),
+        ("Lumenis M22 IPL", "", [("Face", "", 255), ("Hands", "", 120), ("Neck", "", 175), ("Neck & décolletage", "", 299), ("Pigmentation", "", 255), ("Thread vein removal", "", 255),
+                                 ("Leg vein removal", "30 min", 195), ("Leg vein removal", "40 min", 195), ("Leg vein removal", "60 min", 200)]),
+        ("Alumier MD peels & facials", "", [("Advanced Peel", "", 135), ("Deep Moisturising Treatment", "", 115), ("Enzyme Treatment", "", 115), ("Express Luxury Facial", "", 50),
+                                            ("Luxury Facial", "", 175), ("Refining Clay Treatment", "", 115), ("Crystal Clear Complexion", "", 85), ("Décolletage Peel", "", 115),
+                                            ("Detox Clear", "", 115), ("Glow Peel", "", 115), ("Radiant 20/10", "", 115), ("Radiant 30", "", 115), ("Vitamin A Boost", "", 20)]),
+        ("Dermalogica facials", "", [("Age Smart Treatment", "", 70), ("Active Clearing Treatment", "", 65), ("Balance Custom Facial Treatment", "", 80), ("Prescriptive Facial", "", 65),
+                                     ("MicroZone Facial", "Mini facial", 40), ("Pro Power Peel 30", "", 75), ("Pro Power Peel 60", "", 95), ("The Balance Express Facial Treatment", "", 40),
+                                     ("UltraCalming Treatment", "", 65)]),
+    ]),
+    ("body", "Body contouring", [
+        ("Venus Legacy", "Pay per session, or save with a course.", [
+            ("Face", "Course of 6 + 2 free: €690", 115), ("Neck + jowls", "Course of 6 + 2 free: €534", 89), ("Thigh", "Course of 10: €550", 110), ("Thighs", "Course of 10: €1,100", 220),
+            ("Back fat", "Course of 10: €550", 110), ("Hands", "Course of 10: €445", 89), ("Knees + lower legs", "Course of 10: €550", 110), ("Arms", "Course of 10: €445", 89),
+            ("Brazilian bum lift", "Course of 10: €465", 93), ("Stomach front / flanks", "Course of 10: €665", 133), ("Stomach back / love handles", "Course of 10: €665", 133)]),
+    ]),
+    ("injectables", "Injectables", [
+        ("Anti-wrinkle injections", "", [("1 ml", "", 350), ("1 area", "", 120), ("2 areas", "", 260), ("3 areas", "", 300), ("4 areas", "", 325), ("5 areas", "", 350)]),
+        ("Botox", "", [("1 area", "", 200), ("2 areas", "", 260), ("3 areas", "", 300), ("5 areas", "", 300)]),
+        ("Fillers & skin boosters", "", [("Lip filler", "", 350), ("Profhilo", "Single session", 350), ("Profhilo", "2 sessions", 650)]),
+        ("Medical treatments", "", [("Hyperhidrosis", "Excessive sweating", 600), ("Jaw clenching", "", 450)]),
+    ]),
+    ("beauty", "Beauty", [
+        ("Lashes", "", [("Lash lift", "", 45), ("Lash tint", "", 15)]),
+        ("Eyebrows", "", [("Eye combo", "", 35), ("Eyebrow tint", "", 10), ("Eyebrow wax / trim", "", 15)]),
+        ("Manicure", "", [("French manicure", "", 30), ("Luxury manicure + polish", "", 45), ("Mini manicure", "", 30), ("Mini manicure with French polish", "", 25)]),
+        ("Pedicure", "", [("Margaret Dabbs pedicure", "30 min", 30), ("Margaret Dabbs pedicure", "45 min", 45), ("Shellac feet", "", 28), ("Margaret Dabbs manicure + pedicure", "", 79)]),
+    ]),
+    ("waxing", "Waxing", [
+        ("Bikini", "", [("Bikini wax", "10 min", 20), ("Brazilian", "25 min", 51), ("California (extended)", "15 min", 29), ("Hollywood", "40 min", 61)]),
+        ("Body", "", [("Full arm", "30 min", 33), ("Forearm", "15 min", 21), ("Underarm", "10 min", 20), ("Full leg", "30 min", 33), ("Half leg", "15 min", 28), ("3/4 leg", "20 min", 26)]),
+        ("Face", "", [("Eyebrow", "10 min", 15), ("Nose", "10 min", 13), ("Lip", "10 min", 13), ("Chin", "10 min", 13)]),
+        ("Male", "", [("Male waxing", "40 min", 70), ("Full chest", "30 min", 50), ("Full back incl. neck", "30 min", 40), ("Upper back + shoulders", "30 min", 25)]),
+        ("Combos", "", [("Brazilian + full legs, underarms free", "45 min", 71), ("Lip + chin", "10 min", 21)]),
+    ]),
 ]
 
 # ---------------------------------------------------------------- shared html
@@ -598,10 +631,25 @@ def team():
 
 def price_list():
     rel = ""
-    groups = "".join(f'<div class="pgroup" data-reveal><h2>{g}</h2><table>' + "".join(f'<tr><td>{n}{"<small>"+s+"</small>" if s else ""}</td><td>On request</td></tr>' for n, s in rows) + "</table></div>" for g, rows in PRICES)
+    def esc(x): return html.escape(x, quote=False)
+    chips = "".join(f'<a href="#p-{sid}">{esc(title)}</a>' for sid, title, _ in PRICES)
+    secs = ""
+    for sid, title, groups in PRICES:
+        n = sum(len(rows) for _, _, rows in groups)
+        gh = ""
+        for g, note, rows in groups:
+            trs = "".join(f'<tr><td>{esc(name)}{"<small>" + esc(d) + "</small>" if d else ""}</td><td>€{price:,}</td></tr>' for name, d, price in rows)
+            gh += f'<div class="pgroup" data-reveal><h3>{esc(g)}</h3>{"<p class=\"gnote\">" + esc(note) + "</p>" if note else ""}<table>{trs}</table></div>'
+        secs += f'<div class="psec" id="p-{sid}"><div class="psec-head"><h2 data-split>{esc(title)}</h2><span>{n} treatments</span></div><div class="pgrid{' one' if len(groups) == 1 else ''}">{gh}</div></div>'
     body = phero(rel, [("Home", "index.html")], "Price <em>list.</em>", "Our full treatment menu. Courses are priced with a saving, and every treatment can be bought as a gift voucher.", word="Prices",
                  ctas=f'<a class="btn btn-lime" href="book/index.html">Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="shop/gift-vouchers.html">Gift vouchers</a>')
-    body += f'<section class="sec"><div class="prices">{groups}</div><div class="pnote">Prices are confirmed at booking and at consultation. Call {PHONE} for a quote on a course or a package.</div></section>{visit(rel)}'
+    body += f'''<section class="sec price-sec">
+  <div class="pbar"><nav class="pchips" aria-label="Price list sections">{chips}</nav>
+    <label class="psearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="price-search" type="search" placeholder="Search treatments" aria-label="Search treatments" autocomplete="off"></label></div>
+  {secs}
+  <p class="pempty" hidden>No treatments match that search. Try a shorter word, or call {PHONE}.</p>
+  <div class="pnote">All prices are in euro. Prices are confirmed at booking and at consultation. Call {PHONE} for a quote on a course or a package.</div>
+</section>{visit(rel)}'''
     return page(rel, "Price List · Balance Clinic", "Treatment prices at Balance Clinic Spa Beauty, Navan.", "prices", body)
 
 def shop():
