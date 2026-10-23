@@ -634,21 +634,19 @@ def team():
 
 def price_list():
     rel = ""
-    cards = "".join(pcard(rel, sid, title, groups) for sid, title, groups in PRICES)
-    lfr = None
-    cards += (f'<a class="hcard" href="laser/index.html#pricing"><img src="assets/img/la-upper.jpg" alt="" loading="lazy">'
-              f'<span class="arrow"><svg viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span>'
-              f'<div><p class="lc-k">Women &amp; men</p><h3>Laser hair removal</h3><div class="tags"><span>By area</span></div></div></a>')
+    chips = price_chips(rel, "all")
     secs = ""
     for sid, title, groups in PRICES:
         t_esc = html.escape(title, quote=False)
-        secs += f'<div class="psec" id="p-{sid}"><div class="psec-head"><h2><a href="prices/{PINFO[sid]["slug"]}.html">{t_esc}</a></h2><span>{pcount(groups)} treatments</span></div><div class="pgrid">{pgroups_html(groups)}</div></div>'
-    body = phero(rel, [("Home", "index.html")], "Price <em>list.</em>", "Choose a category to see its prices, or search every treatment at once. Courses are priced with a saving, and every treatment can be bought as a gift voucher.", word="Prices",
+        secs += f'<div class="psec" id="p-{sid}"><div class="psec-head"><h2 data-split>{t_esc}</h2><span>{pcount(groups)} treatments</span></div><div class="pgrid{" one" if len(groups) == 1 else ""}">{pgroups_html(groups)}</div></div>'
+    lg = "".join(f'<div class="pgroup" data-reveal><h3>{a["name"]} · {label.replace("For ", "").lower()}</h3>{ltable(a)}</div>' for gid, label, areas in LASER for a in areas)
+    secs += f'<div class="psec" id="p-laser"><div class="psec-head"><h2 data-split>Laser hair removal</h2><span>Per session</span></div><div class="pgrid">{lg}</div></div>'
+    body = phero(rel, [("Home", "index.html")], "Price <em>list.</em>", "Every treatment and price in one place. Search for a treatment, or tap a category above the list to see just those prices.", word="Prices",
                  ctas=f'<a class="btn btn-lime" href="book/index.html">Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="shop/gift-vouchers.html">Gift vouchers</a>')
     body += f'''<section class="sec price-sec">
-  <div class="pbar phub"><label class="psearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="price-search" type="search" placeholder="Search all treatments and prices" aria-label="Search all treatments and prices" autocomplete="off"></label></div>
-  <div class="lgrid pcards">{cards}</div>
-  <div class="presults" hidden>{secs}</div>
+  <div class="pbar"><nav class="pchips" aria-label="Price list sections">{chips}</nav>
+    <label class="psearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="price-search" type="search" placeholder="Search treatments" aria-label="Search treatments" autocomplete="off"></label></div>
+  {secs}
   <p class="pempty" hidden>No treatments match that search. Try a shorter word, or call {PHONE}.</p>
   <div class="pnote">All prices are in euro. Prices are confirmed at booking and at consultation. Call {PHONE} for a quote on a course or a package.</div>
 </section>{visit(rel)}'''
@@ -787,6 +785,12 @@ def pgroups_html(groups):
         gh += f'<div class="pgroup" data-reveal><h3>{esc(g)}</h3>{"<p class=gnote>" + esc(note) + "</p>" if note else ""}<table>{trs}</table></div>'
     return gh
 
+def price_chips(rel, current):
+    items = [("all", "All prices", "price-list.html")]
+    items += [(sid, title, f"prices/{PINFO[sid]['slug']}.html") for sid, title, _ in PRICES]
+    items += [("laser", "Laser hair removal", "prices/laser-hair-removal.html")]
+    return "".join(f'<a class="{"on" if k == current else ""}" href="{rel}{h}">{html.escape(t, quote=False)}</a>' for k, t, h in items)
+
 def pcard(rel, sid, title, groups):
     i = PINFO[sid]
     return (f'<a class="hcard" href="{rel}prices/{i["slug"]}.html"><img src="{rel}assets/img/{i["img"]}" alt="" loading="lazy">'
@@ -797,8 +801,7 @@ def price_cat_page(sid, title, groups):
     rel = "../"
     i = PINFO[sid]
     t_esc = html.escape(title, quote=False)
-    chips = "".join(f'<a class="{"on" if s2 == sid else ""}" href="{rel}prices/{PINFO[s2]["slug"]}.html">{html.escape(t2, quote=False)}</a>' for s2, t2, _ in PRICES)
-    chips += f'<a href="{rel}laser/index.html#pricing">Laser hair removal</a>'
+    chips = price_chips(rel, sid)
     related = "".join(tcard(rel, TMAP[x]) for x in i["related"])
     rel_html = f'<section class="sec" style="padding-top:0"><div class="psec" style="margin-bottom:0"><div class="psec-head"><h2 data-split>Treatments explained</h2><span>Learn more</span></div><div class="tlist">{related}</div></div></section>' if related else ""
     body = phero(rel, [("Home", "index.html"), ("Price List", "price-list.html")], f"{t_esc} <em>prices.</em>", i["intro"], img=i["img"],
@@ -811,6 +814,23 @@ def price_cat_page(sid, title, groups):
 {rel_html}
 {visit(rel)}'''
     return page(rel, f"{title} Prices · Balance Clinic", f"{title} prices at Balance Clinic Spa Beauty, Navan.", "prices", body)
+
+def laser_price_page():
+    rel = "../"
+    chips = price_chips(rel, "laser")
+    secs = ""
+    for gid, label, areas in LASER:
+        groups = "".join(f'<div class="pgroup" data-reveal><h3><a href="{rel}laser/{gid}/{a["slug"]}.html">{a["name"]}</a></h3>{ltable(a)}</div>' for a in areas)
+        secs += f'<div class="psec"><div class="psec-head"><h2 data-split>{label}</h2><span>{sum(len(a["rows"]) for a in areas)} areas</span></div><div class="pgrid">{groups}</div></div>'
+    body = phero(rel, [("Home", "index.html"), ("Price List", "price-list.html")], "Laser hair removal <em>prices.</em>", "Prices per session for every area, for women and men. Most clients need a course of 6 to 8 sessions, confirmed at your consultation and patch test.", img="la-upper.jpg",
+                 ctas=f'<a class="btn btn-lime" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="{rel}laser/index.html">About laser</a>')
+    body += f'''<section class="sec price-sec">
+  <div class="pbar"><nav class="pchips" aria-label="Price list sections">{chips}</nav></div>
+  {secs}
+  <div class="pnote">Prices are per session and confirmed at your consultation. Call {PHONE} for a quote on a course.</div>
+</section>
+{visit(rel)}'''
+    return page(rel, "Laser Hair Removal Prices · Balance Clinic", "Laser hair removal prices by area for women and men at Balance Clinic Spa Beauty, Navan.", "prices", body)
 
 # ---------------------------------------------------------------- laser hair removal
 CHEV = '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>'
@@ -867,8 +887,9 @@ def laser_panels(rel):
         items = "".join(f'<a class="mlink" href="{rel}laser/{gid}/{a["slug"]}.html">{a["name"]}</a>' for a in areas)
         items += f'<a class="mlink sm" href="{rel}laser/index.html#{gid}">Learn more</a><a class="mlink sm" href="{rel}laser/index.html#pricing">Pricing</a>'
         out += pnl(f"mp-laser-{gid}", "Laser Hair Removal", "mp-laser", label, items)
-    items = "".join(f'<a class="mlink" href="{rel}prices/{PINFO[sid]["slug"]}.html">{html.escape(title, quote=False)}</a>' for sid, title, _ in PRICES)
-    items += f'<a class="mlink" href="{rel}laser/index.html#pricing">Laser hair removal</a><a class="mlink sm" href="{rel}price-list.html">All prices</a>'
+    items = f'<a class="mlink" href="{rel}price-list.html">All prices</a>'
+    items += "".join(f'<a class="mlink" href="{rel}prices/{PINFO[sid]["slug"]}.html">{html.escape(title, quote=False)}</a>' for sid, title, _ in PRICES)
+    items += f'<a class="mlink" href="{rel}prices/laser-hair-removal.html">Laser hair removal</a>'
     out += pnl("mp-prices", "Menu", "", "Price List", items)
     return out
 
@@ -960,6 +981,7 @@ if __name__ == "__main__":
     write("about/index.html", about()); write("about/team.html", team())
     write("price-list.html", price_list())
     for sid, title, groups in PRICES: write(f"prices/{PINFO[sid]['slug']}.html", price_cat_page(sid, title, groups))
+    write("prices/laser-hair-removal.html", laser_price_page())
     write("shop/index.html", shop()); write("shop/gift-vouchers.html", gift_vouchers()); write("shop/january-sale.html", january_sale())
     write("book/index.html", book()); write("book/online-consultation.html", consultation())
     write("contact.html", contact())

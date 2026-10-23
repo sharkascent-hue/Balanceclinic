@@ -199,6 +199,12 @@
     if (h && wrap.querySelector('[data-tab="' + h + '"]')) show(h);
   });
 
+  /* price tabs: bring the current tab into view */
+  document.querySelectorAll('.pchips').forEach(function (bar) {
+    var on = bar.querySelector('a.on'); if (!on) return;
+    bar.scrollLeft += on.getBoundingClientRect().left - bar.getBoundingClientRect().left - (bar.clientWidth - on.clientWidth) / 2;
+  });
+
   /* price list: live search and active section chip */
   (function priceList() {
     var inp = document.getElementById('price-search'); if (!inp) return;
@@ -222,7 +228,7 @@
       if (res) { res.hidden = !q; if (cards) cards.hidden = !!q; if (empty) empty.hidden = !q || any; }
       if (hasST) ScrollTrigger.refresh();
     });
-    var chips = document.querySelectorAll('.pchips a');
+    var chips = document.querySelectorAll('.pchips a[href^="#"]');
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (es) {
         es.forEach(function (en) {
