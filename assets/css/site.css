@@ -121,7 +121,7 @@ html.anim .hero h1,html.anim .phero h1,html.anim .hero [data-reveal],html.anim .
 @media (max-width:1000px){.head-cta .btn{display:none}}
 
 /* full-screen menu */
-.menu{position:fixed;inset:0;z-index:110;background:var(--moss);color:#fff;clip-path:circle(0 at calc(100% - 46px) 46px);transition:clip-path 1s var(--ease-io);visibility:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.menu{position:fixed;inset:0;z-index:110;background:var(--moss);color:#fff;clip-path:circle(0 at calc(100% - 46px) 46px);transition:clip-path 1s var(--ease-io);visibility:hidden;overflow-y:auto;overflow-x:hidden;touch-action:pan-y;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .menu-open .menu{clip-path:circle(160% at calc(100% - 46px) 46px);visibility:visible}
 .menu .inner{min-height:100%;padding:calc(110px + env(safe-area-inset-top,0px)) var(--gutter) 48px;display:grid;grid-template-columns:1.1fr .9fr;gap:48px}
 .menu .primary a{display:block;font-family:var(--display);font-size:clamp(42px,6.5vw,88px);line-height:1.05;padding:.04em 0;transform:translateY(40px);opacity:0;transition:transform .9s var(--ease),opacity .7s;position:relative;width:max-content;max-width:100%}
@@ -580,7 +580,7 @@ footer .giant{position:absolute;left:50%;bottom:-.25em;transform:translateX(-50%
 /* ---------- phone menu: slide-in sub-menus ---------- */
 .menu .primary a .chev{width:.4em;height:.4em;display:inline-block;vertical-align:middle;margin-left:.3em;stroke:currentColor;fill:none;stroke-width:1.6;opacity:.6;transition:transform .4s var(--ease)}
 .menu .primary a.has-sub:hover .chev{transform:translateX(6px)}
-.mpanel{position:absolute;inset:0;z-index:2;min-height:100%;background:var(--moss);padding:calc(108px + env(safe-area-inset-top,0px)) var(--gutter) 48px;display:flex;flex-direction:column;align-items:flex-start;transform:translateX(100%);visibility:hidden;transition:transform .7s var(--ease-io),visibility .7s;overflow-y:auto;overscroll-behavior:contain}
+.mpanel{position:fixed;inset:0;z-index:2;background:var(--moss);padding:calc(108px + env(safe-area-inset-top,0px)) var(--gutter) 48px;display:flex;flex-direction:column;align-items:flex-start;transform:translateX(100%);visibility:hidden;transition:transform .7s var(--ease-io),visibility .7s;overflow-y:auto;overflow-x:hidden;touch-action:pan-y;overscroll-behavior:contain}
 .mpanel.open{transform:none;visibility:visible}
 .mpanel > *{opacity:0;transform:translateX(40px);transition:opacity .5s,transform .7s var(--ease)}
 .mpanel.open > *{opacity:1;transform:none}

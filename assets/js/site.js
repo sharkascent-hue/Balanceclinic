@@ -176,7 +176,7 @@
       var pnl = document.getElementById(o.getAttribute('data-panel'));
       if (pnl) {
         e.preventDefault(); e.stopPropagation();
-        var m = document.getElementById('menu'); if (m) m.scrollTop = 0;
+        var m = document.getElementById('menu'); if (m) { m.scrollTop = 0; m.scrollLeft = 0; }
         pnl.scrollTop = 0; pnl.classList.add('open'); pnl.setAttribute('aria-hidden', 'false');
         var b = pnl.querySelector('.mback'); if (b) setTimeout(function () { b.focus({ preventScroll: true }); }, 300);
       }
@@ -251,9 +251,11 @@
     setInterval(function () { if (mq.matches && bg && !fr.paused && Math.abs(bg.currentTime - fr.currentTime) > .3) bg.currentTime = fr.currentTime; }, 1500);
   })();
   function closePanels() { document.querySelectorAll('.mpanel.open').forEach(function (p) { p.classList.remove('open'); p.setAttribute('aria-hidden', 'true'); }); }
+  var menuEl = document.getElementById('menu');
+  if (menuEl) menuEl.addEventListener('scroll', function () { if (menuEl.scrollLeft) menuEl.scrollLeft = 0; }, { passive: true });
   function closeMenu() { setTimeout(closePanels, 700); if (!document.body.classList.contains('menu-open')) return; document.body.classList.remove('menu-open'); if (burger) { burger.setAttribute('aria-expanded', 'false'); burger.setAttribute('aria-label', 'Open menu'); } if (lenis) lenis.start(); }
   if (burger) burger.addEventListener('click', function () {
-    var open = document.body.classList.toggle('menu-open');
+    var open = document.body.classList.toggle('menu-open'); if (!open) setTimeout(closePanels, 700);
     burger.setAttribute('aria-expanded', String(open)); burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     if (lenis) { open ? lenis.stop() : lenis.start(); }
   });
