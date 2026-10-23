@@ -807,8 +807,10 @@ def price_cat_page(sid, title, groups):
     body = phero(rel, [("Home", "index.html"), ("Price List", "price-list.html")], f"{t_esc} <em>prices.</em>", i["intro"], img=i["img"],
                  ctas=f'<a class="btn btn-lime" href="{rel}book/index.html">Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="{rel}price-list.html">All prices</a>')
     body += f'''<section class="sec price-sec">
-  <div class="pbar"><nav class="pchips" aria-label="Price list sections">{chips}</nav></div>
+  <div class="pbar"><nav class="pchips" aria-label="Price list sections">{chips}</nav>
+    <label class="psearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="price-search" type="search" placeholder="Search {t_esc.lower()} treatments" aria-label="Search {t_esc.lower()} treatments" autocomplete="off"></label></div>
   <div class="psec"><div class="psec-head"><h2 data-split>{t_esc}</h2><span>{pcount(groups)} treatments · from €{pfrom(groups)}</span></div><div class="pgrid{" one" if len(groups) == 1 else ""}">{pgroups_html(groups)}</div></div>
+  <p class="pempty" hidden>No {t_esc.lower()} treatments match that search. Try a shorter word, or see <a href="{rel}price-list.html">all prices</a>.</p>
   <div class="pnote">All prices are in euro and confirmed at booking. Call {PHONE} for a quote on a course or a package.</div>
 </section>
 {rel_html}
@@ -825,8 +827,10 @@ def laser_price_page():
     body = phero(rel, [("Home", "index.html"), ("Price List", "price-list.html")], "Laser hair removal <em>prices.</em>", "Prices per session for every area, for women and men. Most clients need a course of 6 to 8 sessions, confirmed at your consultation and patch test.", img="la-upper.jpg",
                  ctas=f'<a class="btn btn-lime" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="{rel}laser/index.html">About laser</a>')
     body += f'''<section class="sec price-sec">
-  <div class="pbar"><nav class="pchips" aria-label="Price list sections">{chips}</nav></div>
+  <div class="pbar"><nav class="pchips" aria-label="Price list sections">{chips}</nav>
+    <label class="psearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="price-search" type="search" placeholder="Search laser areas" aria-label="Search laser areas" autocomplete="off"></label></div>
   {secs}
+  <p class="pempty" hidden>No laser areas match that search. Try a shorter word, or see <a href="{rel}price-list.html">all prices</a>.</p>
   <div class="pnote">Prices are per session and confirmed at your consultation. Call {PHONE} for a quote on a course.</div>
 </section>
 {visit(rel)}'''
