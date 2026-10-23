@@ -300,9 +300,16 @@ def head(title, desc, rel, extra=""):
 
 PLUS_PATH = '<path d="M32 10v44M10 32h44"/>'
 def intro():
-    return '<div id="intro" aria-hidden="true"><img class="ilogo" src="ASSETS/img/logo-white.png" alt=""></div>\n'
+    return f'''<div id="intro" aria-hidden="true">
+  <div class="slats"><div class="slat"></div><div class="slat"></div><div class="slat"></div><div class="slat"></div><div class="slat"></div><div class="slat"></div></div>
+  <div class="mark">
+    <svg class="plus" viewBox="0 0 64 64">{PLUS_PATH}</svg>
+    <div class="word"><img src="ASSETS/img/logo-white.png" alt=""></div>
+  </div>
+</div>
+'''
 def pt():
-    return ''
+    return f'<div id="pt" aria-hidden="true"><svg class="plus" viewBox="0 0 64 64">{PLUS_PATH}</svg></div>\n'
 
 def header(rel, current):
     nav = [("Treatments", "treatments/index.html", "treatments"), ("Laser", "laser/index.html", "laser"), ("Results", "results/index.html", "results"), ("About", "about/index.html", "about"), ("Price List", "price-list.html", "prices"), ("Shop", "shop/index.html", "shop"), ("Blog", "blog/index.html", "blog"), ("Contact", "contact.html", "contact")]
