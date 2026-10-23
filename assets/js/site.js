@@ -223,6 +223,16 @@
         });
         sec.hidden = !secAny; if (secAny) any = true;
       });
+      var lp = document.querySelectorAll('.lgrid[data-tabpanel]');
+      if (lp.length) {
+        lp.forEach(function (p) {
+          var pAny = false;
+          p.querySelectorAll('.hcard[data-search]').forEach(function (c) { var hit = !q || c.getAttribute('data-search').indexOf(q) > -1; c.hidden = !hit; if (hit) pAny = true; });
+          if (q) { p.hidden = !pAny; if (pAny) any = true; }
+        });
+        if (!q) { var onTab = document.querySelector('[data-tabs] .ltab.on'); lp.forEach(function (p) { p.hidden = !!onTab && p.getAttribute('data-tabpanel') !== onTab.getAttribute('data-tab'); }); }
+        var tw = document.querySelector('[data-tabs]'); if (tw) tw.style.display = q ? 'none' : '';
+      }
       if (empty) empty.hidden = any;
       var res = document.querySelector('.presults'), cards = document.querySelector('.pcards');
       if (res) { res.hidden = !q; if (cards) cards.hidden = !!q; if (empty) empty.hidden = !q || any; }
