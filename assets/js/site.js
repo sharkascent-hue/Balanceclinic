@@ -218,6 +218,8 @@
         sec.hidden = !secAny; if (secAny) any = true;
       });
       if (empty) empty.hidden = any;
+      var res = document.querySelector('.presults'), cards = document.querySelector('.pcards');
+      if (res) { res.hidden = !q; if (cards) cards.hidden = !!q; if (empty) empty.hidden = !q || any; }
       if (hasST) ScrollTrigger.refresh();
     });
     var chips = document.querySelectorAll('.pchips a');
