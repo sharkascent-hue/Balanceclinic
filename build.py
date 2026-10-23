@@ -23,6 +23,7 @@ GROUPS = [
 
 T = []
 def treatment(**k): T.append(k)
+def turl(t): return "laser/index.html" if t["slug"] == "laser-hair-removal" else f"treatments/{t['slug']}.html"
 
 treatment(slug="laser-hair-removal", group="body", title="Laser Hair Removal", em="Laser", img="laser.jpg",
     short="Medical-grade laser for smooth, lasting results on face and body.",
@@ -312,9 +313,9 @@ def pt():
     return f'<div id="pt" aria-hidden="true"><svg class="plus" viewBox="0 0 64 64">{PLUS_PATH}</svg></div>\n'
 
 def header(rel, current):
-    nav = [("Treatments", "treatments/index.html", "treatments"), ("Results", "results/index.html", "results"), ("About", "about/index.html", "about"), ("Price List", "price-list.html", "prices"), ("Shop", "shop/index.html", "shop"), ("Blog", "blog/index.html", "blog"), ("Contact", "contact.html", "contact")]
+    nav = [("Treatments", "treatments/index.html", "treatments"), ("Laser", "laser/index.html", "laser"), ("Results", "results/index.html", "results"), ("About", "about/index.html", "about"), ("Price List", "price-list.html", "prices"), ("Shop", "shop/index.html", "shop"), ("Blog", "blog/index.html", "blog"), ("Contact", "contact.html", "contact")]
     links = "".join(f'<a href="{rel}{h}"{" aria-current=\"page\"" if k == current else ""}>{t}</a>' for t, h, k in nav)
-    groups = "".join(f'<div><h4>{g[1]}</h4>' + "".join(f'<a href="{rel}treatments/{t["slug"]}.html">{t["title"]}</a>' for t in T if t["group"] == g[0]) + "</div>" for g in GROUPS)
+    groups = "".join(f'<div><h4>{g[1]}</h4>' + "".join(f'<a href="{rel}{turl(t)}">{t["title"]}</a>' for t in T if t["group"] == g[0]) + "</div>" for g in GROUPS)
     return f'''<header class="site-head" id="head">
   <a class="brand" href="{rel}index.html" aria-label="Balance Clinic Spa Beauty, home"><img src="{rel}assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"></a>
   <nav class="site-nav" aria-label="Primary">{links}</nav>
@@ -328,6 +329,7 @@ def header(rel, current):
     <nav class="primary" aria-label="Menu">
       <a href="{rel}index.html">Home</a>
       <a href="{rel}treatments/index.html">Treatments<i>16</i></a>
+      <a href="{rel}laser/index.html" class="has-sub" data-panel="mp-laser">Laser Hair Removal{CHEV}</a>
       <a href="{rel}results/index.html">Results</a>
       <a href="{rel}about/index.html">About</a>
       <a href="{rel}price-list.html">Price List</a>
@@ -339,13 +341,14 @@ def header(rel, current):
     <div class="groups">{groups}</div>
     <div class="foot"><span>{ADDRESS}</span><span>{PHONE}</span></div>
   </div>
+  {laser_panels(rel)}
 </div>
 <div class="page">
 '''
 
 def footer(rel):
-    body = "".join(f'<li><a href="{rel}treatments/{t["slug"]}.html">{t["title"]}</a></li>' for t in T if t["group"] == "body")
-    skin = "".join(f'<li><a href="{rel}treatments/{t["slug"]}.html">{t["title"]}</a></li>' for t in T if t["group"] == "skin")
+    body = "".join(f'<li><a href="{rel}{turl(t)}">{t["title"]}</a></li>' for t in T if t["group"] == "body")
+    skin = "".join(f'<li><a href="{rel}{turl(t)}">{t["title"]}</a></li>' for t in T if t["group"] == "skin")
     return f'''</div>
 <footer>
   <div class="inner">
@@ -438,7 +441,7 @@ def visit(rel, title_html="Trimgate Street,<br><em>Navan.</em>", lead="Walk in f
 def tcard(rel, t):
     pic = f'<img src="{rel}assets/img/{t["img"]}" alt="" loading="lazy">' if t.get("img") else t["title"][0]
     new = ' <i style="font-style:normal;font-family:var(--sans);font-size:10px;letter-spacing:.2em;color:var(--coral);vertical-align:middle">NEW</i>' if t.get("new") else ""
-    return f'''<a class="tcard" href="{rel}treatments/{t["slug"]}.html" data-reveal>
+    return f'''<a class="tcard" href="{rel}{turl(t)}" data-reveal>
   <div class="pic">{pic}</div>
   <div><h3>{t["title"]}{new}</h3><p>{t["short"]}</p></div>
   <span class="arrow"><svg viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span>
@@ -449,7 +452,7 @@ def home():
     rel = ""
     cards = ""
     strip = [
-        ("Medical Grade Laser", "Hair removal, rejuvenation and thread veins.", "laser.jpg", "treatments/laser-hair-removal.html", ["Hair removal", "Thread veins"]),
+        ("Medical Grade Laser", "Hair removal, rejuvenation and thread veins.", "laser.jpg", "laser/index.html", ["Hair removal", "Thread veins"]),
         ("Body Treatments", "Venus Legacy contouring, cellulite and skin tightening.", "contour.jpg", "treatments/body-contouring.html", ["Venus Legacy", "Cellulite"]),
         ("Skin Treatments", "Alumier peels, IPL, microneedling and exosomes.", "hero-poster.jpg", "treatments/alumier-md-peels.html", ["Peels", "IPL", "Needling"]),
         ("Non Surgical", "Microneedling, Idenel and CACI for lift without surgery.", "nonsurgical.jpg", "treatments/microneedling.html", ["Microneedling", "Idenel"]),
@@ -632,7 +635,7 @@ def team():
 def price_list():
     rel = ""
     def esc(x): return html.escape(x, quote=False)
-    chips = "".join(f'<a href="#p-{sid}">{esc(title)}</a>' for sid, title, _ in PRICES)
+    chips = "".join(f'<a href="#p-{sid}">{esc(title)}</a>' for sid, title, _ in PRICES) + '<a href="laser/index.html#pricing">Laser hair removal</a>'
     secs = ""
     for sid, title, groups in PRICES:
         n = sum(len(rows) for _, _, rows in groups)
@@ -757,6 +760,133 @@ def post_page(p):
     return page(rel, f"{p['title']} · Balance Clinic", p["summary"], "blog", body)
 
 # ---------------------------------------------------------------- write
+# ---------------------------------------------------------------- laser hair removal
+CHEV = '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>'
+CHEV_L = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>'
+# Each area: (name, detail, price in euro or None). Fill in prices when the clinic confirms them.
+LASER = [
+    ("women", "For Women", [
+        dict(slug="bikini", name="Bikini", img="la-bikini.jpg",
+             intro="From a neat bikini line to a full Hollywood, laser keeps the bikini area smooth without the rash, ingrown hairs and regrowth that come with shaving and waxing.",
+             rows=[("Bikini line", "", None), ("Extended bikini", "Californian", None), ("Brazilian", "", None), ("Hollywood", "Full bikini", None)]),
+        dict(slug="face", name="Face", img="la-face.jpg",
+             intro="Upper lip, chin and the sides of the face are the most popular areas for women. Small areas mean short sessions, often under ten minutes.",
+             rows=[("Upper lip", "", None), ("Chin", "", None), ("Upper lip & chin", "", None), ("Sides of face", "", None), ("Full face", "", None), ("Neck", "", None)]),
+        dict(slug="upper-body", name="Upper Body", img="la-upper.jpg",
+             intro="Underarms are the most requested area of all. Arms, stomach and lower back are treated with the same handpiece, which cools the skin with every pulse.",
+             rows=[("Underarms", "", None), ("Forearms", "", None), ("Full arms", "", None), ("Stomach line", "", None), ("Lower back", "", None)]),
+        dict(slug="lower-body", name="Lower Body", img="la-lower.jpg",
+             intro="Legs are the largest area most clients treat. Lower legs take around 20 minutes and full legs about 40, and the smooth finish lasts between maintenance visits.",
+             rows=[("Lower legs", "", None), ("Upper legs", "", None), ("Full legs", "", None), ("Buttocks", "", None), ("Feet & toes", "", None)]),
+        dict(slug="full-body", name="Full Body", img="la-full.jpg",
+             intro="Treat everything in one appointment and one course. Full-body treatment is the best value per area and saves the most time over a year.",
+             rows=[("Full body", "Excluding face", None), ("Full body + face", "", None), ("Full legs, Brazilian & underarms", "Package", None)]),
+    ]),
+    ("men", "For Men", [
+        dict(slug="face", name="Face", img="la-men-upper.jpg",
+             intro="Shape the beard line, clear the neck and stop shaving rash for good. Laser is ideal for ingrown hairs along the jaw and neck.",
+             rows=[("Beard line & neckline", "Shaping", None), ("Cheeks", "", None), ("Neck", "", None), ("Full face", "", None), ("Ears", "", None)]),
+        dict(slug="upper-body", name="Upper Body", img="la-men-upper.jpg",
+             intro="Chest, stomach, back and shoulders are the areas men treat most. Large areas are covered quickly with a wide handpiece.",
+             rows=[("Chest", "", None), ("Stomach", "", None), ("Chest & stomach", "", None), ("Shoulders", "", None), ("Full back", "", None), ("Underarms", "", None), ("Full arms", "", None)]),
+        dict(slug="lower-body", name="Lower Body", img="la-lower.jpg",
+             intro="Smooth legs for sport, cycling or simply less upkeep. Lower legs, upper legs or the full leg in one session.",
+             rows=[("Lower legs", "", None), ("Upper legs", "", None), ("Full legs", "", None), ("Buttocks", "", None)]),
+        dict(slug="full-body", name="Full Body", img="la-full.jpg",
+             intro="One course for everything below the neck, or combine back, shoulders and chest in a single package.",
+             rows=[("Full body", "Excluding face", None), ("Full body + face", "", None), ("Back, shoulders & chest", "Package", None)]),
+    ]),
+]
+
+def lprice(p): return f"€{p:,}" if p else "On consultation"
+def lfrom(area):
+    ps = [r[2] for r in area["rows"] if r[2]]
+    return min(ps) if ps else None
+
+def laser_panels(rel):
+    def pnl(pid, back_label, back_to, title, items):
+        back = f'<button class="mback" type="button" data-back>{CHEV_L}{back_label}</button>'
+        return f'<div class="mpanel" id="{pid}" aria-hidden="true">{back}<p class="mtitle">{title}</p>{items}<a class="btn btn-lime mcta" href="{rel}book/online-consultation.html">Book a consultation</a></div>'
+    top = (f'<a class="mlink" data-panel="mp-laser-women" href="{rel}laser/women/bikini.html">For Women{CHEV}</a>'
+           f'<a class="mlink" data-panel="mp-laser-men" href="{rel}laser/men/face.html">For Men{CHEV}</a>'
+           f'<a class="mlink" href="{rel}laser/index.html">Learn more</a><a class="mlink" href="{rel}laser/index.html#pricing">Pricing</a>')
+    out = pnl("mp-laser", "Menu", "", "Laser Hair Removal", top)
+    for gid, label, areas in LASER:
+        items = "".join(f'<a class="mlink" href="{rel}laser/{gid}/{a["slug"]}.html">{a["name"]}</a>' for a in areas)
+        items += f'<a class="mlink sm" href="{rel}laser/index.html#{gid}">Learn more</a><a class="mlink sm" href="{rel}laser/index.html#pricing">Pricing</a>'
+        out += pnl(f"mp-laser-{gid}", "Laser Hair Removal", "mp-laser", label, items)
+    return out
+
+def lcard(rel, gid, a, label):
+    f = lfrom(a)
+    tag = f"From €{f}" if f else "6 to 8 sessions"
+    return (f'<a class="hcard" href="{rel}laser/{gid}/{a["slug"]}.html"><img src="{rel}assets/img/{a["img"]}" alt="" loading="lazy">'
+            f'<span class="arrow"><svg viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span>'
+            f'<div><p class="lc-k">{label}</p><h3>{a["name"]}</h3><div class="tags"><span>{tag}</span></div></div></a>')
+
+def ltable(a):
+    trs = "".join(f'<tr><td>{html.escape(n)}{"<small>" + html.escape(d) + "</small>" if d else ""}</td><td>{lprice(p)}</td></tr>' for n, d, p in a["rows"])
+    return f'<table>{trs}</table>'
+
+def laser_steps_faq(rel):
+    t = TMAP["laser-hair-removal"]
+    steps = "".join(f'<div class="lstep" data-reveal><b>0{i+1}</b><h3>{a}</h3><p>{b}</p></div>' for i, (a, b) in enumerate(t["steps"]))
+    facts = "".join(f'<div><span>{a}</span><span>{b}</span></div>' for a, b in t["facts"])
+    faqs = "".join(f'<details><summary>{q}<i></i></summary><div class="a">{a}</div></details>' for q, a in t["faqs"])
+    return f'''<section class="sec sage"><div class="sec-head"><div><p class="eyebrow">How it works</p><h2 data-split>Smooth in three steps.</h2></div><div class="facts lfacts" data-reveal>{facts}</div></div><div class="lsteps">{steps}</div></section>
+<section class="sec"><div class="faq"><h2 data-split>Questions, answered.</h2><div data-reveal>{faqs}</div></div></section>'''
+
+def laser_hub():
+    rel = "../"
+    t = TMAP["laser-hair-removal"]
+    tabs = "".join(f'<button type="button" class="ltab{" on" if i == 0 else ""}" data-tab="{gid}" role="tab" aria-selected="{"true" if i == 0 else "false"}">{label}</button>' for i, (gid, label, _) in enumerate(LASER))
+    panels = "".join(f'<div class="lgrid" id="{gid}" data-tabpanel="{gid}" role="tabpanel"{"" if i == 0 else " hidden"}>' + "".join(lcard(rel, gid, a, label) for a in areas) + '</div>' for i, (gid, label, areas) in enumerate(LASER))
+    prose = "".join(f"<p>{x}</p>" for x in t["body"])
+    benefits = "".join(f"<li>{b}</li>" for b in t["benefits"])
+    pricing = ""
+    for gid, label, areas in LASER:
+        groups = "".join(f'<div class="pgroup" data-reveal><h3><a href="{rel}laser/{gid}/{a["slug"]}.html">{a["name"]}</a></h3>{ltable(a)}</div>' for a in areas)
+        pricing += f'<div class="psec"><div class="psec-head"><h2 data-split>{label}</h2><span>{sum(len(a["rows"]) for a in areas)} areas</span></div><div class="pgrid">{groups}</div></div>'
+    body = phero(rel, [("Home", "index.html"), ("Treatments", "treatments/index.html")], "Laser hair <em>removal.</em>", t["intro"], img="la-upper.jpg",
+                 ctas=f'<a class="btn btn-lime" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="#pricing">See prices</a>')
+    body += f'''<section class="sec"><div class="sec-head"><div><p class="eyebrow">Choose an area</p><h2 data-split>Where would you like to be smooth?</h2></div>
+  <div class="ltabs" role="tablist" data-tabs>{tabs}</div></div>{panels}</section>
+<section class="tbody"><div class="inner"><div class="prose"><h2 data-split>About laser hair removal</h2>{prose}<h2 data-split>Good for</h2><ul data-reveal>{benefits}</ul></div>
+  <aside class="aside"><div class="box" data-reveal><h3>Start with a patch test</h3><p>Every course begins with a consultation and patch test, so the settings suit your skin and hair. Call {PHONE} or book online.</p><a class="btn btn-lime" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a></div></aside></div></section>
+{laser_steps_faq(rel)}
+<section class="sec price-sec" id="pricing"><div class="sec-head"><div><p class="eyebrow">Pricing</p><h2 data-split>Laser prices by area.</h2></div><p data-reveal>Prices are per session. Courses of 6 to 8 sessions are confirmed at your consultation.</p></div>{pricing}</section>
+{visit(rel)}'''
+    return page(rel, "Laser Hair Removal · Balance Clinic", "Medical-grade laser hair removal for women and men at Balance Clinic Spa Beauty, Navan.", "laser", body)
+
+def laser_area(gid, label, areas, a):
+    rel = "../../"
+    genders = ""
+    for g2, l2, ar2 in LASER:
+        target = next((x for x in ar2 if x["slug"] == a["slug"]), ar2[0])
+        genders += f'<a class="{"on" if g2 == gid else ""}" href="{rel}laser/{g2}/{target["slug"]}.html">{l2}</a>'
+    chips = "".join(f'<a class="{"on" if x["slug"] == a["slug"] else ""}" href="{rel}laser/{gid}/{x["slug"]}.html">{x["name"]}</a>' for x in areas)
+    f = lfrom(a)
+    badge = f'<div class="lbadge"><small>From</small><b>€{f}</b></div>' if f else '<div class="lbadge"><small>Course of</small><b>6–8</b><small>sessions</small></div>'
+    others = "".join(lcard(rel, gid, x, label) for x in areas if x["slug"] != a["slug"])
+    body = phero(rel, [("Home", "index.html"), ("Laser", "laser/index.html"), (label, f"laser/index.html#{gid}")], f'Laser hair removal <em>{label.lower()}</em>', a["intro"], img=a["img"],
+                 ctas=f'<a class="btn btn-lime" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="#prices">{a["name"]} prices</a>')
+    body += f'''<section class="sec lsec">
+  <div class="pbar lbar"><nav class="lgender" aria-label="Women or men">{genders}</nav><nav class="pchips" aria-label="Areas">{chips}</nav></div>
+  <div class="larea">
+    <div class="lpic reveal-img"><img src="{rel}assets/img/{a["img"]}" alt="Laser hair removal, {a["name"].lower()}">{badge}</div>
+    <div class="ltext" id="prices"><p class="eyebrow">{label}</p><h2 data-split>{a["name"]}</h2><p class="lead" data-reveal>{a["intro"]}</p>
+      <div class="pgroup" data-reveal><h3>Areas &amp; prices</h3>{ltable(a)}</div>
+      <p class="gnote" data-reveal>Prices are per session. Most clients need 6 to 8 sessions, 4 to 8 weeks apart.</p>
+      <div class="ctas" data-reveal><a class="btn btn-moss" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a><a class="btn btn-ghost" href="{rel}laser/index.html#pricing">All laser prices</a></div></div>
+  </div>
+</section>
+{laser_steps_faq(rel)}
+<section class="sec"><div class="sec-head"><div><p class="eyebrow">{label}</p><h2 data-split>Other areas.</h2></div></div><div class="lgrid">{others}</div></section>
+{visit(rel)}'''
+    return page(rel, f"Laser Hair Removal {label}: {a['name']} · Balance Clinic", f"{a['name']} laser hair removal {label.lower()} at Balance Clinic Spa Beauty, Navan.", "laser", body)
+
+REDIRECT = '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Laser Hair Removal · Balance Clinic</title><meta http-equiv="refresh" content="0; url=../laser/index.html"><link rel="canonical" href="../laser/index.html"></head><body><a href="../laser/index.html">Laser hair removal</a></body></html>\\n'
+
 def write(path, content):
     full = os.path.join(ROOT, path); os.makedirs(os.path.dirname(full), exist_ok=True)
     with open(full, "w", encoding="utf-8") as f: f.write(content)
@@ -767,7 +897,10 @@ if __name__ == "__main__":
     write("assets/img/favicon.svg", FAVICON)
     write("index.html", home())
     write("treatments/index.html", treatments_index())
-    for t in T: write(f"treatments/{t['slug']}.html", treatment_page(t))
+    for t in T: write(f"treatments/{t['slug']}.html", REDIRECT if t["slug"] == "laser-hair-removal" else treatment_page(t))
+    write("laser/index.html", laser_hub())
+    for gid, label, areas in LASER:
+        for a in areas: write(f"laser/{gid}/{a['slug']}.html", laser_area(gid, label, areas, a))
     write("results/index.html", results())
     write("about/index.html", about()); write("about/team.html", team())
     write("price-list.html", price_list())
