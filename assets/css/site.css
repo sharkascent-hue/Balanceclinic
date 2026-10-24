@@ -101,9 +101,9 @@ html.anim .hero .bgv,html.anim .phero .bg{opacity:.4;transform:scale(1.12)}
 
 /* ---------- header ---------- */
 .site-head{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:120;padding:22px var(--gutter);display:flex;align-items:center;justify-content:space-between;transition:padding .5s var(--ease),background .5s,color .4s,box-shadow .5s;color:#fff}
-.site-head.scrolled{padding-block:12px;background:rgba(244,246,240,.82);backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);color:var(--ink);box-shadow:0 1px 0 var(--line)}
+.site-head.scrolled{padding-block:12px;background:rgba(28,58,42,.97);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.08),0 18px 40px -28px rgba(10,22,15,.6)}
 .brand img{height:36px;width:auto;transition:filter .4s}
-.site-head.scrolled .brand img{filter:brightness(0) saturate(100%) invert(16%) sepia(20%) saturate(900%) hue-rotate(95deg) brightness(.9)}
+.site-head.scrolled .head-cta .btn-moss{background:var(--lime);border-color:var(--lime);color:var(--moss)}
 .site-nav{display:flex;gap:clamp(18px,2.2vw,34px);font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:400}
 .site-nav a{position:relative;padding-block:6px}
 .site-nav a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:var(--lime);transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
