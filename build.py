@@ -8,6 +8,15 @@ PHONE = "(046) 906 0333"
 ADDRESS = "8 Trimgate Street, Townparks, Navan, Co. Meath, C15 DHE9"
 MAPS = "https://www.google.com/maps/search/?api=1&query=Balance+Clinic+Spa+Beauty+8+Trimgate+St+Navan"
 GOOGLE_REVIEWS = "https://www.google.com/search?q=Balance+Clinic+Spa+Beauty+Navan+reviews"
+SOCIAL = [
+    ("Instagram", "https://www.instagram.com/balanceclinicspabeauty/", '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r=".6" fill="currentColor"/>'),
+    ("Facebook", "https://www.facebook.com/profile.php?id=100063678907606", '<path d="M14 21v-7.5h2.6l.4-3H14V8.6c0-.9.3-1.5 1.6-1.5H17V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H8.3v3H11V21"/>'),
+    ("TikTok", "https://www.tiktok.com/@balanceclinicnavan", '<path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.4 2.6 2.2 4.4 5 4.6"/>'),
+]
+def social(cls="social"):
+    links = "".join(f'<a href="{u}" target="_blank" rel="noopener" aria-label="Balance Clinic on {n}"><svg viewBox="0 0 24 24" aria-hidden="true">{svg}</svg></a>' for n, u, svg in SOCIAL)
+    return f'<div class="{cls}">{links}</div>'
+
 WEB3FORMS_KEY = "YOUR_WEB3FORMS_ACCESS_KEY"   # paste the key from web3forms.com to switch the forms on
 
 ARROW = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h11M9 4l4 4-4 4"/></svg>'
@@ -339,7 +348,7 @@ def header(rel, current):
       <a href="{rel}blog/index.html">Blog</a>
     </nav>
     <div class="groups">{groups}</div>
-    <div class="foot"><span>{ADDRESS}</span><span>{PHONE}</span></div>
+    <div class="foot"><span>{ADDRESS}</span>{social("social sm")}<span>{PHONE}</span></div>
   </div>
   {laser_panels(rel)}
 </div>
@@ -352,7 +361,7 @@ def footer(rel):
     return f'''</div>
 <footer>
   <div class="inner">
-    <div class="brand"><img src="{rel}assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"><p>{ADDRESS}<br>{PHONE}</p></div>
+    <div class="brand"><img src="{rel}assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"><p>{ADDRESS}<br>{PHONE}</p>{social()}</div>
     <div><h4>Body</h4><ul>{body}</ul></div>
     <div><h4>Skin</h4><ul>{skin}</ul></div>
     <div><h4>Clinic</h4><ul>
@@ -765,6 +774,7 @@ def contact():
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Address</span><div><strong>8 Trimgate Street, Townparks</strong><small style="color:var(--ink-2)">Navan, Co. Meath, C15 DHE9</small></div></div>
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Phone</span><div><strong>{PHONE}</strong><button class="copy" type="button" data-copy="046 906 0333" style="color:var(--moss);border-color:var(--line)">Copy</button><small style="color:var(--ink-2)">Call for today's opening hours</small></div></div>
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Hours</span><div><strong>Late opening until 8pm</strong><small style="color:var(--ink-2)">Evening appointments available</small></div></div>
+    <div style="border-color:var(--line)"><span style="color:var(--moss)">Follow</span><div>{social("social ink")}<small style="color:var(--ink-2)">Results, offers and behind the scenes</small></div></div>
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Find us</span><div><strong><a href="{MAPS}" target="_blank" rel="noopener" style="border-color:var(--line)">Open in Google Maps</a></strong><small style="color:var(--ink-2)">Town centre, minutes from parking</small></div></div>
   </div>
 </div></section>{visit(rel)}'''
