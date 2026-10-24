@@ -478,6 +478,100 @@
     });
   });
 
+  /* ---------- basket (kept on this device until payment is connected) ---------- */
+  var basket = (function () {
+    var KEY = 'bc-basket', items = read();
+    var drawer = document.getElementById('basket'), toastEl = document.getElementById('bkt'), toastT;
+    function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+    function save() { try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {} render(); }
+    function find(id) { for (var i = 0; i < items.length; i++) if (items[i].id === id) return items[i]; return null; }
+    function count() { return items.reduce(function (n, it) { return n + it.qty; }, 0); }
+    function total() { return items.reduce(function (n, it) { return n + it.qty * it.price; }, 0); }
+    function euro(n) { return '€' + n.toLocaleString('en-IE'); }
+    function esc(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function label(n) { return n === 1 ? '1 treatment' : n + ' treatments'; }
+    function meta(it) { return [it.section, it.group !== it.name ? it.group : '', it.detail].filter(Boolean).join(' · '); }
+    function itemRow(it) {
+      return '<div class="bki" data-id="' + esc(it.id) + '"><div class="bki-t"><b>' + esc(it.name) + '</b><small>' + esc(meta(it)) + '</small></div>' +
+        '<span class="bki-p">' + euro(it.price * it.qty) + '</span>' +
+        '<div class="bki-c"><div class="qty"><button type="button" data-qty="-1" aria-label="One fewer ' + esc(it.name) + '">−</button><span aria-live="polite">' + it.qty + '</span><button type="button" data-qty="1" aria-label="One more ' + esc(it.name) + '">+</button></div>' +
+        '<button type="button" class="bki-rm" data-remove>Remove</button></div></div>';
+    }
+    function render() {
+      var n = count(), sum = euro(total());
+      document.querySelectorAll('[data-basket-count]').forEach(function (b) { b.textContent = n; b.hidden = !n; });
+      document.querySelectorAll('.bag').forEach(function (b) { b.setAttribute('aria-label', n ? 'Open basket, ' + label(n) : 'Open basket'); });
+      document.querySelectorAll('[data-basket-label]').forEach(function (el) { el.textContent = label(n); });
+      document.querySelectorAll('[data-basket-total]').forEach(function (el) { el.textContent = sum; });
+      var empty = '<div class="bk-empty"><p>Your basket is empty.</p><a class="btn btn-ghost" href="' + priceHref() + '">See the price list</a></div>';
+      document.querySelectorAll('[data-basket-list]').forEach(function (el) { el.innerHTML = items.length ? items.map(itemRow).join('') : empty; });
+      document.querySelectorAll('[data-basket-lines]').forEach(function (el) { el.innerHTML = items.map(function (it) { return '<div><span>' + esc(it.name) + (it.qty > 1 ? ' × ' + it.qty : '') + '</span><span>' + euro(it.price * it.qty) + '</span></div>'; }).join(''); });
+      document.querySelectorAll('[data-basket-go], [data-checkout]').forEach(function (el) { el.classList.toggle('off', !items.length); if (el.tagName === 'BUTTON') el.disabled = !items.length; });
+      var text = items.map(function (it) { return it.qty + ' × ' + it.name + (meta(it) ? ' (' + meta(it) + ')' : '') + ' – ' + euro(it.price * it.qty); }).join('\n');
+      document.querySelectorAll('[data-basket-field]').forEach(function (el) { el.value = items.length ? text + '\nTotal: ' + sum : ''; });
+      document.querySelectorAll('[data-basket-summary]').forEach(function (el) {
+        el.hidden = !items.length;
+        el.innerHTML = items.length ? '<div class="bksum-h"><span>Your basket · ' + label(n) + '</span><b>' + sum + '</b></div><ul>' + items.map(function (it) { return '<li>' + esc(it.name) + (it.qty > 1 ? ' × ' + it.qty : '') + '</li>'; }).join('') + '</ul><a href="' + basketHref() + '">Edit basket</a>' : '';
+      });
+      mark(document);
+    }
+    function priceHref() { var a = document.querySelector('.site-nav a[href*="price-list"]'); return a ? a.getAttribute('href') : 'price-list.html'; }
+    function basketHref() { var a = document.querySelector('[data-basket-go]'); return a ? a.getAttribute('href') : 'basket.html'; }
+    function mark(scope) {
+      scope.querySelectorAll('tr[data-item]').forEach(function (tr) {
+        var on = !!find(tr.getAttribute('data-item')), b = tr.querySelector('.padd');
+        tr.classList.toggle('inb', on);
+        if (b) { b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.setAttribute('aria-label', (on ? 'Remove ' : 'Add ') + tr.getAttribute('data-name') + (on ? ' from basket' : ' to basket')); }
+      });
+    }
+    function toast(msg) {
+      if (!toastEl) return;
+      toastEl.querySelector('span').textContent = msg; toastEl.classList.add('show');
+      clearTimeout(toastT); toastT = setTimeout(function () { toastEl.classList.remove('show'); }, 3200);
+    }
+    function open() {
+      if (!drawer) return;
+      if (toastEl) toastEl.classList.remove('show');
+      closeMenu(); drawer.classList.add('open'); drawer.setAttribute('aria-hidden', 'false');
+      if (lenis) lenis.stop();
+      var x = drawer.querySelector('.bk-x'); if (x) setTimeout(function () { x.focus({ preventScroll: true }); }, 300);
+    }
+    function close() {
+      if (!drawer || !drawer.classList.contains('open')) return;
+      drawer.classList.remove('open'); drawer.setAttribute('aria-hidden', 'true');
+      if (lenis) lenis.start();
+    }
+    document.addEventListener('click', function (e) {
+      var tr = e.target.closest('tr[data-item]');
+      if (tr && !e.target.closest('a')) {
+        var id = tr.getAttribute('data-item'), it = find(id), name = tr.getAttribute('data-name');
+        if (it) { items = items.filter(function (x) { return x !== it; }); save(); toast(name + ' removed'); }
+        else {
+          items.push({ id: id, name: name, group: tr.getAttribute('data-group') || '', section: tr.getAttribute('data-section') || '', detail: tr.getAttribute('data-detail') || '', price: +tr.getAttribute('data-price') || 0, qty: 1 });
+          save(); toast(name + ' added');
+          var b = tr.querySelector('.padd'); if (b && !reduce) { b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); }
+          document.querySelectorAll('.bag').forEach(function (g) { g.classList.remove('bump'); void g.offsetWidth; g.classList.add('bump'); });
+        }
+        return;
+      }
+      if (e.target.closest('[data-basket-open]')) { e.preventDefault(); open(); return; }
+      if (e.target.closest('[data-basket-close]')) { close(); return; }
+      var row = e.target.closest('.bki');
+      if (row) {
+        var cur = find(row.getAttribute('data-id')); if (!cur) return;
+        var q = e.target.closest('[data-qty]');
+        if (q) { cur.qty = Math.max(0, Math.min(20, cur.qty + +q.getAttribute('data-qty'))); if (!cur.qty) items = items.filter(function (x) { return x !== cur; }); save(); return; }
+        if (e.target.closest('[data-remove]')) { items = items.filter(function (x) { return x !== cur; }); save(); }
+        return;
+      }
+      if (e.target.closest('[data-checkout]')) { var m = document.querySelector('[data-checkout-msg]'); if (m) { m.hidden = false; scrollToEl(m, -140); } }
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    window.addEventListener('storage', function (e) { if (e.key === KEY) { items = read(); render(); } });
+    render();
+    return { mark: mark, close: close };
+  })();
+
   /* ---------- price tabs: switch category in place, no page change ---------- */
   (function priceTabs() {
     var page = document.querySelector('.page');
@@ -552,7 +646,7 @@
         var natural = sec.getBoundingClientRect().top + window.scrollY + (parseFloat(getComputedStyle(sec).paddingTop) || 0);
         var y = Math.max(0, natural - keepTop);
         if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); else window.scrollTo(0, y);
-        splitText(page); initTabs(page); revealImgs(page); initCopy(page); magnet(page);
+        splitText(page); initTabs(page); revealImgs(page); initCopy(page); magnet(page); basket.mark(page);
         var nh = page.querySelector('.hero, .phero');
         heroScroll(nh); reveals(page);
         var incoming = outgoing(bar);

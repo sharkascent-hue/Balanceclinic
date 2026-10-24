@@ -320,6 +320,7 @@ def header(rel, current):
   <nav class="site-nav" aria-label="Primary">{links}</nav>
   <div class="head-cta">
     <a class="btn btn-moss" href="{rel}book/index.html">Book now</a>
+    <button class="bag" type="button" data-basket-open aria-label="Open basket">{BAG_SVG}<b data-basket-count hidden>0</b></button>
     <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i><i></i><i></i></button>
   </div>
 </header>
@@ -363,6 +364,20 @@ def footer(rel):
   <div class="giant" aria-hidden="true">Balance</div>
 </footer>
 <a class="fab" id="fab" href="{rel}book/index.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</a>
+<div class="bk" id="basket" aria-hidden="true" data-lenis-prevent>
+  <div class="scrim" data-basket-close></div>
+  <aside class="panel" role="dialog" aria-modal="true" aria-labelledby="bk-title">
+    <div class="bk-head"><h2 id="bk-title">Your basket</h2><span class="bk-n" data-basket-label></span><button class="bk-x" type="button" data-basket-close aria-label="Close basket"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="bk-list" data-basket-list></div>
+    <div class="bk-foot">
+      <div class="bk-total"><span>Total</span><b data-basket-total>€0</b></div>
+      <p class="bk-note">Prices are confirmed at your appointment.</p>
+      <a class="btn btn-moss" href="{rel}basket.html" data-basket-go>Go to checkout {ARROW}</a>
+      <button class="btn btn-ghost" type="button" data-basket-close>Keep browsing</button>
+    </div>
+  </aside>
+</div>
+<div class="bkt" id="bkt" role="status" aria-live="polite"><span></span><button type="button" data-basket-open>View basket</button></div>
 <div id="lb" aria-hidden="true" role="dialog" aria-label="Media viewer" data-lenis-prevent>
   <div class="box"><video playsinline controls preload="none"></video><img alt="" hidden><button class="x" aria-label="Close video"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="t"></div></div>
 </div>
@@ -637,8 +652,8 @@ def price_list():
     secs = ""
     for sid, title, groups in PRICES:
         t_esc = html.escape(title, quote=False)
-        secs += f'<div class="psec" id="p-{sid}"><div class="psec-head"><h2 data-split>{t_esc}</h2><span>{pcount(groups)} treatments</span></div><div class="pgrid{" one" if len(groups) == 1 else ""}">{pgroups_html(groups)}</div></div>'
-    lg = "".join(f'<div class="pgroup" data-reveal><h3>{a["name"]} · {label.replace("For ", "").lower()}</h3>{ltable(a)}</div>' for gid, label, areas in LASER for a in areas)
+        secs += f'<div class="psec" id="p-{sid}"><div class="psec-head"><h2 data-split>{t_esc}</h2><span>{pcount(groups)} treatments</span></div><div class="pgrid{" one" if len(groups) == 1 else ""}">{pgroups_html(groups, title)}</div></div>'
+    lg = "".join(f'<div class="pgroup" data-reveal><h3>{a["name"]} · {label.replace("For ", "").lower()}</h3>{ltable(a, label)}</div>' for gid, label, areas in LASER for a in areas)
     secs += f'<div class="psec" id="p-laser"><div class="psec-head"><h2 data-split>Laser hair removal</h2><span>Per session</span></div><div class="pgrid">{lg}</div></div>'
     body = phero(rel, [("Home", "index.html")], "Price <em>list.</em>", "Every treatment and price in one place. Search for a treatment, or tap a category above the list to see just those prices.", word="Prices",
                  ctas=f'<a class="btn btn-lime" href="book/index.html">Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="shop/gift-vouchers.html">Gift vouchers</a>')
@@ -691,11 +706,31 @@ def form(rel, kind):
   <div class="row"><label>Name<input type="text" name="name" id="f-name" required autocomplete="name"></label><label>Phone<input type="tel" name="phone" id="f-phone" required autocomplete="tel"></label></div>
   <label>Email<input type="email" name="email" id="f-email" required autocomplete="email"></label>
   {('<div class="row"><label>Treatment<select name="treatment" id="f-treatment"><option>Not sure yet</option>' + opts + '</select></label><label>Preferred day and time<input type="text" name="preferred" id="f-pref" placeholder="e.g. Thursday evening"></label></div>') if kind=='book' else ''}
+  {'<div class="bksum" data-basket-summary hidden></div><input type="hidden" name="basket" data-basket-field>' if kind=='book' else ''}
   <label>Message<textarea name="message" id="f-msg" placeholder="{'Anything we should know, or questions about the treatment.' if kind=='book' else 'How can we help?'}"></textarea></label>
   <div class="msg" hidden></div>
   <button class="btn btn-moss" type="submit">{'Send booking request' if kind=='book' else 'Send message'} {ARROW}</button>
   <p class="note">We confirm every request by phone or email. Or call {PHONE}.</p>
 </form>'''
+
+def basket_page():
+    rel = ""
+    body = phero(rel, [("Home", "index.html"), ("Price List", "price-list.html")], "Your <em>basket.</em>", "Check your treatments, change quantities and continue to payment.", word="Basket")
+    body += f'''<section class="sec bkpage-sec">
+  <div class="bkpage">
+    <div><div class="psec-head"><h2>Treatments</h2><span data-basket-label></span></div><div class="bk-list big" data-basket-list></div></div>
+    <aside class="bk-card">
+      <h3>Summary</h3>
+      <div class="bk-lines" data-basket-lines></div>
+      <div class="bk-total"><span>Total</span><b data-basket-total>€0</b></div>
+      <p class="bk-note">Prices are confirmed at your appointment. Courses and packages can be adjusted in clinic.</p>
+      <button class="btn btn-lime" type="button" data-checkout>Continue to payment {ARROW}</button>
+      <div class="bk-pay" data-checkout-msg hidden><p>Online payment is being set up. For now, send your basket as a booking request and we will confirm your times and take payment at the clinic.</p><a class="btn btn-moss" href="{rel}book/index.html">Send as booking request {ARROW}</a></div>
+      <a class="bk-more" href="{rel}price-list.html">Add more treatments</a>
+    </aside>
+  </div>
+</section>'''
+    return page(rel, "Basket · Balance Clinic", "Your basket at Balance Clinic Spa Beauty, Navan.", "basket", body)
 
 def book():
     rel = "../"
@@ -776,11 +811,27 @@ PINFO = {
 }
 def pfrom(groups): return min(p for _, _, rows in groups for _, _, p in rows)
 def pcount(groups): return sum(len(rows) for _, _, rows in groups)
-def pgroups_html(groups):
+BAG_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>'
+ADD_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="pl" d="M12 5v14M5 12h14"/><path class="ck" d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+
+def item_id(*parts):
+    return re.sub(r"[^a-z0-9]+", "-", " ".join(p for p in parts if p).lower()).strip("-")
+
+def prow(section, group, name, detail, price):
+    """A price row. Rows with a price can be added to the basket."""
+    def esc(x): return html.escape(x, quote=True)
+    cell = f'<td>{esc(name)}{"<small>" + esc(detail) + "</small>" if detail else ""}</td>'
+    if not price:
+        return f'<tr>{cell}<td>On consultation</td></tr>'
+    data = f'data-item="{item_id(section, group, name, detail)}" data-name="{esc(name)}" data-group="{esc(group)}" data-section="{esc(section)}" data-detail="{esc(detail)}" data-price="{price}"'
+    return (f'<tr {data}>{cell}<td><span class="pp">€{price:,}</span>'
+            f'<button class="padd" type="button" aria-pressed="false" aria-label="Add {esc(name)} to basket">{ADD_SVG}</button></td></tr>')
+
+def pgroups_html(groups, section=""):
     def esc(x): return html.escape(x, quote=False)
     gh = ""
     for g, note, rows in groups:
-        trs = "".join(f'<tr><td>{esc(name)}{"<small>" + esc(d) + "</small>" if d else ""}</td><td>€{price:,}</td></tr>' for name, d, price in rows)
+        trs = "".join(prow(section, g, name, d, price) for name, d, price in rows)
         gh += f'<div class="pgroup" data-reveal><h3>{esc(g)}</h3>{"<p class=gnote>" + esc(note) + "</p>" if note else ""}<table>{trs}</table></div>'
     return gh
 
@@ -808,7 +859,7 @@ def price_cat_page(sid, title, groups):
     body += f'''<section class="sec price-sec">
   <div class="pbar"><nav class="pchips" aria-label="Price list sections">{chips}</nav>
     <label class="psearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="price-search" type="search" placeholder="Search {t_esc.lower()} treatments" aria-label="Search {t_esc.lower()} treatments" autocomplete="off"></label></div>
-  <div class="psec"><div class="psec-head"><h2 data-split>{t_esc}</h2><span>{pcount(groups)} treatments · from €{pfrom(groups)}</span></div><div class="pgrid{" one" if len(groups) == 1 else ""}">{pgroups_html(groups)}</div></div>
+  <div class="psec"><div class="psec-head"><h2 data-split>{t_esc}</h2><span>{pcount(groups)} treatments · from €{pfrom(groups)}</span></div><div class="pgrid{" one" if len(groups) == 1 else ""}">{pgroups_html(groups, title)}</div></div>
   <p class="pempty" hidden>No {t_esc.lower()} treatments match that search. Try a shorter word, or see <a href="{rel}price-list.html">all prices</a>.</p>
   <div class="pnote">All prices are in euro and confirmed at booking. Call {PHONE} for a quote on a course or a package.</div>
 </section>
@@ -885,8 +936,8 @@ def lcard(rel, gid, a, label):
             f'<span class="arrow"><svg viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span>'
             f'<div><p class="lc-k">{label}</p><h3>{a["name"]}</h3><div class="tags"><span>{tag}</span></div></div></a>')
 
-def ltable(a):
-    trs = "".join(f'<tr><td>{html.escape(n)}{"<small>" + html.escape(d) + "</small>" if d else ""}</td><td>{lprice(p)}</td></tr>' for n, d, p in a["rows"])
+def ltable(a, label=""):
+    trs = "".join(prow("Laser hair removal", f'{a["name"]}{" · " + label.replace("For ", "").lower() if label else ""}', n, d, p) for n, d, p in a["rows"])
     return f'<table>{trs}</table>'
 
 def laser_steps_faq(rel):
@@ -906,7 +957,7 @@ def laser_hub():
     benefits = "".join(f"<li>{b}</li>" for b in t["benefits"])
     pricing = ""
     for gid, label, areas in LASER:
-        groups = "".join(f'<div class="pgroup" data-reveal><h3><a href="{rel}laser/{gid}/{a["slug"]}.html">{a["name"]}</a></h3>{ltable(a)}</div>' for a in areas)
+        groups = "".join(f'<div class="pgroup" data-reveal><h3><a href="{rel}laser/{gid}/{a["slug"]}.html">{a["name"]}</a></h3>{ltable(a, label)}</div>' for a in areas)
         pricing += f'<div class="psec"><div class="psec-head"><h2 data-split>{label}</h2><span>{sum(len(a["rows"]) for a in areas)} areas</span></div><div class="pgrid">{groups}</div></div>'
     body = phero(rel, [("Home", "index.html"), ("Treatments", "treatments/index.html")], "Laser hair <em>removal.</em>", t["intro"], img="la-upper.jpg",
                  ctas=f'<a class="btn btn-lime" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="#pricing">See prices</a>')
@@ -939,7 +990,7 @@ def laser_area(gid, label, areas, a):
   <div class="larea">
     <div class="lpic reveal-img"><img src="{rel}assets/img/{a["img"]}" alt="Laser hair removal, {a["name"].lower()}">{badge}</div>
     <div class="ltext" id="prices"><p class="eyebrow">{label}</p><h2 data-split>{a["name"]}</h2><p class="lead" data-reveal>{a["intro"]}</p>
-      <div class="pgroup" data-reveal><h3>Areas &amp; prices</h3>{ltable(a)}</div>
+      <div class="pgroup" data-reveal><h3>Areas &amp; prices</h3>{ltable(a, label)}</div>
       <p class="gnote" data-reveal>Prices are per session. Most clients need 6 to 8 sessions, 4 to 8 weeks apart.</p>
       <div class="ctas" data-reveal><a class="btn btn-moss" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a><a class="btn btn-ghost" href="{rel}laser/index.html#pricing">All laser prices</a></div></div>
   </div>
@@ -968,6 +1019,7 @@ if __name__ == "__main__":
     write("results/index.html", results())
     write("about/index.html", about()); write("about/team.html", team())
     write("price-list.html", price_list())
+    write("basket.html", basket_page())
     for sid, title, groups in PRICES: write(f"prices/{PINFO[sid]['slug']}.html", price_cat_page(sid, title, groups))
     write("prices/laser-hair-removal.html", REDIRECT)
     write("shop/index.html", shop()); write("shop/gift-vouchers.html", gift_vouchers()); write("shop/january-sale.html", january_sale())

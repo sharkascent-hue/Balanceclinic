@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Basket · Balance Clinic</title>
+<meta name="description" content="Your basket at Balance Clinic Spa Beauty, Navan.">
+<meta name="theme-color" content="#1C3A2A">
+<meta property="og:title" content="Basket · Balance Clinic">
+<meta property="og:description" content="Your basket at Balance Clinic Spa Beauty, Navan.">
+<meta property="og:image" content="assets/img/hero-poster.jpg">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="assets/css/site.css">
+<script>(function(){try{var d=document.documentElement;d.className=d.className.replace('no-js','');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('anim');if(sessionStorage.getItem('bc-pt')==='1')d.classList.add('pt-in');if(sessionStorage.getItem('bc-intro'))d.classList.add('intro-seen');setTimeout(function(){d.classList.remove('anim')},3000)}catch(e){}})()</script>
+</head>
+<body>
+<canvas id="bgfx" aria-hidden="true"></canvas>
+<div id="pt" aria-hidden="true"><svg class="plus" viewBox="0 0 64 64"><path d="M32 10v44M10 32h44"/></svg></div>
+<header class="site-head" id="head">
+  <a class="brand" href="index.html" aria-label="Balance Clinic Spa Beauty, home"><img src="assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"></a>
+  <nav class="site-nav" aria-label="Primary"><a href="treatments/index.html">Treatments</a><a href="laser/index.html">Laser</a><a href="results/index.html">Results</a><a href="about/index.html">About</a><a href="price-list.html">Price List</a><a href="shop/index.html">Shop</a><a href="blog/index.html">Blog</a><a href="contact.html">Contact</a></nav>
+  <div class="head-cta">
+    <a class="btn btn-moss" href="book/index.html">Book now</a>
+    <button class="bag" type="button" data-basket-open aria-label="Open basket"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><b data-basket-count hidden>0</b></button>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i><i></i><i></i></button>
+  </div>
+</header>
+<div class="menu" id="menu" data-lenis-prevent>
+  <div class="inner">
+    <nav class="primary" aria-label="Menu">
+      <a href="index.html">Home</a>
+      <a href="treatments/index.html">Treatments<i>16</i></a>
+      <a href="laser/index.html" class="has-sub" data-panel="mp-laser">Laser Hair Removal<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+      <a href="price-list.html" class="has-sub" data-panel="mp-prices">Price List<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+      <a href="results/index.html">Results</a>
+      <a href="about/index.html">About</a>
+      <a href="shop/index.html">Shop</a>
+      <a href="book/index.html">Book Now</a>
+      <a href="contact.html">Contact</a>
+      <a href="blog/index.html">Blog</a>
+    </nav>
+    <div class="groups"><div><h4>Body Treatments</h4><a href="laser/index.html">Laser Hair Removal</a><a href="treatments/body-contouring.html">Body Contouring</a><a href="treatments/waxing.html">Waxing</a><a href="treatments/massage.html">Massage</a></div><div><h4>Skin Concerns</h4><a href="treatments/what-is-cellulite.html">What Is Cellulite?</a><a href="treatments/anti-ageing-hydration.html">Anti-Ageing &amp; Hydration</a></div><div><h4>Beauty Treatments</h4><a href="treatments/nails-manicure.html">Nails &amp; Manicure</a><a href="treatments/lashes.html">Lashes</a><a href="treatments/pedicure.html">Pedicure</a><a href="treatments/expert-brows-lashes.html">Expert Brows &amp; Lashes</a></div><div><h4>Skin Treatments</h4><a href="treatments/alumier-md-peels.html">Alumier MD Peels</a><a href="treatments/dermalogica-treatments.html">Dermalogica Treatments</a><a href="treatments/lumenis-stellar-m22-ipl.html">Lumenis Stellar M22 IPL</a><a href="treatments/microneedling.html">Microneedling</a><a href="treatments/microneedling-with-exosomes.html">Microneedling with Exosomes</a><a href="treatments/idenel-liquid-microneedling.html">Idenel Liquid Microneedling</a></div></div>
+    <div class="foot"><span>8 Trimgate Street, Townparks, Navan, Co. Meath, C15 DHE9</span><span>(046) 906 0333</span></div>
+  </div>
+  <div class="mpanel" id="mp-laser" aria-hidden="true"><button class="mback" type="button" data-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Menu</button><p class="mtitle">Laser Hair Removal</p><a class="mlink" data-panel="mp-laser-women" href="laser/women/bikini.html">For Women<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a><a class="mlink" data-panel="mp-laser-men" href="laser/men/face.html">For Men<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a><a class="mlink" href="laser/index.html">Learn more</a><a class="mlink" href="laser/index.html#pricing">Pricing</a><a class="btn btn-lime mcta" href="book/online-consultation.html">Book a consultation</a></div><div class="mpanel" id="mp-laser-women" aria-hidden="true"><button class="mback" type="button" data-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Laser Hair Removal</button><p class="mtitle">For Women</p><a class="mlink" href="laser/women/bikini.html">Bikini</a><a class="mlink" href="laser/women/face.html">Face</a><a class="mlink" href="laser/women/upper-body.html">Upper Body</a><a class="mlink" href="laser/women/lower-body.html">Lower Body</a><a class="mlink" href="laser/women/full-body.html">Full Body</a><a class="mlink sm" href="laser/index.html#women">Learn more</a><a class="mlink sm" href="laser/index.html#pricing">Pricing</a><a class="btn btn-lime mcta" href="book/online-consultation.html">Book a consultation</a></div><div class="mpanel" id="mp-laser-men" aria-hidden="true"><button class="mback" type="button" data-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Laser Hair Removal</button><p class="mtitle">For Men</p><a class="mlink" href="laser/men/face.html">Face</a><a class="mlink" href="laser/men/upper-body.html">Upper Body</a><a class="mlink" href="laser/men/lower-body.html">Lower Body</a><a class="mlink" href="laser/men/full-body.html">Full Body</a><a class="mlink sm" href="laser/index.html#men">Learn more</a><a class="mlink sm" href="laser/index.html#pricing">Pricing</a><a class="btn btn-lime mcta" href="book/online-consultation.html">Book a consultation</a></div><div class="mpanel" id="mp-prices" aria-hidden="true"><button class="mback" type="button" data-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Menu</button><p class="mtitle">Price List</p><a class="mlink" href="price-list.html">All prices</a><a class="mlink" href="prices/skin-face.html">Skin &amp; face</a><a class="mlink" href="prices/body-contouring.html">Body contouring</a><a class="mlink" href="prices/injectables.html">Injectables</a><a class="mlink" href="prices/beauty.html">Beauty</a><a class="mlink" href="prices/waxing.html">Waxing</a><a class="mlink" href="laser/index.html">Laser hair removal</a><a class="btn btn-lime mcta" href="book/online-consultation.html">Book a consultation</a></div>
+</div>
+<div class="page">
+<section class="phero grain">
+  <div class="bg typo"><span>Basket</span></div>
+  <div class="content">
+    <div class="crumbs"><a href="index.html">Home</a> <span>/</span> <a href="price-list.html">Price List</a> <span>/</span> <span>Your basket.</span></div>
+    <h1 data-split>Your <em>basket.</em></h1>
+    <p class="lead" data-reveal>Check your treatments, change quantities and continue to payment.</p>
+    
+  </div>
+</section>
+<section class="sec bkpage-sec">
+  <div class="bkpage">
+    <div><div class="psec-head"><h2>Treatments</h2><span data-basket-label></span></div><div class="bk-list big" data-basket-list></div></div>
+    <aside class="bk-card">
+      <h3>Summary</h3>
+      <div class="bk-lines" data-basket-lines></div>
+      <div class="bk-total"><span>Total</span><b data-basket-total>€0</b></div>
+      <p class="bk-note">Prices are confirmed at your appointment. Courses and packages can be adjusted in clinic.</p>
+      <button class="btn btn-lime" type="button" data-checkout>Continue to payment <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h11M9 4l4 4-4 4"/></svg></button>
+      <div class="bk-pay" data-checkout-msg hidden><p>Online payment is being set up. For now, send your basket as a booking request and we will confirm your times and take payment at the clinic.</p><a class="btn btn-moss" href="book/index.html">Send as booking request <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a></div>
+      <a class="bk-more" href="price-list.html">Add more treatments</a>
+    </aside>
+  </div>
+</section></div>
+<footer>
+  <div class="inner">
+    <div class="brand"><img src="assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"><p>8 Trimgate Street, Townparks, Navan, Co. Meath, C15 DHE9<br>(046) 906 0333</p></div>
+    <div><h4>Body</h4><ul><li><a href="laser/index.html">Laser Hair Removal</a></li><li><a href="treatments/body-contouring.html">Body Contouring</a></li><li><a href="treatments/waxing.html">Waxing</a></li><li><a href="treatments/massage.html">Massage</a></li></ul></div>
+    <div><h4>Skin</h4><ul><li><a href="treatments/alumier-md-peels.html">Alumier MD Peels</a></li><li><a href="treatments/dermalogica-treatments.html">Dermalogica Treatments</a></li><li><a href="treatments/lumenis-stellar-m22-ipl.html">Lumenis Stellar M22 IPL</a></li><li><a href="treatments/microneedling.html">Microneedling</a></li><li><a href="treatments/microneedling-with-exosomes.html">Microneedling with Exosomes</a></li><li><a href="treatments/idenel-liquid-microneedling.html">Idenel Liquid Microneedling</a></li></ul></div>
+    <div><h4>Clinic</h4><ul>
+      <li><a href="results/index.html">Results</a></li><li><a href="about/index.html">About</a></li><li><a href="about/team.html">Meet the team</a></li><li><a href="price-list.html">Price list</a></li>
+      <li><a href="shop/gift-vouchers.html">Gift vouchers</a></li><li><a href="book/index.html">Book a treatment</a></li><li><a href="book/online-consultation.html">Online consultation</a></li>
+      <li><a href="contact.html">Contact</a></li><li><a href="blog/index.html">Blog</a></li></ul></div>
+  </div>
+  <div class="bottom"><span>© <span id="yr">2026</span> Balance Clinic · Spa · Beauty</span><span><a href="https://www.google.com/search?q=Balance+Clinic+Spa+Beauty+Navan+reviews" target="_blank" rel="noopener">4.9 ★ on Google</a></span></div>
+  <div class="giant" aria-hidden="true">Balance</div>
+</footer>
+<a class="fab" id="fab" href="book/index.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</a>
+<div class="bk" id="basket" aria-hidden="true" data-lenis-prevent>
+  <div class="scrim" data-basket-close></div>
+  <aside class="panel" role="dialog" aria-modal="true" aria-labelledby="bk-title">
+    <div class="bk-head"><h2 id="bk-title">Your basket</h2><span class="bk-n" data-basket-label></span><button class="bk-x" type="button" data-basket-close aria-label="Close basket"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="bk-list" data-basket-list></div>
+    <div class="bk-foot">
+      <div class="bk-total"><span>Total</span><b data-basket-total>€0</b></div>
+      <p class="bk-note">Prices are confirmed at your appointment.</p>
+      <a class="btn btn-moss" href="basket.html" data-basket-go>Go to checkout <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a>
+      <button class="btn btn-ghost" type="button" data-basket-close>Keep browsing</button>
+    </div>
+  </aside>
+</div>
+<div class="bkt" id="bkt" role="status" aria-live="polite"><span></span><button type="button" data-basket-open>View basket</button></div>
+<div id="lb" aria-hidden="true" role="dialog" aria-label="Media viewer" data-lenis-prevent>
+  <div class="box"><video playsinline controls preload="none"></video><img alt="" hidden><button class="x" aria-label="Close video"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="t"></div></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>
