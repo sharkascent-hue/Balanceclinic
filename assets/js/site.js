@@ -102,18 +102,25 @@
     return new Promise(function (res) {
       var done = false;
       function finish() { if (done) return; done = true; killIntro(); if (lenis) lenis.start(); res(); }
-      var tl = gsap.timeline({ onComplete: finish });
-      tl.to(intro.querySelector('.plus path'), { strokeDashoffset: 0, duration: .9, ease: 'power3.inOut' }, 0)
-        .to(intro.querySelector('.word img'), { y: 0, duration: 1, ease: 'power4.out' }, .35)
-        .to(intro.querySelector('.mark'), { opacity: 0, y: -24, duration: .5, ease: 'power2.in' }, 1.55)
-        .to(intro.querySelectorAll('.slat'), { scaleY: 0, duration: .9, ease: 'expo.inOut', stagger: { each: .06, from: 'start' } }, 1.7);
-      setTimeout(finish, 3600); /* hard stop: never leave the intro on screen */
+      var img = intro.querySelector('.word img');
+      var ready = img && img.decode ? Promise.race([img.decode().catch(function () {}), new Promise(function (r) { setTimeout(r, 700); })]) : Promise.resolve();
+      setTimeout(finish, 4200); /* hard stop: never leave the intro on screen */
+      ready.then(function () {
+        if (done) return;
+        gsap.timeline({ onComplete: finish })
+          .to(intro.querySelector('.plus path'), { strokeDashoffset: 0, duration: .9, ease: 'power3.inOut' }, 0)
+          .to(intro.querySelector('.word img'), { y: 0, duration: 1, ease: 'power4.out' }, .35)
+          .to(intro.querySelector('.mark'), { opacity: 0, y: -24, duration: .5, ease: 'power2.in' }, 1.55)
+          .to(intro.querySelectorAll('.slat'), { scaleY: 0, duration: .9, ease: 'expo.inOut', stagger: { each: .06, from: 'start' } }, 1.7);
+      });
     });
   }
   function transitionIn() {
     if (!pt) return Promise.resolve();
-    if (ss.get('bc-pt') !== '1' || reduce || !hasGsap) { pt.style.transform = 'translateY(101%)'; return Promise.resolve(); }
-    ss.set('bc-pt', '0'); document.documentElement.classList.remove('pt-in');
+    var covered = document.documentElement.classList.contains('pt-in');
+    ss.set('bc-pt', '0');
+    if (!covered || reduce || !hasGsap) { document.documentElement.classList.remove('pt-in'); pt.style.transform = 'translateY(101%)'; pt.style.visibility = 'hidden'; return Promise.resolve(); }
+    document.documentElement.classList.remove('pt-in');
     gsap.set(pt, { y: '0%', visibility: 'visible' });
     return new Promise(function (res) {
       gsap.to(pt, { y: '-101%', duration: .9, ease: 'expo.inOut', delay: .05, onComplete: function () { pt.style.visibility = 'hidden'; res(); } });
@@ -124,7 +131,14 @@
     ss.set('bc-pt', '1');
     gsap.fromTo(pt, { y: '101%', visibility: 'visible' }, { y: '0%', duration: .7, ease: 'expo.inOut', onComplete: function () { location.href = href; } });
   }
-  window.addEventListener('pageshow', function (e) { if (e.persisted && pt && hasGsap) gsap.set(pt, { y: '101%', visibility: 'hidden' }); });
+  /* coming back with the back button: never leave a cover, menu or basket open */
+  window.addEventListener('pageshow', function (e) {
+    if (!e.persisted) return;
+    ss.set('bc-pt', '0'); document.documentElement.classList.remove('pt-in', 'anim');
+    if (pt && hasGsap) gsap.set(pt, { y: '101%', visibility: 'hidden' });
+    closeMenu(); if (typeof basket !== 'undefined' && basket) basket.close();
+    if (lenis) lenis.start();
+  });
   document.addEventListener('click', function (e) {
     var a = e.target.closest('a'); if (!a) return;
     var href = a.getAttribute('href'); if (!href) return;
@@ -305,17 +319,27 @@
   function heroIn() {
     if (!hasGsap || reduce) return;
     var hero = document.querySelector('.hero, .phero'); if (!hero) return;
+    /* start states are set at boot, before the first frame, so these only ever move forward */
     var tl = gsap.timeline();
     var words = hero.querySelectorAll('[data-split] .wd i');
-    if (words.length) tl.fromTo(words, { yPercent: 115 }, { yPercent: 0, duration: 1.2, ease: 'power4.out', stagger: .05 }, 0);
+    if (words.length) tl.to(words, { yPercent: 0, duration: 1.2, ease: 'power4.out', stagger: .05 }, 0);
     var lines = hero.querySelectorAll('h1 .inner');
-    if (lines.length) tl.fromTo(lines, { yPercent: 115 }, { yPercent: 0, duration: 1.3, ease: 'power4.out', stagger: .12 }, 0);
-    tl.fromTo(hero.querySelectorAll('.eyebrow, .crumbs'), { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: .9, ease: 'power3.out' }, .15)
-      .fromTo(hero.querySelectorAll('[data-reveal]'), { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out', stagger: .1 }, .45)
-      .from(hero.querySelectorAll('.bgv, .bg'), { scale: 1.12, opacity: .4, duration: 2.2, ease: 'power2.out' }, 0);
-    if (head) tl.from(head, { y: -30, opacity: 0, duration: 1, ease: 'power3.out' }, .3);
+    if (lines.length) tl.to(lines, { yPercent: 0, duration: 1.3, ease: 'power4.out', stagger: .12 }, 0);
+    tl.to(hero.querySelectorAll('.eyebrow, .crumbs'), { opacity: 1, x: 0, duration: .9, ease: 'power3.out' }, .15)
+      .to(hero.querySelectorAll('[data-reveal]'), { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out', stagger: .1 }, .45)
+      .to(hero.querySelectorAll('.bgv, .bg'), { scale: 1, opacity: 1, duration: 2.2, ease: 'power2.out' }, 0);
+    if (head) tl.to(head, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', clearProps: 'transform,opacity' }, .3);
     var frm = hero.querySelector('.hero-frame');
-    if (frm && getComputedStyle(frm).display !== 'none') tl.fromTo(frm, { opacity: 0, y: 90, scale: .94 }, { opacity: 1, y: 0, scale: 1, duration: 1.6, ease: 'expo.out' }, .35);
+    if (frm && getComputedStyle(frm).display !== 'none') tl.to(frm, { opacity: 1, y: 0, scale: 1, duration: 1.6, ease: 'expo.out' }, .35);
+  }
+  function heroStart(hero) {
+    gsap.set(hero.querySelectorAll('[data-split] .wd i, h1 .inner'), { yPercent: 140 });
+    gsap.set(hero.querySelectorAll('h1'), { opacity: 1 });
+    gsap.set(hero.querySelectorAll('.eyebrow, .crumbs'), { opacity: 0, x: -20 });
+    gsap.set(hero.querySelectorAll('[data-reveal]'), { opacity: 0, y: 28 });
+    gsap.set(hero.querySelectorAll('.bgv, .bg'), { scale: 1.12, opacity: .4 });
+    var f = hero.querySelector('.hero-frame'); if (f && getComputedStyle(f).display !== 'none') gsap.set(f, { opacity: 0, y: 90, scale: .94 });
+    if (head) gsap.set(head, { y: -30, opacity: 0 });
   }
   function heroScroll(hero) {
     if (!hasST || reduce || !hero) return;
@@ -329,12 +353,17 @@
     if (!hasST || reduce) return;
     scope.querySelectorAll('[data-reveal]').forEach(function (el) {
       if (el.closest('.hero, .phero')) return;
-      gsap.fromTo(el, { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
+      /* cards with their own hover transition would lag behind the reveal; pause it, and hand the transform back to CSS when done */
+      var own = /transform|all/.test(getComputedStyle(el).transitionProperty);
+      gsap.fromTo(el, { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out', clearProps: 'transform,opacity',
+        onStart: own ? function () { el.style.transition = 'none'; } : null,
+        onComplete: own ? function () { el.style.transition = ''; } : null,
+        scrollTrigger: { trigger: el, start: 'top 94%', once: true } });
     });
     scope.querySelectorAll('[data-split]').forEach(function (el) {
       if (el.closest('.hero, .phero')) return;
       var w = el.querySelectorAll('.wd i'); if (!w.length) return;
-      gsap.from(w, { yPercent: 115, duration: 1.1, ease: 'power4.out', stagger: .035, scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
+      gsap.from(w, { yPercent: 140, duration: 1.1, ease: 'power4.out', stagger: .035, scrollTrigger: { trigger: el, start: 'top 92%', once: true } });
     });
     scope.querySelectorAll('.split .img img, .phero .bg img').forEach(function (img) {
       gsap.fromTo(img, { yPercent: -10 }, { yPercent: 2, ease: 'none', scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
@@ -663,6 +692,7 @@
       swapTo(u.href, true);
     }, true);
     pinUrls(document.body, location.href);
+    document.querySelectorAll('link[rel~="icon"]').forEach(function (l) { var u = new URL(l.getAttribute('href'), location.href); l.setAttribute('href', u.pathname); });
     history.replaceState({ bcPrice: 1 }, '', location.href);
     window.addEventListener('popstate', function (e) {
       if (!e.state || !e.state.bcPrice) return;
@@ -675,18 +705,19 @@
 
   /* ---------- boot ---------- */
   var root = document.documentElement;
-  if (hasGsap && !reduce) {
-    var hero0 = document.querySelector('.hero, .phero');
-    if (hero0) {
-      gsap.set(hero0.querySelectorAll('[data-split] .wd i, h1 .inner'), { yPercent: 115 });
-      gsap.set(hero0.querySelectorAll('h1'), { opacity: 1 });
-      gsap.set(hero0.querySelectorAll('[data-reveal], .eyebrow, .crumbs'), { opacity: 0 });
-    }
-  }
+  /* only run the hero entrance if the page is still in its pre-paint hidden state (the safety timer may have shown it already) */
+  var hero0 = document.querySelector('.hero, .phero');
+  var animHero = hasGsap && !reduce && !!hero0 && root.classList.contains('anim');
+  if (animHero) heroStart(hero0);
   root.classList.remove('anim');
-  Promise.resolve().then(function () { return intro && !seen ? runIntro() : transitionIn(); }).then(function () {
+  /* wait for the web fonts (briefly) so headings don't reflow mid-animation */
+  var fontsReady = new Promise(function (res) { if (document.fonts && document.fonts.ready) { document.fonts.ready.then(res, res); setTimeout(res, 1200); } else res(); });
+  var started = false;
+  Promise.all([intro && !seen ? runIntro() : transitionIn(), fontsReady]).then(function () {
+    if (started) return; started = true;
     if (intro && seen) killIntro();
-    heroIn(); scrollFx();
-    if (hasST) setTimeout(function () { ScrollTrigger.refresh(); }, 400);
+    if (animHero) heroIn();
+    scrollFx();
+    if (hasST) { setTimeout(function () { ScrollTrigger.refresh(); }, 400); if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); }); }
   });
 })();
