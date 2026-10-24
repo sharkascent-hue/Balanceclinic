@@ -247,7 +247,7 @@
         var secAny = false;
         sec.querySelectorAll('.pgroup').forEach(function (g) {
           var gname = g.querySelector('h3').textContent.toLowerCase(), gAny = false;
-          g.querySelectorAll('tr').forEach(function (tr) {
+          g.querySelectorAll('tr, .lrow').forEach(function (tr) {
             var hit = !q || gname.indexOf(q) > -1 || tr.textContent.toLowerCase().indexOf(q) > -1;
             tr.hidden = !hit; if (hit) gAny = true;
           });
@@ -529,7 +529,7 @@
     function find(id) { for (var i = 0; i < items.length; i++) if (items[i].id === id) return items[i]; return null; }
     function count() { return items.reduce(function (n, it) { return n + it.qty; }, 0); }
     function total() { return items.reduce(function (n, it) { return n + it.qty * it.price; }, 0); }
-    function euro(n) { return '€' + n.toLocaleString('en-IE'); }
+    function euro(n) { n = Math.round(n * 100) / 100; return '€' + (n % 1 ? n.toLocaleString('en-IE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : n.toLocaleString('en-IE')); }
     function esc(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
     function label(n) { return n === 1 ? '1 treatment' : n + ' treatments'; }
     function meta(it) { return [it.section, it.group !== it.name ? it.group : '', it.detail].filter(Boolean).join(' · '); }
@@ -560,10 +560,11 @@
     function priceHref() { var a = document.querySelector('.site-nav a[href*="price-list"]'); return a ? a.getAttribute('href') : 'price-list.html'; }
     function basketHref() { var a = document.querySelector('[data-basket-go]'); return a ? a.getAttribute('href') : 'basket.html'; }
     function mark(scope) {
-      scope.querySelectorAll('tr[data-item]').forEach(function (tr) {
-        var on = !!find(tr.getAttribute('data-item')), b = tr.querySelector('.padd');
+      scope.querySelectorAll('[data-item]').forEach(function (tr) {
+        var on = !!find(tr.getAttribute('data-item')), b = tr.matches('button') ? tr : tr.querySelector('.padd');
+        var what = tr.getAttribute('data-name') + (tr.matches('.lopt') ? ', ' + tr.getAttribute('data-detail') + ', ' + euro(+tr.getAttribute('data-price')) : '');
         tr.classList.toggle('inb', on);
-        if (b) { b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.setAttribute('aria-label', (on ? 'Remove ' : 'Add ') + tr.getAttribute('data-name') + (on ? ' from basket' : ' to basket')); }
+        if (b) { b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.setAttribute('aria-label', (on ? 'Remove ' : 'Add ') + what + (on ? ' from basket' : ' to basket')); }
       });
     }
     function toast(msg) {
@@ -584,14 +585,14 @@
       if (lenis) lenis.start();
     }
     document.addEventListener('click', function (e) {
-      var tr = e.target.closest('tr[data-item]');
+      var tr = e.target.closest('[data-item]');
       if (tr && !e.target.closest('a')) {
-        var id = tr.getAttribute('data-item'), it = find(id), name = tr.getAttribute('data-name');
-        if (it) { items = items.filter(function (x) { return x !== it; }); save(); toast(name + ' removed'); }
+        var id = tr.getAttribute('data-item'), it = find(id), name = tr.getAttribute('data-name'), said = name + (tr.matches('.lopt') ? ' · ' + tr.getAttribute('data-detail') : '');
+        if (it) { items = items.filter(function (x) { return x !== it; }); save(); toast(said + ' removed'); }
         else {
           items.push({ id: id, name: name, group: tr.getAttribute('data-group') || '', section: tr.getAttribute('data-section') || '', detail: tr.getAttribute('data-detail') || '', price: +tr.getAttribute('data-price') || 0, qty: 1 });
-          save(); toast(name + ' added');
-          var b = tr.querySelector('.padd'); if (b && !reduce) { b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); }
+          save(); toast(said + ' added');
+          var b = tr.matches('button') ? tr : tr.querySelector('.padd'); if (b && !reduce) { b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); }
           document.querySelectorAll('.bag').forEach(function (g) { g.classList.remove('bump'); void g.offsetWidth; g.classList.add('bump'); });
         }
         return;

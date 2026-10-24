@@ -663,7 +663,7 @@ def price_list():
         t_esc = html.escape(title, quote=False)
         secs += f'<div class="psec" id="p-{sid}"><div class="psec-head"><h2 data-split>{t_esc}</h2><span>{pcount(groups)} treatments</span></div><div class="pgrid{" one" if len(groups) == 1 else ""}">{pgroups_html(groups, title)}</div></div>'
     lg = "".join(f'<div class="pgroup" data-reveal><h3>{a["name"]} · {label.replace("For ", "").lower()}</h3>{ltable(a, label)}</div>' for gid, label, areas in LASER for a in areas)
-    secs += f'<div class="psec" id="p-laser"><div class="psec-head"><h2 data-split>Laser hair removal</h2><span>Per session</span></div><div class="pgrid">{lg}</div></div>'
+    secs += f'<div class="psec" id="p-laser"><div class="psec-head"><h2 data-split>Laser hair removal</h2><span>1, 3, 6 or 10 sessions</span></div><div class="pgrid">{lg}</div></div>'
     body = phero(rel, [("Home", "index.html")], "Price <em>list.</em>", "Every treatment and price in one place. Search for a treatment, or tap a category above the list to see just those prices.", word="Prices",
                  ctas=f'<a class="btn btn-lime" href="book/index.html">Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="shop/gift-vouchers.html">Gift vouchers</a>')
     body += f'''<section class="sec price-sec">
@@ -881,44 +881,56 @@ def price_cat_page(sid, title, groups):
 CHEV = '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>'
 CHEV_L = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>'
 # Each area: (name, detail, price in euro or None). Fill in prices when the clinic confirms them.
+LASER_SESSIONS = (1, 3, 6, 10)
+# Each area: (name, detail, (price for 1, 3, 6, 10 sessions) in euro). From the clinic's laser price list.
 LASER = [
     ("women", "For Women", [
         dict(slug="bikini", name="Bikini", img="la-bikini.jpg",
              intro="From a neat bikini line to a full Hollywood, laser keeps the bikini area smooth without the rash, ingrown hairs and regrowth that come with shaving and waxing.",
-             rows=[("Bikini line", "", None), ("Extended bikini", "Californian", None), ("Brazilian", "", None), ("Hollywood", "Full bikini", None)]),
+             rows=[("Any bikini", "Line, Brazilian or Hollywood", (73.95, 175, 290, 375)), ("Any bikini & underarms", "", (73.95, 175, 290, 375)),
+                   ("Navel to pubic line", "", (38.95, 85.95, 149, 168))]),
         dict(slug="face", name="Face", img="la-face.jpg",
              intro="Upper lip, chin and the sides of the face are the most popular areas for women. Small areas mean short sessions, often under ten minutes.",
-             rows=[("Upper lip", "", None), ("Chin", "", None), ("Upper lip & chin", "", None), ("Sides of face", "", None), ("Full face", "", None), ("Neck", "", None)]),
+             rows=[("Lip", "", (46.95, 115.95, 199, 219)), ("Chin", "", (46.95, 115.95, 199, 219)), ("Lip & chin", "", (57, 155, 259, 329.5)),
+                   ("Jawline & chin", "", (55.95, 155, 259, 319)), ("Centre brows", "", (38.95, 85.95, 149, 155)), ("Sides of face", "", (57, 105, 259, 329.5)),
+                   ("Front of neck", "", (57, 105, 259, 329.5)), ("Full face", "", (89.95, 260, 319, 425)), ("Full face & front of neck", "", (110, 285, 369, 455))]),
         dict(slug="upper-body", name="Upper Body", img="la-upper.jpg",
              intro="Underarms are the most requested area of all. Arms, stomach and lower back are treated with the same handpiece, which cools the skin with every pulse.",
-             rows=[("Underarms", "", None), ("Forearms", "", None), ("Full arms", "", None), ("Stomach line", "", None), ("Lower back", "", None)]),
+             rows=[("Underarms", "", (48.95, 118, 159, 210)), ("Nipples", "", (48.95, 118, 159, 210)), ("Forearms", "", (68.95, 185, 325, 485)),
+                   ("Full arms", "", (99.95, 275, 420, 580)), ("Stomach", "", (99.95, 240, 390, 559)), ("Lower back", "", (68.95, 185, 328, 485))]),
         dict(slug="lower-body", name="Lower Body", img="la-lower.jpg",
              intro="Legs are the largest area most clients treat. Lower legs take around 20 minutes and full legs about 40, and the smooth finish lasts between maintenance visits.",
-             rows=[("Lower legs", "", None), ("Upper legs", "", None), ("Full legs", "", None), ("Buttocks", "", None), ("Feet & toes", "", None)]),
+             rows=[("Lower legs", "", (68.95, 185, 328, 488)), ("Full legs", "", (129.95, 269.95, 529, 699.5)), ("Buttocks", "", (79.95, 229, 369, 580))]),
         dict(slug="full-body", name="Full Body", img="la-full.jpg",
-             intro="Treat everything in one appointment and one course. Full-body treatment is the best value per area and saves the most time over a year.",
-             rows=[("Full body", "Excluding face", None), ("Full body + face", "", None), ("Full legs, Brazilian & underarms", "Package", None)]),
+             intro="Combine areas in one appointment and one course. Packages are the best value per area and save the most time over a year.",
+             rows=[("Lower legs, any bikini & underarms", "Package", (120, 269, 478, 749.5)), ("Full legs, any bikini & underarms", "Package", (145, 299, 550, 799.5)),
+                   ("Full body & full face", "", (249.95, 575, 895, 1350))]),
     ]),
     ("men", "For Men", [
         dict(slug="face", name="Face", img="la-men-upper.jpg",
              intro="Shape the beard line, clear the neck and stop shaving rash for good. Laser is ideal for ingrown hairs along the jaw and neck.",
-             rows=[("Beard line & neckline", "Shaping", None), ("Cheeks", "", None), ("Neck", "", None), ("Full face", "", None), ("Ears", "", None)]),
+             rows=[("Full beard", "", (79.95, 215, 365, 550)), ("Full beard & neck", "", (87.95, 230, 399, 529)), ("Front or back of neck", "", (57, 155, 255, 375)),
+                   ("Centre brow", "", (31, 76, 125, 155)), ("Ears", "", (36, 99, 178, 216)), ("Nose", "", (58, 163, 274, 395))]),
         dict(slug="upper-body", name="Upper Body", img="la-men-upper.jpg",
              intro="Chest, stomach, back and shoulders are the areas men treat most. Large areas are covered quickly with a wide handpiece.",
-             rows=[("Chest", "", None), ("Stomach", "", None), ("Chest & stomach", "", None), ("Shoulders", "", None), ("Full back", "", None), ("Underarms", "", None), ("Full arms", "", None)]),
+             rows=[("Chest or stomach", "", (64.95, 179.85, 299.7, 495)), ("Chest & stomach", "", (73, 207, 349, 499)), ("Shoulders", "", (69.95, 195, 330, 499.5)),
+                   ("Full back", "", (88, 230, 405, 640)), ("Full back & shoulders", "", (99.95, 268, 478, 699.95)), ("Lower back", "", (65, 168, 245, 365)),
+                   ("Underarms", "", (58, 116, 208, 275)), ("Forearms", "", (89.95, 280, 370, 449.75)), ("Full arms", "", (108, 278, 399, 525))]),
         dict(slug="lower-body", name="Lower Body", img="la-lower.jpg",
-             intro="Smooth legs for sport, cycling or simply less upkeep. Lower legs, upper legs or the full leg in one session.",
-             rows=[("Lower legs", "", None), ("Upper legs", "", None), ("Full legs", "", None), ("Buttocks", "", None)]),
+             intro="Smooth legs for sport, cycling or simply less upkeep. Lower legs or the full leg in one session.",
+             rows=[("Lower legs", "", (125, 348, 599.95, 898.95)), ("Full legs", "", (133, 365, 635, 928))]),
         dict(slug="full-body", name="Full Body", img="la-full.jpg",
-             intro="One course for everything below the neck, or combine back, shoulders and chest in a single package.",
-             rows=[("Full body", "Excluding face", None), ("Full body + face", "", None), ("Back, shoulders & chest", "Package", None)]),
+             intro="One course for everything below the neck, and the best value per area.",
+             rows=[("Full body", "Excluding face", (276, 749, 1350, 1795))]),
     ]),
 ]
 
-def lprice(p): return f"€{p:,}" if p else "On consultation"
+def eur(p):
+    """€73.95, €175, €1,350"""
+    return f"€{p:,.2f}" if p != int(p) else f"€{int(p):,}"
 def lfrom(area):
-    ps = [r[2] for r in area["rows"] if r[2]]
-    return min(ps) if ps else None
+    ps = [r[2][0] for r in area["rows"] if r[2]]
+    return eur(min(ps)) if ps else None
 
 def laser_panels(rel):
     def pnl(pid, back_label, back_to, title, items):
@@ -940,15 +952,27 @@ def laser_panels(rel):
 
 def lcard(rel, gid, a, label):
     f = lfrom(a)
-    tag = f"From €{f}" if f else "6 to 8 sessions"
+    tag = f"From {f}" if f else "6 to 8 sessions"
     words = html.escape(" ".join([label, a["name"]] + [n + " " + d for n, d, _ in a["rows"]]).lower())
     return (f'<a class="hcard" data-search="{words}" href="{rel}laser/{gid}/{a["slug"]}.html"><img src="{rel}assets/img/{a["img"]}" alt="" loading="lazy">'
             f'<span class="arrow"><svg viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span>'
             f'<div><p class="lc-k">{label}</p><h3>{a["name"]}</h3><div class="tags"><span>{tag}</span></div></div></a>')
 
 def ltable(a, label=""):
-    trs = "".join(prow("Laser hair removal", f'{a["name"]}{" · " + label.replace("For ", "").lower() if label else ""}', n, d, p) for n, d, p in a["rows"])
-    return f'<table>{trs}</table>'
+    """Each area with its four course prices; every price can go in the basket."""
+    def esc(x): return html.escape(x, quote=True)
+    group = f'{a["name"]}{" · " + label.replace("For ", "").lower() if label else ""}'
+    out = ""
+    for n, d, prices in a["rows"]:
+        opts = ""
+        for k, p in zip(LASER_SESSIONS, prices):
+            sess = f'{k} session{"s" if k > 1 else ""}'
+            data = (f'data-item="{item_id("laser", group, n, sess)}" data-name="{esc(n)}" data-group="{esc(group)}" '
+                    f'data-section="Laser hair removal" data-detail="{sess}" data-price="{p}"')
+            opts += f'<button class="lopt" type="button" {data} aria-pressed="false" aria-label="Add {esc(n)}, {sess}, {eur(p)} to basket"><span>{sess}</span><b>{eur(p)}</b></button>'
+        out += f'<div class="lrow"><div class="ln">{esc(n)}{"<small>" + esc(d) + "</small>" if d else ""}</div><div class="lopts">{opts}</div></div>'
+    head = '<div class="lhead"><span></span><div class="lopts">' + "".join(f'<span>{k} session{"s" if k > 1 else ""}</span>' for k in LASER_SESSIONS) + '</div></div>'
+    return f'<div class="lrows">{head}{out}</div>'
 
 def laser_steps_faq(rel):
     t = TMAP["laser-hair-removal"]
@@ -979,7 +1003,7 @@ def laser_hub():
 <section class="tbody"><div class="inner"><div class="prose"><h2 data-split>About laser hair removal</h2>{prose}<h2 data-split>Good for</h2><ul data-reveal>{benefits}</ul></div>
   <aside class="aside"><div class="box" data-reveal><h3>Start with a patch test</h3><p>Every course begins with a consultation and patch test, so the settings suit your skin and hair. Call {PHONE} or book online.</p><a class="btn btn-lime" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a></div></aside></div></section>
 {laser_steps_faq(rel)}
-<section class="sec price-sec" id="pricing"><div class="sec-head"><div><p class="eyebrow">Pricing</p><h2 data-split>Laser prices by area.</h2></div><p data-reveal>Prices are per session. Courses of 6 to 8 sessions are confirmed at your consultation.</p></div>{pricing}</section>
+<section class="sec price-sec" id="pricing"><div class="sec-head"><div><p class="eyebrow">Pricing</p><h2 data-split>Laser prices by area.</h2></div><p data-reveal>Book a single session, or save with a course of 3, 6 or 10. Tap a price to add it to your basket.</p></div>{pricing}</section>
 {visit(rel)}'''
     return page(rel, "Laser Hair Removal · Balance Clinic", "Medical-grade laser hair removal for women and men at Balance Clinic Spa Beauty, Navan.", "laser", body)
 
@@ -991,7 +1015,7 @@ def laser_area(gid, label, areas, a):
         genders += f'<a class="{"on" if g2 == gid else ""}" href="{rel}laser/{g2}/{target["slug"]}.html">{l2}</a>'
     chips = "".join(f'<a class="{"on" if x["slug"] == a["slug"] else ""}" href="{rel}laser/{gid}/{x["slug"]}.html">{x["name"]}</a>' for x in areas)
     f = lfrom(a)
-    badge = f'<div class="lbadge"><small>From</small><b>€{f}</b></div>' if f else '<div class="lbadge"><small>Course of</small><b>6–8</b><small>sessions</small></div>'
+    badge = f'<div class="lbadge"><small>From</small><b>{f}</b></div>' if f else '<div class="lbadge"><small>Course of</small><b>6–8</b><small>sessions</small></div>'
     others = "".join(lcard(rel, gid, x, label) for x in areas if x["slug"] != a["slug"])
     body = phero(rel, [("Home", "index.html"), ("Laser", "laser/index.html"), (label, f"laser/index.html#{gid}")], f'Laser hair removal <em>{label.lower()}</em>', a["intro"], img=a["img"],
                  ctas=f'<a class="btn btn-lime" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="#prices">{a["name"]} prices</a>')
@@ -1001,7 +1025,7 @@ def laser_area(gid, label, areas, a):
     <div class="lpic reveal-img"><img src="{rel}assets/img/{a["img"]}" alt="Laser hair removal, {a["name"].lower()}">{badge}</div>
     <div class="ltext" id="prices"><p class="eyebrow">{label}</p><h2 data-split>{a["name"]}</h2><p class="lead" data-reveal>{a["intro"]}</p>
       <div class="pgroup" data-reveal><h3>Areas &amp; prices</h3>{ltable(a, label)}</div>
-      <p class="gnote" data-reveal>Prices are per session. Most clients need 6 to 8 sessions, 4 to 8 weeks apart.</p>
+      <p class="gnote" data-reveal>Choose a single session or save with a course of 3, 6 or 10. Most clients need 6 to 8 sessions, 4 to 8 weeks apart.</p>
       <div class="ctas" data-reveal><a class="btn btn-moss" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a><a class="btn btn-ghost" href="{rel}laser/index.html#pricing">All laser prices</a></div></div>
   </div>
 </section>
