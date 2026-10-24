@@ -99,19 +99,20 @@
     ss.set('bc-intro', '1');
     document.body.classList.add('intro-on');
     if (lenis) lenis.stop();
+    /* resolves as the slats start to lift, so the hero rises while the intro clears */
     return new Promise(function (res) {
       var done = false;
-      function finish() { if (done) return; done = true; killIntro(); if (lenis) lenis.start(); res(); }
+      function finish() { res(); if (done) return; done = true; killIntro(); if (lenis) lenis.start(); }
       var img = intro.querySelector('.word img');
-      var ready = img && img.decode ? Promise.race([img.decode().catch(function () {}), new Promise(function (r) { setTimeout(r, 700); })]) : Promise.resolve();
-      setTimeout(finish, 4200); /* hard stop: never leave the intro on screen */
+      var ready = img && img.decode ? Promise.race([img.decode().catch(function () {}), new Promise(function (r) { setTimeout(r, 400); })]) : Promise.resolve();
+      setTimeout(finish, 3000); /* hard stop: never leave the intro on screen */
       ready.then(function () {
         if (done) return;
         gsap.timeline({ onComplete: finish })
-          .to(intro.querySelector('.plus path'), { strokeDashoffset: 0, duration: .9, ease: 'power3.inOut' }, 0)
-          .to(intro.querySelector('.word img'), { y: 0, duration: 1, ease: 'power4.out' }, .35)
-          .to(intro.querySelector('.mark'), { opacity: 0, y: -24, duration: .5, ease: 'power2.in' }, 1.55)
-          .to(intro.querySelectorAll('.slat'), { scaleY: 0, duration: .9, ease: 'expo.inOut', stagger: { each: .06, from: 'start' } }, 1.7);
+          .to(intro.querySelector('.plus path'), { strokeDashoffset: 0, duration: .6, ease: 'power3.inOut' }, 0)
+          .to(intro.querySelector('.word img'), { y: 0, duration: .75, ease: 'power4.out' }, .2)
+          .to(intro.querySelector('.mark'), { opacity: 0, y: -24, duration: .35, ease: 'power2.in' }, .95)
+          .to(intro.querySelectorAll('.slat'), { scaleY: 0, duration: .7, ease: 'expo.inOut', stagger: { each: .04, from: 'start' }, onStart: function () { setTimeout(res, 120); } }, 1.05);
       });
     });
   }
@@ -122,14 +123,26 @@
     if (!covered || reduce || !hasGsap) { document.documentElement.classList.remove('pt-in'); pt.style.transform = 'translateY(101%)'; pt.style.visibility = 'hidden'; return Promise.resolve(); }
     document.documentElement.classList.remove('pt-in');
     gsap.set(pt, { y: '0%', visibility: 'visible' });
+    /* the hero starts rising while the cover lifts */
     return new Promise(function (res) {
-      gsap.to(pt, { y: '-101%', duration: .9, ease: 'expo.inOut', delay: .05, onComplete: function () { pt.style.visibility = 'hidden'; res(); } });
+      gsap.to(pt, { y: '-101%', duration: .6, ease: 'expo.inOut', onComplete: function () { pt.style.visibility = 'hidden'; res(); } });
+      setTimeout(res, 150);
     });
   }
+  /* start fetching the next page as soon as a finger or pointer lands on a link */
+  var warmed = {};
+  function prefetch(href) {
+    try { var u = new URL(href, location.href); if (u.origin !== location.origin || warmed[u.pathname]) return; warmed[u.pathname] = 1;
+      var l = document.createElement('link'); l.rel = 'prefetch'; l.href = u.pathname; document.head.appendChild(l); } catch (e) {}
+  }
+  function warmLink(e) { var a = e.target.closest && e.target.closest('a[href]'); if (!a || a.target === '_blank') return; var h = a.getAttribute('href'); if (!h || h.charAt(0) === '#' || /^(mailto|tel|sms):/.test(h)) return; prefetch(h); }
+  document.addEventListener('touchstart', warmLink, { passive: true });
+  document.addEventListener('mouseover', warmLink, { passive: true });
   function transitionOut(href) {
     if (!pt || reduce || !hasGsap) { location.href = href; return; }
     ss.set('bc-pt', '1');
-    gsap.fromTo(pt, { y: '101%', visibility: 'visible' }, { y: '0%', duration: .7, ease: 'expo.inOut', onComplete: function () { location.href = href; } });
+    prefetch(href);
+    gsap.fromTo(pt, { y: '101%', visibility: 'visible' }, { y: '0%', duration: .45, ease: 'expo.inOut', onComplete: function () { location.href = href; } });
   }
   /* coming back with the back button: never leave a cover, menu or basket open */
   window.addEventListener('pageshow', function (e) {
@@ -322,15 +335,15 @@
     /* start states are set at boot, before the first frame, so these only ever move forward */
     var tl = gsap.timeline();
     var words = hero.querySelectorAll('[data-split] .wd i');
-    if (words.length) tl.to(words, { yPercent: 0, duration: 1.2, ease: 'power4.out', stagger: .05 }, 0);
+    if (words.length) tl.to(words, { yPercent: 0, duration: 1, ease: 'power4.out', stagger: .04 }, 0);
     var lines = hero.querySelectorAll('h1 .inner');
-    if (lines.length) tl.to(lines, { yPercent: 0, duration: 1.3, ease: 'power4.out', stagger: .12 }, 0);
-    tl.to(hero.querySelectorAll('.eyebrow, .crumbs'), { opacity: 1, x: 0, duration: .9, ease: 'power3.out' }, .15)
-      .to(hero.querySelectorAll('[data-reveal]'), { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out', stagger: .1 }, .45)
+    if (lines.length) tl.to(lines, { yPercent: 0, duration: 1, ease: 'power4.out', stagger: .1 }, 0);
+    tl.to(hero.querySelectorAll('.eyebrow, .crumbs'), { opacity: 1, x: 0, duration: .7, ease: 'power3.out' }, .1)
+      .to(hero.querySelectorAll('[data-reveal]'), { opacity: 1, y: 0, duration: .9, ease: 'power3.out', stagger: .08 }, .3)
       .to(hero.querySelectorAll('.bgv, .bg'), { scale: 1, opacity: 1, duration: 2.2, ease: 'power2.out' }, 0);
-    if (head) tl.to(head, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', clearProps: 'transform,opacity' }, .3);
+    if (head) tl.to(head, { y: 0, opacity: 1, duration: .8, ease: 'power3.out', clearProps: 'transform,opacity' }, .15);
     var frm = hero.querySelector('.hero-frame');
-    if (frm && getComputedStyle(frm).display !== 'none') tl.to(frm, { opacity: 1, y: 0, scale: 1, duration: 1.6, ease: 'expo.out' }, .35);
+    if (frm && getComputedStyle(frm).display !== 'none') tl.to(frm, { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'expo.out' }, .2);
   }
   function heroStart(hero) {
     gsap.set(hero.querySelectorAll('[data-split] .wd i, h1 .inner'), { yPercent: 140 });
@@ -711,7 +724,7 @@
   if (animHero) heroStart(hero0);
   root.classList.remove('anim');
   /* wait for the web fonts (briefly) so headings don't reflow mid-animation */
-  var fontsReady = new Promise(function (res) { if (document.fonts && document.fonts.ready) { document.fonts.ready.then(res, res); setTimeout(res, 1200); } else res(); });
+  var fontsReady = new Promise(function (res) { if (document.fonts && document.fonts.ready) { document.fonts.ready.then(res, res); setTimeout(res, 500); } else res(); });
   var started = false;
   Promise.all([intro && !seen ? runIntro() : transitionIn(), fontsReady]).then(function () {
     if (started) return; started = true;
