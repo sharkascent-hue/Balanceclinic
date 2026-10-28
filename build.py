@@ -493,11 +493,11 @@ def home():
   <div class="hero-frame" aria-hidden="true"><video muted loop playsinline preload="none" poster="assets/img/hero-poster.jpg" data-src="assets/video/hero.mp4"></video></div>
   <div class="content">
     <div>
-      <p class="eyebrow">Navan, Co. Meath · Clinic, Spa &amp; Beauty</p>
-      <h1><span class="line"><span class="inner">Find your</span></span><span class="line"><span class="inner"><em>balance.</em></span></span></h1>
+      <p class="eyebrow">Aesthetic clinic · Holistic spa · Navan</p>
+      <h1><span class="line"><span class="inner">Results you see.</span></span><span class="line"><span class="inner"><em>Calm you feel.</em></span></span></h1>
     </div>
     <div class="side">
-      <p data-reveal>Medical-grade laser, advanced skin treatments, body contouring, massage and beauty under one roof on Trimgate Street.</p>
+      <p data-reveal>Medical-grade technology for face and body, with the care of a holistic spa. Life is busy and stressful, and time to look after yourself isn't a luxury. It's essential.</p>
       <div class="ctas" data-reveal><a class="btn btn-lime" href="book/index.html">Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="treatments/index.html">Explore treatments</a></div>
       <a class="rating" data-reveal href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener" aria-label="4.9 stars from over 800 Google reviews"><span class="g">G</span><span class="stars" aria-hidden="true">★★★★★</span><span><b>4.9</b> · 800+ Google reviews</span></a>
     </div>
@@ -509,8 +509,8 @@ def home():
 
 <section class="statement">
   <div class="inner">
-    <p class="eyebrow" style="margin-bottom:34px">The Balance experience</p>
-    <p class="big">Take a step into our world and find the balance between <em>rejuvenation</em> and <em>relaxation</em>. Signature treatments, expert hands and results you can see.</p>
+    <p class="eyebrow" style="margin-bottom:34px">The Balance approach</p>
+    <p class="big">An aesthetic clinic at heart, a holistic spa in spirit. Advanced treatments for <em>face and body</em> sit side by side with massage and moments of <em>real rest</em>, because how you feel matters as much as how you look.</p>
     <div class="row" data-reveal><a class="link" href="about/index.html">Our story {ARROW}</a><a class="link" href="about/team.html">Meet the team {ARROW}</a></div>
   </div>
 </section>
@@ -565,7 +565,7 @@ def home():
   </div>
 </section>
 {visit(rel)}'''
-    return page(rel, "Balance Clinic Spa Beauty, Navan", "Medical-grade laser, skin treatments, body contouring, massage and beauty in Navan, Co. Meath. Rated 4.9 by over 800 Google reviewers.", "home", body, show_intro=True)
+    return page(rel, "Balance Clinic Spa Beauty · Aesthetic Clinic & Holistic Spa, Navan", "Aesthetic clinic and holistic spa in Navan, Co. Meath. Medical-grade technology for face and body, with massage and spa care for everyday stress. Rated 4.9 by over 800 Google reviewers.", "home", body, show_intro=True)
 
 def treatments_index():
     rel = "../"
