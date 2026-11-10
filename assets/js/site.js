@@ -547,7 +547,7 @@
       document.querySelectorAll('[data-basket-total]').forEach(function (el) { el.textContent = sum; });
       var empty = '<div class="bk-empty"><p>Your basket is empty.</p><a class="btn btn-ghost" href="' + priceHref() + '">See the price list</a></div>';
       document.querySelectorAll('[data-basket-list]').forEach(function (el) { el.innerHTML = items.length ? items.map(itemRow).join('') : empty; });
-      document.querySelectorAll('[data-basket-lines]').forEach(function (el) { el.innerHTML = items.map(function (it) { return '<div><span>' + esc(it.name) + (it.qty > 1 ? ' × ' + it.qty : '') + '</span><span>' + euro(it.price * it.qty) + '</span></div>'; }).join(''); });
+      document.querySelectorAll('[data-basket-lines]').forEach(function (el) { el.innerHTML = items.map(function (it) { return '<div><span>' + esc(it.name) + (it.section === 'Laser hair removal' && it.detail ? ', ' + esc(it.detail) : '') + (it.qty > 1 ? ' × ' + it.qty : '') + '</span><span>' + euro(it.price * it.qty) + '</span></div>'; }).join(''); });
       document.querySelectorAll('[data-basket-go], [data-checkout]').forEach(function (el) { el.classList.toggle('off', !items.length); if (el.tagName === 'BUTTON') el.disabled = !items.length; });
       var text = items.map(function (it) { return it.qty + ' × ' + it.name + (meta(it) ? ' (' + meta(it) + ')' : '') + ' – ' + euro(it.price * it.qty); }).join('\n');
       document.querySelectorAll('[data-basket-field]').forEach(function (el) { el.value = items.length ? text + '\nTotal: ' + sum : ''; });
@@ -607,11 +607,61 @@
         if (e.target.closest('[data-remove]')) { items = items.filter(function (x) { return x !== cur; }); save(); }
         return;
       }
-      if (e.target.closest('[data-checkout]')) { var m = document.querySelector('[data-checkout-msg]'); if (m) { m.hidden = false; scrollToEl(m, -140); } }
+      if (e.target.closest('[data-checkout]')) pay(e.target.closest('[data-checkout]'));
     });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
     window.addEventListener('storage', function (e) { if (e.key === KEY) { items = read(); render(); } });
     render();
+    /* ----- payment: hand the basket to the server, which prices it and returns Stripe's secure page ----- */
+    var paying = false;
+    function fallback() { var m = document.querySelector('[data-checkout-msg]'); if (m) { m.hidden = false; scrollToEl(m, -140); } }
+    function payError(msg) { var el = document.querySelector('[data-checkout-err]'); if (el) { el.textContent = msg; el.hidden = !msg; } }
+    function pay(btn) {
+      if (paying || !items.length) return;
+      var lab = btn.querySelector('[data-checkout-label]'), was = lab ? lab.textContent : '';
+      paying = true; btn.classList.add('busy'); if (lab) lab.textContent = 'Opening secure payment…'; payError('');
+      function done() { paying = false; btn.classList.remove('busy'); if (lab) lab.textContent = was; }
+      fetch(apiUrl('checkout'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: items.map(function (it) { return { id: it.id, qty: it.qty }; }) }) })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, d: r.status === 404 || r.status === 405 ? { error: 'not_connected' } : d }; }); })
+        .then(function (r) {
+          if (r.ok && r.d.url) { location.href = r.d.url; return; }      /* stay "busy" while the payment page loads */
+          done();
+          if (r.d.error === 'unavailable' && r.d.ids) {
+            var gone = items.filter(function (it) { return r.d.ids.indexOf(it.id) > -1; });
+            items = items.filter(function (it) { return r.d.ids.indexOf(it.id) < 0; }); save();
+            payError(gone.map(function (it) { return it.name; }).join(', ') + (gone.length === 1 ? ' is' : ' are') + ' no longer available to buy online and ' + (gone.length === 1 ? 'has' : 'have') + ' been removed. Please check your basket and try again.');
+          } else if (r.d.error === 'not_connected') fallback();
+          else { payError('Sorry, we could not open the payment page. Please try again, or send your basket as a booking request.'); fallback(); }
+        })
+        .catch(function () { done(); fallback(); });
+    }
+    function apiUrl(name) { var a = document.querySelector('.site-head .brand'); return new URL('api/' + name, a ? a.href.replace(/index\.html$/, '') : location.origin + '/').href; }
+    if (/[?&]cancelled=1/.test(location.search) && document.querySelector('[data-checkout]')) {
+      setTimeout(function () { toast('Payment cancelled. Your basket is saved.'); }, 900);
+      try { history.replaceState(history.state, '', location.pathname); } catch (e) {}
+    }
+
+    /* ----- thank-you page: confirm the payment with the server, then empty the basket ----- */
+    (function thanks() {
+      var box = document.querySelector('[data-order]'); if (!box) return;
+      var q = function (sel) { return box.querySelector(sel); };
+      function show(ok) { q('[data-order-wait]').hidden = true; q('[data-order-ok]').hidden = !ok; q('[data-order-no-pay]').hidden = ok; if (hasST) ScrollTrigger.refresh(); }
+      var sid = (location.search.match(/[?&]session_id=(cs_[A-Za-z0-9_]+)/) || [])[1];
+      if (!sid) return show(false);
+      var tries = 0;
+      (function check() {
+        fetch(apiUrl('checkout') + '?session_id=' + encodeURIComponent(sid)).then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (d) {
+          if (!d.paid) { if (++tries < 4) return setTimeout(check, 1500); return show(false); }   /* some banks confirm a moment later */
+          q('[data-order-no]').textContent = d.order || '';
+          q('[data-order-name]').textContent = d.name ? ', ' + d.name.split(' ')[0] : '';
+          q('[data-order-email]').textContent = d.email ? ' to ' + d.email : '';
+          q('[data-order-lines]').innerHTML = (d.items || []).map(function (it) { return '<div><span>' + esc(it.name) + (it.qty > 1 ? ' × ' + it.qty : '') + '</span><span>' + euro(it.amount / 100) + '</span></div>'; }).join('');
+          q('[data-order-total]').textContent = euro(d.total / 100);
+          items = []; save(); show(true);
+        }).catch(function () { show(false); });
+      })();
+    })();
+
     return { mark: mark, close: close };
   })();
 

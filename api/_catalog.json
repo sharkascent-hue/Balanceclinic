@@ -1,0 +1,1282 @@
+{
+"beauty-eyebrows-eye-combo": {
+"d": "Beauty",
+"n": "Eyebrows: Eye combo",
+"p": 3500
+},
+"beauty-eyebrows-eyebrow-tint": {
+"d": "Beauty",
+"n": "Eyebrows: Eyebrow tint",
+"p": 1000
+},
+"beauty-eyebrows-eyebrow-wax-trim": {
+"d": "Beauty",
+"n": "Eyebrows: Eyebrow wax / trim",
+"p": 1500
+},
+"beauty-lashes-lash-lift": {
+"d": "Beauty",
+"n": "Lashes: Lash lift",
+"p": 4500
+},
+"beauty-lashes-lash-tint": {
+"d": "Beauty",
+"n": "Lashes: Lash tint",
+"p": 1500
+},
+"beauty-manicure-french-manicure": {
+"d": "Beauty",
+"n": "French manicure",
+"p": 3000
+},
+"beauty-manicure-luxury-manicure-polish": {
+"d": "Beauty",
+"n": "Luxury manicure + polish",
+"p": 4500
+},
+"beauty-manicure-mini-manicure": {
+"d": "Beauty",
+"n": "Mini manicure",
+"p": 3000
+},
+"beauty-manicure-mini-manicure-with-french-polish": {
+"d": "Beauty",
+"n": "Mini manicure with French polish",
+"p": 2500
+},
+"beauty-pedicure-margaret-dabbs-manicure-pedicure": {
+"d": "Beauty",
+"n": "Margaret Dabbs manicure + pedicure",
+"p": 7900
+},
+"beauty-pedicure-margaret-dabbs-pedicure-30-min": {
+"d": "Beauty",
+"n": "Margaret Dabbs pedicure (30 min)",
+"p": 3000
+},
+"beauty-pedicure-margaret-dabbs-pedicure-45-min": {
+"d": "Beauty",
+"n": "Margaret Dabbs pedicure (45 min)",
+"p": 4500
+},
+"beauty-pedicure-shellac-feet": {
+"d": "Beauty",
+"n": "Pedicure: Shellac feet",
+"p": 2800
+},
+"body-contouring-venus-legacy-arms-course-of-10-445": {
+"d": "Body contouring · Course of 10: €445",
+"n": "Venus Legacy: Arms",
+"p": 8900
+},
+"body-contouring-venus-legacy-back-fat-course-of-10-550": {
+"d": "Body contouring · Course of 10: €550",
+"n": "Venus Legacy: Back fat",
+"p": 11000
+},
+"body-contouring-venus-legacy-brazilian-bum-lift-course-of-10-465": {
+"d": "Body contouring · Course of 10: €465",
+"n": "Venus Legacy: Brazilian bum lift",
+"p": 9300
+},
+"body-contouring-venus-legacy-face-course-of-6-2-free-690": {
+"d": "Body contouring · Course of 6 + 2 free: €690",
+"n": "Venus Legacy: Face",
+"p": 11500
+},
+"body-contouring-venus-legacy-hands-course-of-10-445": {
+"d": "Body contouring · Course of 10: €445",
+"n": "Venus Legacy: Hands",
+"p": 8900
+},
+"body-contouring-venus-legacy-knees-lower-legs-course-of-10-550": {
+"d": "Body contouring · Course of 10: €550",
+"n": "Venus Legacy: Knees + lower legs",
+"p": 11000
+},
+"body-contouring-venus-legacy-neck-jowls-course-of-6-2-free-534": {
+"d": "Body contouring · Course of 6 + 2 free: €534",
+"n": "Venus Legacy: Neck + jowls",
+"p": 8900
+},
+"body-contouring-venus-legacy-stomach-back-love-handles-course-of-10-665": {
+"d": "Body contouring · Course of 10: €665",
+"n": "Venus Legacy: Stomach back / love handles",
+"p": 13300
+},
+"body-contouring-venus-legacy-stomach-front-flanks-course-of-10-665": {
+"d": "Body contouring · Course of 10: €665",
+"n": "Venus Legacy: Stomach front / flanks",
+"p": 13300
+},
+"body-contouring-venus-legacy-thigh-course-of-10-550": {
+"d": "Body contouring · Course of 10: €550",
+"n": "Venus Legacy: Thigh",
+"p": 11000
+},
+"body-contouring-venus-legacy-thighs-course-of-10-1-100": {
+"d": "Body contouring · Course of 10: €1,100",
+"n": "Venus Legacy: Thighs",
+"p": 22000
+},
+"gift-voucher-100": {
+"d": "Balance Clinic gift voucher",
+"n": "Gift voucher €100",
+"p": 10000
+},
+"gift-voucher-150": {
+"d": "Balance Clinic gift voucher",
+"n": "Gift voucher €150",
+"p": 15000
+},
+"gift-voucher-200": {
+"d": "Balance Clinic gift voucher",
+"n": "Gift voucher €200",
+"p": 20000
+},
+"gift-voucher-25": {
+"d": "Balance Clinic gift voucher",
+"n": "Gift voucher €25",
+"p": 2500
+},
+"gift-voucher-50": {
+"d": "Balance Clinic gift voucher",
+"n": "Gift voucher €50",
+"p": 5000
+},
+"gift-voucher-75": {
+"d": "Balance Clinic gift voucher",
+"n": "Gift voucher €75",
+"p": 7500
+},
+"laser-bikini-women-any-bikini-1-session": {
+"d": "Laser hair removal · Bikini",
+"n": "Laser: Any bikini (women, 1 session)",
+"p": 7395
+},
+"laser-bikini-women-any-bikini-10-sessions": {
+"d": "Laser hair removal · Bikini",
+"n": "Laser: Any bikini (women, 10 sessions)",
+"p": 37500
+},
+"laser-bikini-women-any-bikini-3-sessions": {
+"d": "Laser hair removal · Bikini",
+"n": "Laser: Any bikini (women, 3 sessions)",
+"p": 17500
+},
+"laser-bikini-women-any-bikini-6-sessions": {
+"d": "Laser hair removal · Bikini",
+"n": "Laser: Any bikini (women, 6 sessions)",
+"p": 29000
+},
+"laser-bikini-women-any-bikini-underarms-1-session": {
+"d": "Laser hair removal · Bikini",
+"n": "Laser: Any bikini & underarms (women, 1 session)",
+"p": 7395
+},
+"laser-bikini-women-any-bikini-underarms-10-sessions": {
+"d": "Laser hair removal · Bikini",
+"n": "Laser: Any bikini & underarms (women, 10 sessions)",
+"p": 37500
+},
+"laser-bikini-women-any-bikini-underarms-3-sessions": {
+"d": "Laser hair removal · Bikini",
+"n": "Laser: Any bikini & underarms (women, 3 sessions)",
+"p": 17500
+},
+"laser-bikini-women-any-bikini-underarms-6-sessions": {
+"d": "Laser hair removal · Bikini",
+"n": "Laser: Any bikini & underarms (women, 6 sessions)",
+"p": 29000
+},
+"laser-bikini-women-navel-to-pubic-line-1-session": {
+"d": "Laser hair removal · Bikini",
+"n": "Laser: Navel to pubic line (women, 1 session)",
+"p": 3895
+},
+"laser-bikini-women-navel-to-pubic-line-10-sessions": {
+"d": "Laser hair removal · Bikini",
+"n": "Laser: Navel to pubic line (women, 10 sessions)",
+"p": 16800
+},
+"laser-bikini-women-navel-to-pubic-line-3-sessions": {
+"d": "Laser hair removal · Bikini",
+"n": "Laser: Navel to pubic line (women, 3 sessions)",
+"p": 8595
+},
+"laser-bikini-women-navel-to-pubic-line-6-sessions": {
+"d": "Laser hair removal · Bikini",
+"n": "Laser: Navel to pubic line (women, 6 sessions)",
+"p": 14900
+},
+"laser-face-men-centre-brow-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Centre brow (men, 1 session)",
+"p": 3100
+},
+"laser-face-men-centre-brow-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Centre brow (men, 10 sessions)",
+"p": 15500
+},
+"laser-face-men-centre-brow-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Centre brow (men, 3 sessions)",
+"p": 7600
+},
+"laser-face-men-centre-brow-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Centre brow (men, 6 sessions)",
+"p": 12500
+},
+"laser-face-men-ears-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Ears (men, 1 session)",
+"p": 3600
+},
+"laser-face-men-ears-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Ears (men, 10 sessions)",
+"p": 21600
+},
+"laser-face-men-ears-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Ears (men, 3 sessions)",
+"p": 9900
+},
+"laser-face-men-ears-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Ears (men, 6 sessions)",
+"p": 17800
+},
+"laser-face-men-front-or-back-of-neck-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Front or back of neck (men, 1 session)",
+"p": 5700
+},
+"laser-face-men-front-or-back-of-neck-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Front or back of neck (men, 10 sessions)",
+"p": 37500
+},
+"laser-face-men-front-or-back-of-neck-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Front or back of neck (men, 3 sessions)",
+"p": 15500
+},
+"laser-face-men-front-or-back-of-neck-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Front or back of neck (men, 6 sessions)",
+"p": 25500
+},
+"laser-face-men-full-beard-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full beard (men, 1 session)",
+"p": 7995
+},
+"laser-face-men-full-beard-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full beard (men, 10 sessions)",
+"p": 55000
+},
+"laser-face-men-full-beard-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full beard (men, 3 sessions)",
+"p": 21500
+},
+"laser-face-men-full-beard-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full beard (men, 6 sessions)",
+"p": 36500
+},
+"laser-face-men-full-beard-neck-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full beard & neck (men, 1 session)",
+"p": 8795
+},
+"laser-face-men-full-beard-neck-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full beard & neck (men, 10 sessions)",
+"p": 52900
+},
+"laser-face-men-full-beard-neck-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full beard & neck (men, 3 sessions)",
+"p": 23000
+},
+"laser-face-men-full-beard-neck-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full beard & neck (men, 6 sessions)",
+"p": 39900
+},
+"laser-face-men-nose-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Nose (men, 1 session)",
+"p": 5800
+},
+"laser-face-men-nose-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Nose (men, 10 sessions)",
+"p": 39500
+},
+"laser-face-men-nose-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Nose (men, 3 sessions)",
+"p": 16300
+},
+"laser-face-men-nose-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Nose (men, 6 sessions)",
+"p": 27400
+},
+"laser-face-women-centre-brows-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Centre brows (women, 1 session)",
+"p": 3895
+},
+"laser-face-women-centre-brows-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Centre brows (women, 10 sessions)",
+"p": 15500
+},
+"laser-face-women-centre-brows-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Centre brows (women, 3 sessions)",
+"p": 8595
+},
+"laser-face-women-centre-brows-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Centre brows (women, 6 sessions)",
+"p": 14900
+},
+"laser-face-women-chin-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Chin (women, 1 session)",
+"p": 4695
+},
+"laser-face-women-chin-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Chin (women, 10 sessions)",
+"p": 21900
+},
+"laser-face-women-chin-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Chin (women, 3 sessions)",
+"p": 11595
+},
+"laser-face-women-chin-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Chin (women, 6 sessions)",
+"p": 19900
+},
+"laser-face-women-front-of-neck-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Front of neck (women, 1 session)",
+"p": 5700
+},
+"laser-face-women-front-of-neck-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Front of neck (women, 10 sessions)",
+"p": 32950
+},
+"laser-face-women-front-of-neck-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Front of neck (women, 3 sessions)",
+"p": 10500
+},
+"laser-face-women-front-of-neck-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Front of neck (women, 6 sessions)",
+"p": 25900
+},
+"laser-face-women-full-face-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full face (women, 1 session)",
+"p": 8995
+},
+"laser-face-women-full-face-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full face (women, 10 sessions)",
+"p": 42500
+},
+"laser-face-women-full-face-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full face (women, 3 sessions)",
+"p": 26000
+},
+"laser-face-women-full-face-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full face (women, 6 sessions)",
+"p": 31900
+},
+"laser-face-women-full-face-front-of-neck-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full face & front of neck (women, 1 session)",
+"p": 11000
+},
+"laser-face-women-full-face-front-of-neck-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full face & front of neck (women, 10 sessions)",
+"p": 45500
+},
+"laser-face-women-full-face-front-of-neck-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full face & front of neck (women, 3 sessions)",
+"p": 28500
+},
+"laser-face-women-full-face-front-of-neck-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Full face & front of neck (women, 6 sessions)",
+"p": 36900
+},
+"laser-face-women-jawline-chin-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Jawline & chin (women, 1 session)",
+"p": 5595
+},
+"laser-face-women-jawline-chin-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Jawline & chin (women, 10 sessions)",
+"p": 31900
+},
+"laser-face-women-jawline-chin-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Jawline & chin (women, 3 sessions)",
+"p": 15500
+},
+"laser-face-women-jawline-chin-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Jawline & chin (women, 6 sessions)",
+"p": 25900
+},
+"laser-face-women-lip-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Lip (women, 1 session)",
+"p": 4695
+},
+"laser-face-women-lip-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Lip (women, 10 sessions)",
+"p": 21900
+},
+"laser-face-women-lip-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Lip (women, 3 sessions)",
+"p": 11595
+},
+"laser-face-women-lip-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Lip (women, 6 sessions)",
+"p": 19900
+},
+"laser-face-women-lip-chin-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Lip & chin (women, 1 session)",
+"p": 5700
+},
+"laser-face-women-lip-chin-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Lip & chin (women, 10 sessions)",
+"p": 32950
+},
+"laser-face-women-lip-chin-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Lip & chin (women, 3 sessions)",
+"p": 15500
+},
+"laser-face-women-lip-chin-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Lip & chin (women, 6 sessions)",
+"p": 25900
+},
+"laser-face-women-sides-of-face-1-session": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Sides of face (women, 1 session)",
+"p": 5700
+},
+"laser-face-women-sides-of-face-10-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Sides of face (women, 10 sessions)",
+"p": 32950
+},
+"laser-face-women-sides-of-face-3-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Sides of face (women, 3 sessions)",
+"p": 10500
+},
+"laser-face-women-sides-of-face-6-sessions": {
+"d": "Laser hair removal · Face",
+"n": "Laser: Sides of face (women, 6 sessions)",
+"p": 25900
+},
+"laser-full-body-men-full-body-1-session": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Full body (men, 1 session)",
+"p": 27600
+},
+"laser-full-body-men-full-body-10-sessions": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Full body (men, 10 sessions)",
+"p": 179500
+},
+"laser-full-body-men-full-body-3-sessions": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Full body (men, 3 sessions)",
+"p": 74900
+},
+"laser-full-body-men-full-body-6-sessions": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Full body (men, 6 sessions)",
+"p": 135000
+},
+"laser-full-body-women-full-body-full-face-1-session": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Full body & full face (women, 1 session)",
+"p": 24995
+},
+"laser-full-body-women-full-body-full-face-10-sessions": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Full body & full face (women, 10 sessions)",
+"p": 135000
+},
+"laser-full-body-women-full-body-full-face-3-sessions": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Full body & full face (women, 3 sessions)",
+"p": 57500
+},
+"laser-full-body-women-full-body-full-face-6-sessions": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Full body & full face (women, 6 sessions)",
+"p": 89500
+},
+"laser-full-body-women-full-legs-any-bikini-underarms-1-session": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Full legs, any bikini & underarms (women, 1 session)",
+"p": 14500
+},
+"laser-full-body-women-full-legs-any-bikini-underarms-10-sessions": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Full legs, any bikini & underarms (women, 10 sessions)",
+"p": 79950
+},
+"laser-full-body-women-full-legs-any-bikini-underarms-3-sessions": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Full legs, any bikini & underarms (women, 3 sessions)",
+"p": 29900
+},
+"laser-full-body-women-full-legs-any-bikini-underarms-6-sessions": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Full legs, any bikini & underarms (women, 6 sessions)",
+"p": 55000
+},
+"laser-full-body-women-lower-legs-any-bikini-underarms-1-session": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Lower legs, any bikini & underarms (women, 1 session)",
+"p": 12000
+},
+"laser-full-body-women-lower-legs-any-bikini-underarms-10-sessions": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Lower legs, any bikini & underarms (women, 10 sessions)",
+"p": 74950
+},
+"laser-full-body-women-lower-legs-any-bikini-underarms-3-sessions": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Lower legs, any bikini & underarms (women, 3 sessions)",
+"p": 26900
+},
+"laser-full-body-women-lower-legs-any-bikini-underarms-6-sessions": {
+"d": "Laser hair removal · Full Body",
+"n": "Laser: Lower legs, any bikini & underarms (women, 6 sessions)",
+"p": 47800
+},
+"laser-lower-body-men-full-legs-1-session": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Full legs (men, 1 session)",
+"p": 13300
+},
+"laser-lower-body-men-full-legs-10-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Full legs (men, 10 sessions)",
+"p": 92800
+},
+"laser-lower-body-men-full-legs-3-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Full legs (men, 3 sessions)",
+"p": 36500
+},
+"laser-lower-body-men-full-legs-6-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Full legs (men, 6 sessions)",
+"p": 63500
+},
+"laser-lower-body-men-lower-legs-1-session": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Lower legs (men, 1 session)",
+"p": 12500
+},
+"laser-lower-body-men-lower-legs-10-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Lower legs (men, 10 sessions)",
+"p": 89895
+},
+"laser-lower-body-men-lower-legs-3-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Lower legs (men, 3 sessions)",
+"p": 34800
+},
+"laser-lower-body-men-lower-legs-6-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Lower legs (men, 6 sessions)",
+"p": 59995
+},
+"laser-lower-body-women-buttocks-1-session": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Buttocks (women, 1 session)",
+"p": 7995
+},
+"laser-lower-body-women-buttocks-10-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Buttocks (women, 10 sessions)",
+"p": 58000
+},
+"laser-lower-body-women-buttocks-3-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Buttocks (women, 3 sessions)",
+"p": 22900
+},
+"laser-lower-body-women-buttocks-6-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Buttocks (women, 6 sessions)",
+"p": 36900
+},
+"laser-lower-body-women-full-legs-1-session": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Full legs (women, 1 session)",
+"p": 12995
+},
+"laser-lower-body-women-full-legs-10-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Full legs (women, 10 sessions)",
+"p": 69950
+},
+"laser-lower-body-women-full-legs-3-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Full legs (women, 3 sessions)",
+"p": 26995
+},
+"laser-lower-body-women-full-legs-6-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Full legs (women, 6 sessions)",
+"p": 52900
+},
+"laser-lower-body-women-lower-legs-1-session": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Lower legs (women, 1 session)",
+"p": 6895
+},
+"laser-lower-body-women-lower-legs-10-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Lower legs (women, 10 sessions)",
+"p": 48800
+},
+"laser-lower-body-women-lower-legs-3-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Lower legs (women, 3 sessions)",
+"p": 18500
+},
+"laser-lower-body-women-lower-legs-6-sessions": {
+"d": "Laser hair removal · Lower Body",
+"n": "Laser: Lower legs (women, 6 sessions)",
+"p": 32800
+},
+"laser-upper-body-men-chest-or-stomach-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Chest or stomach (men, 1 session)",
+"p": 6495
+},
+"laser-upper-body-men-chest-or-stomach-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Chest or stomach (men, 10 sessions)",
+"p": 49500
+},
+"laser-upper-body-men-chest-or-stomach-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Chest or stomach (men, 3 sessions)",
+"p": 17985
+},
+"laser-upper-body-men-chest-or-stomach-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Chest or stomach (men, 6 sessions)",
+"p": 29970
+},
+"laser-upper-body-men-chest-stomach-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Chest & stomach (men, 1 session)",
+"p": 7300
+},
+"laser-upper-body-men-chest-stomach-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Chest & stomach (men, 10 sessions)",
+"p": 49900
+},
+"laser-upper-body-men-chest-stomach-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Chest & stomach (men, 3 sessions)",
+"p": 20700
+},
+"laser-upper-body-men-chest-stomach-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Chest & stomach (men, 6 sessions)",
+"p": 34900
+},
+"laser-upper-body-men-forearms-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Forearms (men, 1 session)",
+"p": 8995
+},
+"laser-upper-body-men-forearms-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Forearms (men, 10 sessions)",
+"p": 44975
+},
+"laser-upper-body-men-forearms-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Forearms (men, 3 sessions)",
+"p": 28000
+},
+"laser-upper-body-men-forearms-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Forearms (men, 6 sessions)",
+"p": 37000
+},
+"laser-upper-body-men-full-arms-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full arms (men, 1 session)",
+"p": 10800
+},
+"laser-upper-body-men-full-arms-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full arms (men, 10 sessions)",
+"p": 52500
+},
+"laser-upper-body-men-full-arms-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full arms (men, 3 sessions)",
+"p": 27800
+},
+"laser-upper-body-men-full-arms-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full arms (men, 6 sessions)",
+"p": 39900
+},
+"laser-upper-body-men-full-back-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full back (men, 1 session)",
+"p": 8800
+},
+"laser-upper-body-men-full-back-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full back (men, 10 sessions)",
+"p": 64000
+},
+"laser-upper-body-men-full-back-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full back (men, 3 sessions)",
+"p": 23000
+},
+"laser-upper-body-men-full-back-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full back (men, 6 sessions)",
+"p": 40500
+},
+"laser-upper-body-men-full-back-shoulders-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full back & shoulders (men, 1 session)",
+"p": 9995
+},
+"laser-upper-body-men-full-back-shoulders-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full back & shoulders (men, 10 sessions)",
+"p": 69995
+},
+"laser-upper-body-men-full-back-shoulders-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full back & shoulders (men, 3 sessions)",
+"p": 26800
+},
+"laser-upper-body-men-full-back-shoulders-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full back & shoulders (men, 6 sessions)",
+"p": 47800
+},
+"laser-upper-body-men-lower-back-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Lower back (men, 1 session)",
+"p": 6500
+},
+"laser-upper-body-men-lower-back-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Lower back (men, 10 sessions)",
+"p": 36500
+},
+"laser-upper-body-men-lower-back-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Lower back (men, 3 sessions)",
+"p": 16800
+},
+"laser-upper-body-men-lower-back-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Lower back (men, 6 sessions)",
+"p": 24500
+},
+"laser-upper-body-men-shoulders-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Shoulders (men, 1 session)",
+"p": 6995
+},
+"laser-upper-body-men-shoulders-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Shoulders (men, 10 sessions)",
+"p": 49950
+},
+"laser-upper-body-men-shoulders-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Shoulders (men, 3 sessions)",
+"p": 19500
+},
+"laser-upper-body-men-shoulders-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Shoulders (men, 6 sessions)",
+"p": 33000
+},
+"laser-upper-body-men-underarms-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Underarms (men, 1 session)",
+"p": 5800
+},
+"laser-upper-body-men-underarms-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Underarms (men, 10 sessions)",
+"p": 27500
+},
+"laser-upper-body-men-underarms-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Underarms (men, 3 sessions)",
+"p": 11600
+},
+"laser-upper-body-men-underarms-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Underarms (men, 6 sessions)",
+"p": 20800
+},
+"laser-upper-body-women-forearms-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Forearms (women, 1 session)",
+"p": 6895
+},
+"laser-upper-body-women-forearms-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Forearms (women, 10 sessions)",
+"p": 48500
+},
+"laser-upper-body-women-forearms-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Forearms (women, 3 sessions)",
+"p": 18500
+},
+"laser-upper-body-women-forearms-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Forearms (women, 6 sessions)",
+"p": 32500
+},
+"laser-upper-body-women-full-arms-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full arms (women, 1 session)",
+"p": 9995
+},
+"laser-upper-body-women-full-arms-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full arms (women, 10 sessions)",
+"p": 58000
+},
+"laser-upper-body-women-full-arms-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full arms (women, 3 sessions)",
+"p": 27500
+},
+"laser-upper-body-women-full-arms-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Full arms (women, 6 sessions)",
+"p": 42000
+},
+"laser-upper-body-women-lower-back-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Lower back (women, 1 session)",
+"p": 6895
+},
+"laser-upper-body-women-lower-back-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Lower back (women, 10 sessions)",
+"p": 48500
+},
+"laser-upper-body-women-lower-back-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Lower back (women, 3 sessions)",
+"p": 18500
+},
+"laser-upper-body-women-lower-back-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Lower back (women, 6 sessions)",
+"p": 32800
+},
+"laser-upper-body-women-nipples-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Nipples (women, 1 session)",
+"p": 4895
+},
+"laser-upper-body-women-nipples-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Nipples (women, 10 sessions)",
+"p": 21000
+},
+"laser-upper-body-women-nipples-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Nipples (women, 3 sessions)",
+"p": 11800
+},
+"laser-upper-body-women-nipples-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Nipples (women, 6 sessions)",
+"p": 15900
+},
+"laser-upper-body-women-stomach-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Stomach (women, 1 session)",
+"p": 9995
+},
+"laser-upper-body-women-stomach-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Stomach (women, 10 sessions)",
+"p": 55900
+},
+"laser-upper-body-women-stomach-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Stomach (women, 3 sessions)",
+"p": 24000
+},
+"laser-upper-body-women-stomach-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Stomach (women, 6 sessions)",
+"p": 39000
+},
+"laser-upper-body-women-underarms-1-session": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Underarms (women, 1 session)",
+"p": 4895
+},
+"laser-upper-body-women-underarms-10-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Underarms (women, 10 sessions)",
+"p": 21000
+},
+"laser-upper-body-women-underarms-3-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Underarms (women, 3 sessions)",
+"p": 11800
+},
+"laser-upper-body-women-underarms-6-sessions": {
+"d": "Laser hair removal · Upper Body",
+"n": "Laser: Underarms (women, 6 sessions)",
+"p": 15900
+},
+"skin-face-alumier-md-peels-facials-advanced-peel": {
+"d": "Skin & face",
+"n": "Alumier MD peels & facials: Advanced Peel",
+"p": 13500
+},
+"skin-face-alumier-md-peels-facials-crystal-clear-complexion": {
+"d": "Skin & face",
+"n": "Alumier MD peels & facials: Crystal Clear Complexion",
+"p": 8500
+},
+"skin-face-alumier-md-peels-facials-d-colletage-peel": {
+"d": "Skin & face",
+"n": "Alumier MD peels & facials: Décolletage Peel",
+"p": 11500
+},
+"skin-face-alumier-md-peels-facials-deep-moisturising-treatment": {
+"d": "Skin & face",
+"n": "Alumier MD peels & facials: Deep Moisturising Treatment",
+"p": 11500
+},
+"skin-face-alumier-md-peels-facials-detox-clear": {
+"d": "Skin & face",
+"n": "Alumier MD peels & facials: Detox Clear",
+"p": 11500
+},
+"skin-face-alumier-md-peels-facials-enzyme-treatment": {
+"d": "Skin & face",
+"n": "Alumier MD peels & facials: Enzyme Treatment",
+"p": 11500
+},
+"skin-face-alumier-md-peels-facials-express-luxury-facial": {
+"d": "Skin & face",
+"n": "Alumier MD peels & facials: Express Luxury Facial",
+"p": 5000
+},
+"skin-face-alumier-md-peels-facials-glow-peel": {
+"d": "Skin & face",
+"n": "Alumier MD peels & facials: Glow Peel",
+"p": 11500
+},
+"skin-face-alumier-md-peels-facials-luxury-facial": {
+"d": "Skin & face",
+"n": "Alumier MD peels & facials: Luxury Facial",
+"p": 17500
+},
+"skin-face-alumier-md-peels-facials-radiant-20-10": {
+"d": "Skin & face",
+"n": "Alumier MD peels & facials: Radiant 20/10",
+"p": 11500
+},
+"skin-face-alumier-md-peels-facials-radiant-30": {
+"d": "Skin & face",
+"n": "Alumier MD peels & facials: Radiant 30",
+"p": 11500
+},
+"skin-face-alumier-md-peels-facials-refining-clay-treatment": {
+"d": "Skin & face",
+"n": "Alumier MD peels & facials: Refining Clay Treatment",
+"p": 11500
+},
+"skin-face-alumier-md-peels-facials-vitamin-a-boost": {
+"d": "Skin & face",
+"n": "Alumier MD peels & facials: Vitamin A Boost",
+"p": 2000
+},
+"skin-face-caci-caci-eye": {
+"d": "Skin & face",
+"n": "CACI Eye",
+"p": 6500
+},
+"skin-face-caci-caci-healing-booster": {
+"d": "Skin & face",
+"n": "CACI Healing Booster",
+"p": 11900
+},
+"skin-face-caci-caci-neck-jowl-lift": {
+"d": "Skin & face",
+"n": "CACI Neck + Jowl Lift",
+"p": 6900
+},
+"skin-face-caci-caci-ultimate-anti-ageing": {
+"d": "Skin & face",
+"n": "CACI Ultimate Anti-Ageing",
+"p": 13500
+},
+"skin-face-dermalogica-facials-active-clearing-treatment": {
+"d": "Skin & face",
+"n": "Dermalogica facials: Active Clearing Treatment",
+"p": 6500
+},
+"skin-face-dermalogica-facials-age-smart-treatment": {
+"d": "Skin & face",
+"n": "Dermalogica facials: Age Smart Treatment",
+"p": 7000
+},
+"skin-face-dermalogica-facials-balance-custom-facial-treatment": {
+"d": "Skin & face",
+"n": "Dermalogica facials: Balance Custom Facial Treatment",
+"p": 8000
+},
+"skin-face-dermalogica-facials-microzone-facial-mini-facial": {
+"d": "Skin & face · Mini facial",
+"n": "Dermalogica facials: MicroZone Facial",
+"p": 4000
+},
+"skin-face-dermalogica-facials-prescriptive-facial": {
+"d": "Skin & face",
+"n": "Dermalogica facials: Prescriptive Facial",
+"p": 6500
+},
+"skin-face-dermalogica-facials-pro-power-peel-30": {
+"d": "Skin & face",
+"n": "Dermalogica facials: Pro Power Peel 30",
+"p": 7500
+},
+"skin-face-dermalogica-facials-pro-power-peel-60": {
+"d": "Skin & face",
+"n": "Dermalogica facials: Pro Power Peel 60",
+"p": 9500
+},
+"skin-face-dermalogica-facials-the-balance-express-facial-treatment": {
+"d": "Skin & face",
+"n": "Dermalogica facials: The Balance Express Facial Treatment",
+"p": 4000
+},
+"skin-face-dermalogica-facials-ultracalming-treatment": {
+"d": "Skin & face",
+"n": "Dermalogica facials: UltraCalming Treatment",
+"p": 6500
+},
+"skin-face-lumenis-m22-ipl-face": {
+"d": "Skin & face",
+"n": "Lumenis M22 IPL: Face",
+"p": 25500
+},
+"skin-face-lumenis-m22-ipl-hands": {
+"d": "Skin & face",
+"n": "Lumenis M22 IPL: Hands",
+"p": 12000
+},
+"skin-face-lumenis-m22-ipl-leg-vein-removal-30-min": {
+"d": "Skin & face",
+"n": "Lumenis M22 IPL: Leg vein removal (30 min)",
+"p": 19500
+},
+"skin-face-lumenis-m22-ipl-leg-vein-removal-40-min": {
+"d": "Skin & face",
+"n": "Lumenis M22 IPL: Leg vein removal (40 min)",
+"p": 19500
+},
+"skin-face-lumenis-m22-ipl-leg-vein-removal-60-min": {
+"d": "Skin & face",
+"n": "Lumenis M22 IPL: Leg vein removal (60 min)",
+"p": 20000
+},
+"skin-face-lumenis-m22-ipl-neck": {
+"d": "Skin & face",
+"n": "Lumenis M22 IPL: Neck",
+"p": 17500
+},
+"skin-face-lumenis-m22-ipl-neck-d-colletage": {
+"d": "Skin & face",
+"n": "Lumenis M22 IPL: Neck & décolletage",
+"p": 29900
+},
+"skin-face-lumenis-m22-ipl-pigmentation": {
+"d": "Skin & face",
+"n": "Lumenis M22 IPL: Pigmentation",
+"p": 25500
+},
+"skin-face-lumenis-m22-ipl-thread-vein-removal": {
+"d": "Skin & face",
+"n": "Lumenis M22 IPL: Thread vein removal",
+"p": 25500
+},
+"skin-face-microneedling-biopen-microneedling": {
+"d": "Skin & face",
+"n": "BioPen Microneedling",
+"p": 13000
+},
+"skin-face-microneedling-idenel-liquid-needling": {
+"d": "Skin & face",
+"n": "Microneedling: Idenel Liquid Needling",
+"p": 23900
+},
+"skin-face-microneedling-microneedling": {
+"d": "Skin & face",
+"n": "Microneedling",
+"p": 16000
+},
+"waxing-bikini-bikini-wax-10-min": {
+"d": "Waxing",
+"n": "Bikini wax (10 min)",
+"p": 2000
+},
+"waxing-bikini-brazilian-25-min": {
+"d": "Waxing",
+"n": "Bikini: Brazilian (25 min)",
+"p": 5100
+},
+"waxing-bikini-california-extended-15-min": {
+"d": "Waxing",
+"n": "Bikini: California (extended) (15 min)",
+"p": 2900
+},
+"waxing-bikini-hollywood-40-min": {
+"d": "Waxing",
+"n": "Bikini: Hollywood (40 min)",
+"p": 6100
+},
+"waxing-body-3-4-leg-20-min": {
+"d": "Waxing",
+"n": "Body: 3/4 leg (20 min)",
+"p": 2600
+},
+"waxing-body-forearm-15-min": {
+"d": "Waxing",
+"n": "Body: Forearm (15 min)",
+"p": 2100
+},
+"waxing-body-full-arm-30-min": {
+"d": "Waxing",
+"n": "Body: Full arm (30 min)",
+"p": 3300
+},
+"waxing-body-full-leg-30-min": {
+"d": "Waxing",
+"n": "Body: Full leg (30 min)",
+"p": 3300
+},
+"waxing-body-half-leg-15-min": {
+"d": "Waxing",
+"n": "Body: Half leg (15 min)",
+"p": 2800
+},
+"waxing-body-underarm-10-min": {
+"d": "Waxing",
+"n": "Body: Underarm (10 min)",
+"p": 2000
+},
+"waxing-combos-brazilian-full-legs-underarms-free-45-min": {
+"d": "Waxing",
+"n": "Combos: Brazilian + full legs, underarms free (45 min)",
+"p": 7100
+},
+"waxing-combos-lip-chin-10-min": {
+"d": "Waxing",
+"n": "Combos: Lip + chin (10 min)",
+"p": 2100
+},
+"waxing-face-chin-10-min": {
+"d": "Waxing",
+"n": "Face: Chin (10 min)",
+"p": 1300
+},
+"waxing-face-eyebrow-10-min": {
+"d": "Waxing",
+"n": "Face: Eyebrow (10 min)",
+"p": 1500
+},
+"waxing-face-lip-10-min": {
+"d": "Waxing",
+"n": "Face: Lip (10 min)",
+"p": 1300
+},
+"waxing-face-nose-10-min": {
+"d": "Waxing",
+"n": "Face: Nose (10 min)",
+"p": 1300
+},
+"waxing-male-full-back-incl-neck-30-min": {
+"d": "Waxing",
+"n": "Male: Full back incl. neck (30 min)",
+"p": 4000
+},
+"waxing-male-full-chest-30-min": {
+"d": "Waxing",
+"n": "Male: Full chest (30 min)",
+"p": 5000
+},
+"waxing-male-male-waxing-40-min": {
+"d": "Waxing",
+"n": "Male waxing (40 min)",
+"p": 7000
+},
+"waxing-male-upper-back-shoulders-30-min": {
+"d": "Waxing",
+"n": "Male: Upper back + shoulders (30 min)",
+"p": 2500
+}
+}

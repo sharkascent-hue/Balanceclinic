@@ -369,7 +369,7 @@ def footer(rel):
       <li><a href="{rel}shop/gift-vouchers.html">Gift vouchers</a></li><li><a href="{rel}book/index.html">Book a treatment</a></li><li><a href="{rel}book/online-consultation.html">Online consultation</a></li>
       <li><a href="{rel}contact.html">Contact</a></li><li><a href="{rel}blog/index.html">Blog</a></li></ul></div>
   </div>
-  <div class="bottom"><span>© <span id="yr">2026</span> Balance Clinic · Spa · Beauty</span><span><a href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">4.9 ★ on Google</a></span></div>
+  <div class="bottom"><span>© <span id="yr">2026</span> Balance Clinic · Spa · Beauty</span><span class="legal"><a href="{rel}terms.html">Terms &amp; refunds</a><a href="{rel}privacy.html">Privacy</a><a href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">4.9 ★ on Google</a></span></div>
   <div class="giant" aria-hidden="true">Balance</div>
 </footer>
 <a class="fab" id="fab" href="{rel}book/index.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</a>
@@ -687,11 +687,13 @@ def shop():
 
 def gift_vouchers():
     rel = "../"
+    vopts = "".join(f'<button class="vopt" type="button" data-item="gift-voucher-{v}" data-name="Gift voucher €{v}" data-group="" data-section="Gift vouchers" data-detail="" data-price="{v}" aria-pressed="false" aria-label="Add a €{v} gift voucher to basket"><b>€{v}</b></button>' for v in VOUCHERS)
     body = phero(rel, [("Home", "index.html"), ("Shop", "shop/index.html")], "Gift <em>vouchers.</em>", "The present that is never the wrong size. Choose an amount or a specific treatment and we will do the rest.", word="Gift")
     body += f'''<section class="sec"><div class="split">
   <div><p class="eyebrow">How it works</p><h2 data-split>Give someone an hour that is only theirs.</h2><p class="lead" data-reveal>Vouchers can be for any value or any treatment on the menu, from a massage to a course of laser. We post them in a gift wallet or email them within the hour.</p>
-    <div class="steps" data-reveal><div><div><b>Choose</b>An amount, or a treatment from the price list.</div></div><div><div><b>Order</b>Call {PHONE}, drop into the clinic or order online.</div></div><div><div><b>Deliver</b>Posted, emailed or collected, ready to give.</div></div></div>
-    <div class="ctas" data-reveal><a class="btn btn-lime" href="https://balanceclinic.ie/" target="_blank" rel="noopener">Order online {ARROW}</a><a class="btn btn-ghost" href="{rel}contact.html">Ask us</a></div></div>
+    <div class="steps" data-reveal><div><div><b>Choose</b>An amount below, or a treatment from the price list.</div></div><div><div><b>Order</b>Add it to your basket and pay online, call {PHONE} or drop into the clinic.</div></div><div><div><b>Deliver</b>Posted, emailed or collected, ready to give.</div></div></div>
+    <div class="vbuy" data-reveal><p class="eyebrow">Choose an amount</p><div class="vopts">{vopts}</div><p class="gnote">Valid for five years and good for any treatment. Tell us who it is for at checkout.</p></div>
+    <div class="ctas" data-reveal><button class="btn btn-lime" type="button" data-basket-open>View basket {ARROW}</button><a class="btn btn-ghost" href="{rel}contact.html">Ask us</a></div></div>
   <div class="shop-grid" style="grid-template-columns:1fr;max-width:420px">
     <div class="voucher" data-reveal><div><b>Any amount</b><p>From a treat to a full course.</p></div></div>
     <div class="voucher alt" data-reveal><div><b>A treatment</b><p>Massage, facial, laser, lashes. You name it.</p></div></div>
@@ -732,14 +734,82 @@ def basket_page():
       <h3>Summary</h3>
       <div class="bk-lines" data-basket-lines></div>
       <div class="bk-total"><span>Total</span><b data-basket-total>€0</b></div>
-      <p class="bk-note">Prices are confirmed at your appointment. Courses and packages can be adjusted in clinic.</p>
-      <button class="btn btn-lime" type="button" data-checkout>Continue to payment {ARROW}</button>
+      <p class="bk-note">After your order we call you to arrange your appointment. Laser courses start with a patch test.</p>
+      <button class="btn btn-lime" type="button" data-checkout><span data-checkout-label>Continue to payment</span> {ARROW}</button>
+      <p class="bk-secure"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Secure payment by card, Apple Pay or Google Pay</p>
+      <p class="bk-err" data-checkout-err role="alert" hidden></p>
       <div class="bk-pay" data-checkout-msg hidden><p>Online payment is being set up. For now, send your basket as a booking request and we will confirm your times and take payment at the clinic.</p><a class="btn btn-moss" href="{rel}book/index.html">Send as booking request {ARROW}</a></div>
+      <p class="bk-terms">By paying you agree to our <a href="{rel}terms.html">terms and refund policy</a>.</p>
       <a class="bk-more" href="{rel}price-list.html">Add more treatments</a>
     </aside>
   </div>
 </section>'''
     return page(rel, "Basket · Balance Clinic", "Your basket at Balance Clinic Spa Beauty, Navan.", "basket", body)
+
+def thank_you():
+    rel = ""
+    body = phero(rel, [("Home", "index.html")], "Thank <em>you.</em>", "Your order is in. Here is what happens next.", word="Thanks")
+    body += f'''<section class="sec bkpage-sec">
+  <div class="ty" data-order>
+    <div class="ty-wait" data-order-wait><span class="spin" aria-hidden="true"></span><p>Confirming your payment…</p></div>
+    <div class="ty-ok" data-order-ok hidden>
+      <p class="eyebrow">Order <span data-order-no></span></p>
+      <h2>Payment received.</h2>
+      <p class="lead">Thank you<span data-order-name></span>. A receipt is on its way<span data-order-email></span>.</p>
+      <div class="bk-card"><div class="bk-lines" data-order-lines></div><div class="bk-total"><span>Paid</span><b data-order-total></b></div></div>
+      <div class="steps"><div><div><b>We call you</b>Within one working day, to arrange a time that suits.</div></div><div><div><b>Consultation</b>Your therapist checks the treatment is right for you. Laser starts with a patch test.</div></div><div><div><b>Your treatment</b>Arrive a few minutes early and we will look after the rest.</div></div></div>
+      <div class="ctas"><a class="btn btn-moss" href="{rel}index.html">Back to home {ARROW}</a><a class="btn btn-ghost" href="{rel}contact.html">Contact us</a></div>
+    </div>
+    <div class="ty-no" data-order-no-pay hidden>
+      <h2>We could not confirm a payment.</h2>
+      <p class="lead">Nothing has been taken twice. If you completed a payment, your receipt email is your proof and we will be in touch. Otherwise your basket is still saved.</p>
+      <div class="ctas"><a class="btn btn-moss" href="{rel}basket.html">Back to basket {ARROW}</a><a class="btn btn-ghost" href="tel:+353469060333">Call {PHONE}</a></div>
+    </div>
+  </div>
+</section>'''
+    return page(rel, "Thank You · Balance Clinic", "Your order at Balance Clinic Spa Beauty, Navan.", "basket", body)
+
+def policy(rel, title_html, lead, word, eyebrow, blocks, page_title, desc):
+    body = phero(rel, [("Home", "index.html")], title_html, lead, word=word)
+    inner = "".join(f"<h2>{h}</h2>" + "".join(f"<p>{x}</p>" for x in ps) for h, ps in blocks)
+    body += f'<section class="article policy"><div class="inner"><p class="eyebrow">{eyebrow}</p>{inner}</div></section>'
+    return page(rel, page_title, desc, "policy", body)
+
+def terms():
+    rel = ""
+    blocks = [
+        ("Who you are buying from", [f"Balance Clinic Spa Beauty, {ADDRESS}. Phone {PHONE}. These terms cover treatments, courses and gift vouchers bought through this website."]),
+        ("Ordering and payment", ["Prices are in euro and include VAT where it applies. Payment is taken securely by Stripe when you place your order. We never see or store your card details.",
+                                  "Once you have paid you will receive a receipt by email, and we will phone you within one working day to arrange your appointment."]),
+        ("Consultation and suitability", ["Every treatment starts with a consultation, and laser hair removal starts with a patch test. If your therapist finds that a treatment is not suitable for you, we will offer an alternative or refund what you paid for it in full.",
+                                          "Some treatments, including injectables, cannot be bought online because they need a consultation first."]),
+        ("Changing or cancelling an appointment", ["Please give us at least 24 hours' notice if you need to move or cancel an appointment, so we can offer the time to someone else. Appointments missed without notice may be counted as taken."]),
+        ("Refunds", ["You can cancel an online order within 14 days of buying it and receive a full refund, as long as the treatment has not been carried out. If you have started a course, the sessions you have already had are charged at the single-session price and the balance is refunded.",
+                     "Refunds are made to the card you paid with, normally within 5 to 10 working days. To ask for one, call us or use the contact page and quote your order number."]),
+        ("Courses", ["Courses of 3, 6 or 10 sessions are for one person and one treatment area. Sessions are spaced as your therapist recommends, and a course should be used within 18 months of purchase."]),
+        ("Gift vouchers", ["Gift vouchers are valid for five years from the date of purchase and can be used against any treatment. They cannot be exchanged for cash. Please treat a voucher like cash: we cannot replace one that is lost."]),
+        ("Results", ["Everybody responds differently to treatment, so results vary from person to person and cannot be guaranteed. Your therapist will tell you honestly what to expect at your consultation."]),
+        ("Questions", [f"Call {PHONE} or send a message from the <a href=\"{rel}contact.html\">contact page</a>. Nothing in these terms affects your rights as a consumer under Irish and EU law."]),
+    ]
+    return policy(rel, "Terms &amp; <em>refunds.</em>", "How ordering, appointments, cancellations and refunds work when you buy online.", "Terms", "Terms of sale",
+                  blocks, "Terms & Refunds · Balance Clinic", "Terms of sale, cancellation and refund policy for Balance Clinic Spa Beauty, Navan.")
+
+def privacy():
+    rel = ""
+    blocks = [
+        ("Who is responsible for your data", [f"Balance Clinic Spa Beauty, {ADDRESS}, is the data controller for information collected through this website. Phone {PHONE}."]),
+        ("What we collect", ["When you send a booking request or message: your name, phone number, email address and what you tell us about the treatment you want.",
+                             "When you pay online: your name, email address, phone number, billing details and what you bought. Card details go directly to Stripe, our payment provider. We never see or store them.",
+                             "Your basket is saved in your own browser so it is still there when you come back. It is not sent to us until you order."]),
+        ("How we use it", ["To arrange and carry out your appointment, take payment, send your receipt, and answer your questions. We do not sell your information or use it for advertising."]),
+        ("Who else handles it", ["Stripe processes payments. Web3Forms delivers messages from our forms to the clinic. The site is hosted by Vercel, and fonts are loaded from Google Fonts. Each of these receives only what it needs to do that job."]),
+        ("Health information", ["Anything about your health that you share at a consultation is recorded in the clinic, kept confidential and used only to treat you safely. Please do not send medical details through the website forms."]),
+        ("How long we keep it", ["Payment records are kept for six years, as tax law requires. Messages and booking requests are kept only for as long as we need them to look after you."]),
+        ("Cookies", ["This site does not use advertising or tracking cookies. Stripe sets cookies on its own payment page to keep payments secure and prevent fraud."]),
+        ("Your rights", [f"You can ask to see, correct or delete the information we hold about you, or object to how we use it. Call {PHONE} or use the <a href=\"{rel}contact.html\">contact page</a>. You also have the right to complain to the Data Protection Commission at dataprotection.ie."]),
+    ]
+    return policy(rel, "Privacy <em>notice.</em>", "What we collect when you book or pay, why, and the choices you have.", "Privacy", "Your data",
+                  blocks, "Privacy · Balance Clinic", "Privacy notice for Balance Clinic Spa Beauty, Navan.")
 
 def book():
     rel = "../"
@@ -824,6 +894,9 @@ def pcount(groups): return sum(len(rows) for _, _, rows in groups)
 BAG_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>'
 ADD_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="pl" d="M12 5v14M5 12h14"/><path class="ck" d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
 
+OFFLINE_SECTIONS = {"Injectables"}   # need a consultation first, so they are not sold online
+VOUCHERS = (25, 50, 75, 100, 150, 200)
+
 def item_id(*parts):
     return re.sub(r"[^a-z0-9]+", "-", " ".join(p for p in parts if p).lower()).strip("-")
 
@@ -833,6 +906,8 @@ def prow(section, group, name, detail, price):
     cell = f'<td>{esc(name)}{"<small>" + esc(detail) + "</small>" if detail else ""}</td>'
     if not price:
         return f'<tr>{cell}<td>On consultation</td></tr>'
+    if section in OFFLINE_SECTIONS:
+        return f'<tr>{cell}<td><span class="pp">€{price:,}</span><small class="pcons">Consultation first</small></td></tr>'
     data = f'data-item="{item_id(section, group, name, detail)}" data-name="{esc(name)}" data-group="{esc(group)}" data-section="{esc(section)}" data-detail="{esc(detail)}" data-price="{price}"'
     return (f'<tr {data}>{cell}<td><span class="pp">€{price:,}</span>'
             f'<button class="padd" type="button" aria-pressed="false" aria-label="Add {esc(name)} to basket">{ADD_SVG}</button></td></tr>')
@@ -1036,6 +1111,51 @@ def laser_area(gid, label, areas, a):
 
 REDIRECT = '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Laser Hair Removal · Balance Clinic</title><meta http-equiv="refresh" content="0; url=../laser/index.html"><link rel="canonical" href="../laser/index.html"></head><body><a href="../laser/index.html">Laser hair removal</a></body></html>\\n'
 
+def catalog():
+    """id -> name, price in cent, description. api/checkout.js prices every basket line from this."""
+    import json
+    out = {}
+    def add(iid, name, cents, desc):
+        assert iid not in out, f"duplicate basket id: {iid}"
+        out[iid] = {"n": name, "p": cents, "d": desc}
+    for sid, title, groups in PRICES:
+        if title in OFFLINE_SECTIONS: continue
+        for g, _, rows in groups:
+            for name, d, price in rows:
+                if not price: continue
+                # the name is what the clinic and the receipt show, so it has to stand on its own: "Venus Legacy: Face", "Leg vein removal (30 min)"
+                full = name if g.lower() in name.lower() or name.lower() in g.lower() else f"{g}: {name}"
+                short = bool(re.fullmatch(r"\d+ (min|sessions?)|Single session", d))
+                if short: full += f" ({d})"
+                add(item_id(title, g, name, d), full, round(price * 100), " · ".join(x for x in (title, "" if short else d) if x))
+    for gid, label, areas in LASER:
+        for a in areas:
+            group = f'{a["name"]} · {label.replace("For ", "").lower()}'
+            for n, d, prices in a["rows"]:
+                for k, p in zip(LASER_SESSIONS, prices):
+                    sess = f'{k} session{"s" if k > 1 else ""}'
+                    who = label.replace("For ", "").lower()
+                    add(item_id("laser", group, n, sess), f"Laser: {n} ({who}, {sess})", round(p * 100), f"Laser hair removal · {a['name']}")
+    for v in VOUCHERS:
+        add(f"gift-voucher-{v}", f"Gift voucher €{v}", v * 100, "Balance Clinic gift voucher")
+    return json.dumps(out, ensure_ascii=False, indent=0, sort_keys=True) + "\n"
+
+VERCEL = """{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/admin(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
+  ]
+}
+"""
+
 def write(path, content):
     full = os.path.join(ROOT, path); os.makedirs(os.path.dirname(full), exist_ok=True)
     with open(full, "w", encoding="utf-8") as f: f.write(content)
@@ -1053,7 +1173,9 @@ if __name__ == "__main__":
     write("results/index.html", results())
     write("about/index.html", about()); write("about/team.html", team())
     write("price-list.html", price_list())
-    write("basket.html", basket_page())
+    write("basket.html", basket_page()); write("thank-you.html", thank_you())
+    write("terms.html", terms()); write("privacy.html", privacy())
+    write("api/_catalog.json", catalog())
     for sid, title, groups in PRICES: write(f"prices/{PINFO[sid]['slug']}.html", price_cat_page(sid, title, groups))
     write("prices/laser-hair-removal.html", REDIRECT)
     write("shop/index.html", shop()); write("shop/gift-vouchers.html", gift_vouchers()); write("shop/january-sale.html", january_sale())
@@ -1061,5 +1183,6 @@ if __name__ == "__main__":
     write("contact.html", contact())
     write("blog/index.html", blog_index())
     for p in POSTS: write(f"blog/{p['slug']}.html", post_page(p))
-    write("vercel.json", '{\n  "cleanUrls": true,\n  "trailingSlash": false\n}\n')
-    print("built", 1 + 1 + len(T) + 2 + 1 + 3 + 2 + 1 + 1 + len(POSTS), "pages")
+    write("vercel.json", VERCEL)
+    n = sum(1 for d, _, fs in os.walk(ROOT) if ".git" not in d for f in fs if f.endswith(".html"))
+    print("built", n, "pages")

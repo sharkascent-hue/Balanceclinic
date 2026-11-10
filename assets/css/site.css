@@ -801,3 +801,37 @@ tr.inb .padd .ck{display:inline;stroke-dasharray:22;stroke-dashoffset:0}
   .lopt span{display:block}
   .lopt b{font-size:14px}
 }
+
+/* ---------- checkout, thank-you, vouchers, policies ---------- */
+.pcons{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:400}
+.bk-secure{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12.5px;color:var(--ink-2);margin:0}
+.bk-secure svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.bk-err{margin:0;padding:12px 14px;border-radius:14px;background:rgba(227,122,100,.14);color:#8A2E1C;font-size:14px}
+.bk-terms{margin:0;font-size:12.5px;color:var(--ink-2);text-align:center}
+.bk-terms a{border-bottom:1px solid var(--line)}
+.btn.busy{pointer-events:none;opacity:.75}
+.btn.busy svg{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.ty{max-width:760px;margin-inline:auto}
+.ty-wait{display:grid;justify-items:center;gap:16px;padding:60px 0;color:var(--ink-2)}
+.spin{width:34px;height:34px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--moss);animation:spin 1s linear infinite}
+.ty-ok,.ty-no{display:grid;gap:22px}
+.ty h2{font-size:clamp(38px,5vw,64px);line-height:1}
+.ty .bk-card{position:relative;top:auto}
+.ty .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.ty [data-order-no]{color:var(--moss)}
+
+.vbuy{margin-top:30px;display:grid;gap:14px}
+.vopts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:460px}
+.vopt{padding:16px 8px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.6);color:var(--moss);font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .35s var(--ease),border-color .35s,color .35s}
+.vopt b{font-family:var(--display);font-weight:400;font-size:28px;line-height:1}
+.vopt:hover{border-color:var(--moss)}
+.vopt.inb{background:var(--moss);border-color:var(--moss);color:#fff}
+.vopt.pop{animation:padPop .55s var(--ease)}
+
+.policy .inner{gap:14px}
+.policy h2{font-size:clamp(26px,2.8vw,36px);margin-top:26px}
+.policy a{color:var(--moss);border-bottom:1px solid var(--lime)}
+footer .bottom .legal{display:flex;gap:8px 22px;flex-wrap:wrap}
+@media (max-width:1000px){footer .bottom{padding-right:104px}}
