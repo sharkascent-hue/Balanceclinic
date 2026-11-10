@@ -1,12 +1,12 @@
 /* Orders panel. Orders live in Stripe (each paid checkout is an order), so there is no database to run.
-   GET  /api/admin                       -> { password, stripe, authed }   what is set up, and are you signed in
+   GET  /api/admin                       -> { password, starter, stripe, live, authed }   what is set up, and are you signed in
    GET  /api/admin?orders=1&days=90      -> { orders: [...] }              (signed in)
    GET  /api/admin?order=cs_…            -> { items: [...] }               (signed in)
    POST /api/admin { action: 'login', password } | { action: 'logout' }
-   POST /api/admin { action: 'update', id, status, note }                  (signed in)
-   The clinic's own status and note for an order are kept on the Stripe payment's metadata. */
+   POST /api/admin { action: 'update', id, status, note, sent }            (signed in)
+   The clinic's own status, note and "sent" time for an order are kept on the Stripe payment's metadata. */
 'use strict';
-const { stripe, stripeKey, adminPassword, adminReady, makeCookie, clearCookie, isAdmin, safeEqual, body, send } = require('./_lib');
+const { stripe, stripeKey, adminReady, starterPassword, login, clearCookie, isAdmin, body, send } = require('./_lib');
 
 const STATUSES = ['new', 'contacted', 'booked', 'completed', 'cancelled'];
 const MAX_PAGES = 10;                       /* 10 × 100 orders per load */
@@ -17,12 +17,15 @@ function toOrder(s) {
   const ch = pi && pi.latest_charge && typeof pi.latest_charge === 'object' ? pi.latest_charge : null;
   const md = Object.assign({}, s.metadata || {}, (pi && pi.metadata) || {});
   const cd = s.customer_details || {};
-  const cf = (s.custom_fields || []).filter(function (f) { return f.key === 'notes'; })[0];
+  const field = function (key) { const f = (s.custom_fields || []).filter(function (x) { return x.key === key; })[0]; return (f && f.text && f.text.value) || ''; };
   return {
     id: s.id, no: md.order_no || s.client_reference_id || '', created: s.created,
     total: s.amount_total || 0, currency: s.currency || 'eur',
     name: cd.name || '', email: cd.email || '', phone: cd.phone || '',
-    request: (cf && cf.text && cf.text.value) || '',
+    eircode: (field('eircode') || (cd.address && cd.address.postal_code) || '').toUpperCase(),
+    request: field('notes'),
+    toSend: md.to_send || '',
+    sent: parseInt(md.bc_sent, 10) || 0,
     summary: md.summary || '',
     status: STATUSES.indexOf(md.bc_status) > -1 ? md.bc_status : 'new',
     note: md.bc_note || '',
@@ -34,7 +37,8 @@ function toOrder(s) {
 
 module.exports = async function handler(req, res) {
   try {
-    const state = { password: adminReady(), stripe: !!stripeKey(), authed: isAdmin(req) };
+    const key = stripeKey();
+    const state = { password: adminReady(), starter: starterPassword(), stripe: !!key, live: key.indexOf('sk_live_') === 0, authed: isAdmin(req) };
 
     if (req.method === 'GET') {
       const q = req.query || {};
@@ -68,8 +72,9 @@ module.exports = async function handler(req, res) {
 
     if (b.action === 'login') {
       if (!state.password) return send(res, 503, { error: 'no_password' });
-      if (!safeEqual(String(b.password || ''), adminPassword())) { await wait(900); return send(res, 401, { error: 'wrong' }); }
-      res.setHeader('Set-Cookie', makeCookie(req, 12));
+      const cookie = login(req, String(b.password || ''), 12);
+      if (!cookie) { await wait(900); return send(res, 401, { error: 'wrong' }); }
+      res.setHeader('Set-Cookie', cookie);
       return send(res, 200, { ok: true });
     }
     if (b.action === 'logout') { res.setHeader('Set-Cookie', clearCookie()); return send(res, 200, { ok: true }); }
@@ -79,11 +84,14 @@ module.exports = async function handler(req, res) {
       if (!state.stripe) return send(res, 503, { error: 'not_connected' });
       const id = String(b.id || ''), status = String(b.status || ''), note = String(b.note || '').slice(0, 480);
       if (!/^cs_[A-Za-z0-9_]{10,200}$/.test(id) || STATUSES.indexOf(status) < 0) return send(res, 400, { error: 'bad_update' });
-      const s = await stripe('GET', '/v1/checkout/sessions/' + id);
-      const pi = typeof s.payment_intent === 'string' ? s.payment_intent : (s.payment_intent && s.payment_intent.id);
+      const s = await stripe('GET', '/v1/checkout/sessions/' + id, { expand: ['payment_intent'] });
+      const pi = s.payment_intent && typeof s.payment_intent === 'object' ? s.payment_intent : null;
       if (!pi) return send(res, 400, { error: 'no_payment' });
-      await stripe('POST', '/v1/payment_intents/' + pi, { metadata: { bc_status: status, bc_note: note } });
-      return send(res, 200, { ok: true, status: status, note: note });
+      /* "sent" keeps the time it was first marked, so re-saving an order does not move it */
+      const was = parseInt((pi.metadata || {}).bc_sent, 10) || 0;
+      const sent = b.sent ? (was || Math.floor(Date.now() / 1000)) : 0;
+      await stripe('POST', '/v1/payment_intents/' + pi.id, { metadata: { bc_status: status, bc_note: note, bc_sent: sent ? String(sent) : '' } });
+      return send(res, 200, { ok: true, status: status, note: note, sent: sent });
     }
     return send(res, 400, { error: 'action' });
   } catch (e) {

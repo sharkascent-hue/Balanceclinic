@@ -5,8 +5,21 @@ const crypto = require('crypto');
 const STRIPE_BASE = process.env.STRIPE_API_BASE || 'https://api.stripe.com';
 const stripeKey = () => (process.env.STRIPE_SECRET_KEY || '').trim();
 const adminPassword = () => (process.env.ADMIN_PASSWORD || '').trim();
-/* a short password would be guessable, so the panel stays locked until a proper one is set */
-const adminReady = () => adminPassword().length >= 10;
+/* The starter password is kept only as a one-way fingerprint (this repository is public).
+   Setting ADMIN_PASSWORD in Vercel replaces it; a replacement shorter than 10 characters locks the panel. */
+const STARTER = 'd8f41c818b1942e0fbb2ad0ce9fb3edcaca2e25726179d19fe4b0ebb9cd83700';
+const SALT = 'bc-admin-v1';
+const sha = (v) => crypto.createHash('sha256').update(String(v)).digest('hex');
+const tokenFor = (pw) => crypto.scryptSync(String(pw).slice(0, 200), SALT, 32).toString('hex');
+let own = null;
+function expected() {
+  const pw = adminPassword();
+  if (!pw) return STARTER;
+  if (!own || own.pw !== pw) own = { pw: pw, h: sha(tokenFor(pw)) };
+  return own.h;
+}
+const adminReady = () => !adminPassword() || adminPassword().length >= 10;
+const starterPassword = () => !adminPassword();
 
 /* Stripe takes form-encoded bodies with bracketed keys: line_items[0][price_data][currency]=eur */
 function encode(obj, prefix, out) {
@@ -46,26 +59,26 @@ function siteUrl(req) {
   return proto + '://' + host;
 }
 
-/* ----- admin session: a signed, expiring cookie. Nothing is stored server-side. ----- */
+/* ----- admin session -----
+   Signing in turns the password into a long token (scrypt) that only the right password can produce.
+   The browser keeps it in an HttpOnly cookie; the server only ever compares its fingerprint. Nothing is stored server-side. */
 const COOKIE = 'bc_admin';
-const signKey = () => crypto.createHash('sha256').update('bc-admin:' + adminPassword()).digest();
-const sign = (exp) => crypto.createHmac('sha256', signKey()).update(String(exp)).digest('hex');
 function safeEqual(a, b) {
   const x = crypto.createHash('sha256').update(String(a)).digest(), y = crypto.createHash('sha256').update(String(b)).digest();
   return crypto.timingSafeEqual(x, y);
 }
-function makeCookie(req, hours) {
-  const exp = Date.now() + hours * 3600 * 1000;
+function login(req, password, hours) {
+  if (!adminReady()) return null;
+  const tok = tokenFor(password);
+  if (!safeEqual(sha(tok), expected())) return null;
   const secure = siteUrl(req).indexOf('https://') === 0 ? '; Secure' : '';
-  return COOKIE + '=' + exp + '.' + sign(exp) + '; Path=/; HttpOnly; SameSite=Strict; Max-Age=' + hours * 3600 + secure;
+  return COOKIE + '=' + tok + '; Path=/; HttpOnly; SameSite=Strict; Max-Age=' + hours * 3600 + secure;
 }
 function clearCookie() { return COOKIE + '=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0'; }
 function isAdmin(req) {
   if (!adminReady()) return false;
-  const m = String(req.headers.cookie || '').match(new RegExp('(?:^|;\\s*)' + COOKIE + '=(\\d+)\\.([0-9a-f]{64})'));
-  if (!m) return false;
-  if (+m[1] < Date.now()) return false;
-  return safeEqual(m[2], sign(m[1]));
+  const m = String(req.headers.cookie || '').match(new RegExp('(?:^|;\\s*)' + COOKIE + '=([0-9a-f]{64})(?:;|$)'));
+  return !!m && safeEqual(sha(m[1]), expected());
 }
 
 function body(req) {
@@ -77,4 +90,4 @@ function send(res, status, data) {
   res.status(status).json(data);
 }
 
-module.exports = { stripe, stripeKey, adminPassword, adminReady, siteUrl, makeCookie, clearCookie, isAdmin, safeEqual, body, send };
+module.exports = { stripe, stripeKey, adminReady, starterPassword, siteUrl, login, clearCookie, isAdmin, body, send };

@@ -53,7 +53,9 @@ module.exports = async function handler(req, res) {
 
     const base = siteUrl(req), no = orderNo();
     const summary = lines.map(function (l) { return l.qty + ' × ' + l.c.n; }).join('; ');
+    const toSend = lines.filter(function (l) { return l.c.s; }).map(function (l) { return l.qty + ' × ' + l.c.n; }).join('; ');
     const meta = { order_no: no, summary: summary.slice(0, 480), bc_status: 'new' };
+    if (toSend) meta.to_send = toSend.slice(0, 480);
     const session = await stripe('POST', '/v1/checkout/sessions', {
       mode: 'payment',
       client_reference_id: no,
@@ -66,7 +68,10 @@ module.exports = async function handler(req, res) {
       }),
       phone_number_collection: { enabled: true },
       billing_address_collection: 'auto',
-      custom_fields: [{ key: 'notes', type: 'text', optional: true, label: { type: 'custom', custom: 'Preferred times, or who a voucher is for' } }],
+      custom_fields: [
+        { key: 'eircode', type: 'text', label: { type: 'custom', custom: 'Eircode' }, text: { maximum_length: 10 } },
+        { key: 'notes', type: 'text', optional: true, label: { type: 'custom', custom: 'Preferred times, or who a voucher is for' } }
+      ],
       custom_text: { submit: { message: 'We will call you to arrange your appointment. Laser courses start with a patch test.' } },
       metadata: meta,
       payment_intent_data: { description: 'Balance Clinic order ' + no, metadata: meta }

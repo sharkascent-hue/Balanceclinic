@@ -15,7 +15,7 @@ To switch on the booking and contact forms, create a free key at web3forms.com a
 - `api/admin.js` and `/admin` are the orders panel. Orders are read from Stripe, so there is no database. The clinic's status and note for each order are saved on the Stripe payment.
 - Two environment variables in Vercel switch it on (Settings → Environment Variables, then redeploy):
   - `STRIPE_SECRET_KEY`: from Stripe → Developers → API keys. `sk_test_…` for practice payments, `sk_live_…` for real ones.
-  - `ADMIN_PASSWORD`: the password for `/admin`, at least 10 characters.
+  - `ADMIN_PASSWORD`: your own password for `/admin`, at least 10 characters. Until it is set, a starter password works; only its one-way fingerprint is in `api/_lib.js`. Set your own before real orders arrive.
   - Optional `SITE_URL` (e.g. `https://www.example.ie`) if the site has more than one address.
 - Until the Stripe key is set, the basket offers "send as booking request" instead of payment.
 - Injectables are not sold online (`OFFLINE_SECTIONS` in `build.py`). Gift voucher amounts are `VOUCHERS`.

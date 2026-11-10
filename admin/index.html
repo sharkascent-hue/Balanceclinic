@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>Orders · Balance Clinic</title>
+<title>Admin · Balance Clinic</title>
 <meta name="theme-color" content="#1C3A2A">
 <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,59 +13,117 @@
 <link rel="stylesheet" href="../assets/css/admin.css">
 </head>
 <body>
-<header class="top">
-  <a class="brand" href="../index.html" aria-label="Back to the website"><img src="../assets/img/logo-white.png" alt="Balance Clinic"></a>
-  <span class="where">Orders</span>
-  <div class="top-actions" id="top-actions" hidden>
-    <button class="tbtn" type="button" id="refresh" aria-label="Refresh orders"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></svg><span>Refresh</span></button>
-    <button class="tbtn" type="button" id="signout"><span>Sign out</span></button>
-  </div>
-</header>
 
-<main id="app">
-  <!-- loading -->
-  <section class="center" id="v-load"><span class="spin" aria-hidden="true"></span><p>Loading…</p></section>
+<!-- loading -->
+<section class="center" id="v-load"><span class="spin" aria-hidden="true"></span><p>Loading…</p></section>
 
-  <!-- sign in -->
-  <section class="center" id="v-login" hidden>
-    <form class="card login" id="login" autocomplete="on">
-      <h1>Sign in</h1>
-      <p>Orders for Balance Clinic. Enter the admin password.</p>
-      <label for="pw">Password</label>
-      <input id="pw" type="password" name="password" autocomplete="current-password" required>
-      <p class="err" id="login-err" role="alert" hidden></p>
-      <button class="btn" type="submit">Sign in</button>
-    </form>
-  </section>
+<!-- sign in -->
+<section class="gate" id="v-login" hidden>
+  <form class="card login" id="login" autocomplete="on">
+    <img class="logo" src="../assets/img/logo-white.png" alt="Balance Clinic">
+    <h1>Admin</h1>
+    <p>Sign in to see orders, customers and takings.</p>
+    <label for="pw">Password</label>
+    <input id="pw" type="password" name="password" autocomplete="current-password" required>
+    <p class="err" id="login-err" role="alert" hidden></p>
+    <button class="btn" type="submit">Sign in</button>
+    <a class="back" href="../index.html">Back to the website</a>
+  </form>
+</section>
 
-  <!-- not set up yet -->
-  <section class="center" id="v-setup" hidden>
-    <div class="card setup">
-      <h1 id="setup-title">Finish setting up</h1>
-      <p id="setup-lead">Two settings switch on payments and this page. Add them in Vercel, under the project's <b>Settings → Environment Variables</b>.</p>
-      <ol class="steps">
-        <li id="step-pw"><b>ADMIN_PASSWORD</b><span>The password for this page. Choose your own, at least 10 characters.</span></li>
-        <li id="step-stripe"><b>STRIPE_SECRET_KEY</b><span>From Stripe, under Developers → API keys. A key starting <code>sk_test_</code> takes pretend payments for testing; <code>sk_live_</code> takes real ones.</span></li>
-        <li><b>Redeploy</b><span>In Vercel, open Deployments, tap the ⋯ on the latest one and choose Redeploy. Then reload this page.</span></li>
-      </ol>
-      <button class="btn ghost" type="button" id="sample">See it with sample orders</button>
+<!-- locked: a replacement password that is too short -->
+<section class="gate" id="v-locked" hidden>
+  <div class="card"><h1>Admin is locked</h1><p>The <code>ADMIN_PASSWORD</code> set in Vercel is shorter than 10 characters. Choose a longer one under Settings → Environment Variables, redeploy, then reload this page.</p></div>
+</section>
+
+<!-- the back office -->
+<div class="shell" id="v-app" hidden>
+  <aside class="side">
+    <a class="s-brand" href="#dashboard"><img src="../assets/img/logo-white.png" alt="Balance Clinic"><span>Admin</span></a>
+    <nav class="s-nav" id="nav" aria-label="Admin">
+      <a href="#dashboard" data-v="dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg><span>Dashboard</span></a>
+      <a href="#orders" data-v="orders"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span>Orders</span><b id="n-orders" hidden></b></a>
+      <a href="#customers" data-v="customers"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.2-5.5 6.5-5.5s5.900 2.100 6.500 5.500"/><circle cx="17.500" cy="9" r="2.500"/><path d="M17.500 14.500c2.200.200 3.700 1.700 4.200 4"/></svg><span>Customers</span></a>
+      <a href="#setup" data-v="setup"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.500M12 18.500V21M3 12h2.500M18.500 12H21M5.600 5.600l1.800 1.800M16.600 16.600l1.800 1.800M5.600 18.400l1.800-1.800M16.600 7.400l1.800-1.800"/></svg><span>Set-up</span><b id="n-setup" hidden>!</b></a>
+    </nav>
+    <div class="s-foot">
+      <a href="../index.html" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span>View website</span></a>
+      <button type="button" id="signout"><svg viewBox="0 0 24 24"><path d="M10 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h4M15 8l4 4-4 4M19 12H10"/></svg><span>Sign out</span></button>
     </div>
-  </section>
+  </aside>
 
-  <!-- orders -->
-  <section id="v-orders" hidden>
+  <main class="main">
+    <header class="bar">
+      <h1 id="title">Dashboard</h1>
+      <div class="bar-actions">
+        <select id="days" aria-label="Period"><option value="30">Last 30 days</option><option value="90" selected>Last 90 days</option><option value="365">Last 12 months</option><option value="3650">All time</option></select>
+        <button class="ibtn" type="button" id="refresh" aria-label="Refresh"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.600-5.900"/><path d="M20 4v5h-5"/></svg></button>
+      </div>
+    </header>
     <p class="banner" id="banner" hidden></p>
-    <div class="tiles" id="tiles"></div>
-    <div class="bar">
-      <div class="chips" id="chips" role="tablist" aria-label="Order status"></div>
-      <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Search name, phone, order…" aria-label="Search orders" autocomplete="off"></label>
-      <select id="days" aria-label="Period"><option value="30">Last 30 days</option><option value="90" selected>Last 90 days</option><option value="365">Last 12 months</option><option value="3650">All time</option></select>
-      <button class="tbtn dark" type="button" id="csv">Export</button>
-    </div>
-    <div class="list" id="list"></div>
-    <p class="empty" id="empty" hidden></p>
-  </section>
-</main>
+
+    <!-- dashboard -->
+    <section class="view" id="p-dashboard">
+      <div class="tiles" id="tiles"></div>
+      <div class="cols">
+        <div class="box"><div class="box-h"><h2>Needs attention</h2><a href="#orders" data-go="todo">See all</a></div><div class="mini" id="todo"></div></div>
+        <div class="box"><div class="box-h"><h2>Takings, last 14 days</h2><span id="chart-sum"></span></div><div class="chart" id="chart" role="img"></div></div>
+      </div>
+      <div class="box"><div class="box-h"><h2>Latest orders</h2><a href="#orders" data-go="all">All orders</a></div><div class="tbl" id="latest"></div></div>
+    </section>
+
+    <!-- orders -->
+    <section class="view" id="p-orders" hidden>
+      <div class="tools">
+        <div class="chips" id="chips" role="tablist" aria-label="Filter orders"></div>
+        <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Search name, phone, email, Eircode, order…" aria-label="Search orders" autocomplete="off"></label>
+        <button class="btn sm ghost" type="button" id="csv">Export</button>
+      </div>
+      <div class="tbl" id="orders"></div>
+      <p class="empty" id="orders-empty" hidden></p>
+    </section>
+
+    <!-- customers -->
+    <section class="view" id="p-customers" hidden>
+      <div class="tools"><label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="cq" type="search" placeholder="Search customers…" aria-label="Search customers" autocomplete="off"></label></div>
+      <div class="tbl" id="customers"></div>
+      <p class="empty" id="customers-empty" hidden></p>
+    </section>
+
+    <!-- set-up -->
+    <section class="view" id="p-setup" hidden>
+      <div class="setup">
+        <div class="box" id="su-pay"><div class="box-h"><h2>Payments</h2><span class="pill" id="su-pay-pill"></span></div><p id="su-pay-text"></p>
+          <ol class="steps" id="su-pay-steps">
+            <li><b>Open a Stripe account</b><span>At stripe.com, in the clinic's name, with the bank account the money should land in.</span></li>
+            <li><b>Add STRIPE_SECRET_KEY in Vercel</b><span>Project → Settings → Environment Variables. The value is in Stripe under Developers → API keys. A key starting <code>sk_test_</code> takes practice payments; <code>sk_live_</code> takes real ones.</span></li>
+            <li><b>Redeploy</b><span>Vercel → Deployments → ⋯ on the latest one → Redeploy. Then refresh this page.</span></li>
+          </ol>
+        </div>
+        <div class="box" id="su-pw"><div class="box-h"><h2>Password</h2><span class="pill" id="su-pw-pill"></span></div><p id="su-pw-text"></p>
+          <ol class="steps" id="su-pw-steps">
+            <li><b>Add ADMIN_PASSWORD in Vercel</b><span>Project → Settings → Environment Variables. At least 10 characters; a few random words work well. It replaces the starter password.</span></li>
+            <li><b>Redeploy</b><span>Then sign in again with the new password.</span></li>
+          </ol>
+        </div>
+        <div class="box"><div class="box-h"><h2>Good to know</h2></div>
+          <ul class="notes">
+            <li>Refunds are made in Stripe. Open an order and choose "Open in Stripe".</li>
+            <li>Stripe can email the clinic for every payment and send customers a receipt. Both are switched on in Stripe's settings.</li>
+            <li>Each order's status, note and "sent" time are saved with the payment in Stripe, so nothing is lost if this page is closed.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabs" id="tabs" aria-label="Admin">
+    <a href="#dashboard" data-v="dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>Home</a>
+    <a href="#orders" data-v="orders"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Orders<b id="t-orders" hidden></b></a>
+    <a href="#customers" data-v="customers"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.2-5.5 6.5-5.5s5.900 2.100 6.500 5.500"/><circle cx="17.500" cy="9" r="2.500"/><path d="M17.500 14.500c2.200.200 3.700 1.700 4.200 4"/></svg>Customers</a>
+    <a href="#setup" data-v="setup"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.500M12 18.500V21M3 12h2.500M18.500 12H21M5.600 5.600l1.800 1.800M16.600 16.600l1.800 1.800M5.600 18.400l1.800-1.800M16.600 7.400l1.800-1.800"/></svg>Set-up</a>
+  </nav>
+</div>
 
 <!-- one order -->
 <div class="sheet" id="sheet" aria-hidden="true">
@@ -73,14 +131,24 @@
   <aside class="panel" role="dialog" aria-modal="true" aria-labelledby="o-no">
     <div class="p-head"><div><p class="k" id="o-date"></p><h2 id="o-no"></h2></div><button class="x" type="button" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="p-body">
-      <div class="who"><b id="o-name"></b><a id="o-phone"></a><a id="o-email"></a></div>
+      <div class="blk"><p class="k">Customer</p>
+        <dl class="facts">
+          <div><dt>Name</dt><dd id="o-name"></dd></div>
+          <div><dt>Phone</dt><dd><a id="o-phone"></a></dd></div>
+          <div><dt>Email</dt><dd><a id="o-email"></a></dd></div>
+          <div><dt>Eircode</dt><dd><span id="o-eir"></span> <a id="o-map" target="_blank" rel="noopener">Map</a></dd></div>
+        </dl>
+      </div>
       <div class="req" id="o-req" hidden><p class="k">Customer's note</p><p id="o-req-t"></p></div>
-      <div><p class="k">Items</p><div class="lines" id="o-items"></div><div class="total"><span>Paid</span><b id="o-total"></b></div><p class="refund" id="o-refund" hidden></p></div>
-      <div><p class="k">Status</p><div class="status" id="o-status"></div></div>
-      <div><label class="k" for="o-note">Your note (only the clinic sees this)</label><textarea id="o-note" maxlength="480" placeholder="e.g. Booked for Thursday 2pm with Anna"></textarea></div>
+      <div class="blk"><p class="k">Items bought</p><div class="lines" id="o-items"></div><div class="total"><span>Paid</span><b id="o-total"></b></div><p class="refund" id="o-refund" hidden></p></div>
+      <div class="blk"><p class="k">Delivery</p>
+        <div class="deliv" id="o-deliv"><p id="o-deliv-what"></p><p class="d-state" id="o-deliv-state"></p><button class="btn sm" type="button" id="o-sent"></button></div>
+      </div>
+      <div class="blk"><p class="k">Order status</p><div class="status" id="o-status"></div></div>
+      <div class="blk"><label class="k" for="o-note">Your note (only the clinic sees this)</label><textarea id="o-note" maxlength="480" placeholder="e.g. Booked for Thursday 2pm with Anna"></textarea></div>
       <p class="err" id="o-err" role="alert" hidden></p>
     </div>
-    <div class="p-foot"><button class="btn" type="button" id="o-save">Save</button><a class="btn ghost" id="o-stripe" target="_blank" rel="noopener">Open in Stripe</a></div>
+    <div class="p-foot"><button class="btn" type="button" id="o-save">Save changes</button><a class="btn ghost" id="o-stripe" target="_blank" rel="noopener">Open in Stripe</a></div>
   </aside>
 </div>
 <script src="../assets/js/admin.js"></script>

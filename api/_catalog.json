@@ -122,32 +122,38 @@
 "gift-voucher-100": {
 "d": "Balance Clinic gift voucher",
 "n": "Gift voucher €100",
-"p": 10000
+"p": 10000,
+"s": 1
 },
 "gift-voucher-150": {
 "d": "Balance Clinic gift voucher",
 "n": "Gift voucher €150",
-"p": 15000
+"p": 15000,
+"s": 1
 },
 "gift-voucher-200": {
 "d": "Balance Clinic gift voucher",
 "n": "Gift voucher €200",
-"p": 20000
+"p": 20000,
+"s": 1
 },
 "gift-voucher-25": {
 "d": "Balance Clinic gift voucher",
 "n": "Gift voucher €25",
-"p": 2500
+"p": 2500,
+"s": 1
 },
 "gift-voucher-50": {
 "d": "Balance Clinic gift voucher",
 "n": "Gift voucher €50",
-"p": 5000
+"p": 5000,
+"s": 1
 },
 "gift-voucher-75": {
 "d": "Balance Clinic gift voucher",
 "n": "Gift voucher €75",
-"p": 7500
+"p": 7500,
+"s": 1
 },
 "laser-bikini-women-any-bikini-1-session": {
 "d": "Laser hair removal · Bikini",

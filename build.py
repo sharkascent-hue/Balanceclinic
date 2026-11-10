@@ -1115,9 +1115,10 @@ def catalog():
     """id -> name, price in cent, description. api/checkout.js prices every basket line from this."""
     import json
     out = {}
-    def add(iid, name, cents, desc):
+    def add(iid, name, cents, desc, send=False):
         assert iid not in out, f"duplicate basket id: {iid}"
         out[iid] = {"n": name, "p": cents, "d": desc}
+        if send: out[iid]["s"] = 1     # something the clinic posts or emails, so the order shows as "to send"
     for sid, title, groups in PRICES:
         if title in OFFLINE_SECTIONS: continue
         for g, _, rows in groups:
@@ -1137,7 +1138,7 @@ def catalog():
                     who = label.replace("For ", "").lower()
                     add(item_id("laser", group, n, sess), f"Laser: {n} ({who}, {sess})", round(p * 100), f"Laser hair removal · {a['name']}")
     for v in VOUCHERS:
-        add(f"gift-voucher-{v}", f"Gift voucher €{v}", v * 100, "Balance Clinic gift voucher")
+        add(f"gift-voucher-{v}", f"Gift voucher €{v}", v * 100, "Balance Clinic gift voucher", send=True)
     return json.dumps(out, ensure_ascii=False, indent=0, sort_keys=True) + "\n"
 
 VERCEL = """{
