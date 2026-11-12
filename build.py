@@ -8,6 +8,8 @@ PHONE = "(046) 906 0333"
 ADDRESS = "8 Trimgate Street, Townparks, Navan, Co. Meath, C15 DHE9"
 MAPS = "https://www.google.com/maps/search/?api=1&query=Balance+Clinic+Spa+Beauty+8+Trimgate+St+Navan"
 GOOGLE_REVIEWS = "https://www.google.com/search?q=Balance+Clinic+Spa+Beauty+Navan+reviews"
+BOOK_URL = "https://www.phorest.com/salon/balanceclinicandspa"   # the clinic's Phorest online booking
+BOOK = f'href="{BOOK_URL}" target="_blank" rel="noopener"'
 SOCIAL = [
     ("Instagram", "https://www.instagram.com/balanceclinicspabeauty/", '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r=".6" fill="currentColor"/>'),
     ("Facebook", "https://www.facebook.com/profile.php?id=100063678907606", '<path d="M14 21v-7.5h2.6l.4-3H14V8.6c0-.9.3-1.5 1.6-1.5H17V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H8.3v3H11V21"/>'),
@@ -233,7 +235,7 @@ POSTS = [
          body=["<p>The skin under the eye is the thinnest on the body. It loses collagen early, shows every shadow and reacts badly to aggressive treatment. For years the options were concealer or filler.</p>",
                "<h2>Repair, not volume</h2><p>Polynucleotides are purified DNA fragments that signal the skin to repair itself. Injected in a series of tiny deposits, they improve hydration, thickness and elasticity, so darkness lifts and the crepey texture smooths. The LumaDoc protocol we use is designed for this delicate area.</p>",
                "<p>Most clients have two to three sessions, three weeks apart, and see the change build over two months.</p>",
-               '<p><a class="link" href="../book/online-consultation.html">Book an online consultation ' + ARROW + '</a></p>'], compare="undereye"),
+               '<p><a class="link" ' + BOOK + '>Book an online consultation ' + ARROW + '</a></p>'], compare="undereye"),
     dict(slug="what-cellulite-really-is", title="What cellulite really is", date="Body · 3 min read", img="contour.jpg",
          summary="It is not about weight. It is about the bands under the skin, and radio frequency reaches them.",
          body=["<p>Cellulite affects around nine in ten women at every size. It appears when fat cells push up against the fibrous bands that anchor skin to muscle, puckering the surface between them.</p>",
@@ -328,7 +330,7 @@ def header(rel, current):
   <a class="brand" href="{rel}index.html" aria-label="Balance Clinic Spa Beauty, home"><img src="{rel}assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"></a>
   <nav class="site-nav" aria-label="Primary">{links}</nav>
   <div class="head-cta">
-    <a class="btn btn-moss" href="{rel}book/index.html">Book now</a>
+    <a class="btn btn-moss" {BOOK}>Book now</a>
     <button class="bag" type="button" data-basket-open aria-label="Open basket">{BAG_SVG}<b data-basket-count hidden>0</b></button>
     <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i><i></i><i></i></button>
   </div>
@@ -343,7 +345,7 @@ def header(rel, current):
       <a href="{rel}results/index.html">Results</a>
       <a href="{rel}about/index.html">About</a>
       <a href="{rel}shop/index.html">Shop</a>
-      <a href="{rel}book/index.html">Book Now</a>
+      <a {BOOK}>Book Now</a>
       <a href="{rel}contact.html">Contact</a>
       <a href="{rel}blog/index.html">Blog</a>
     </nav>
@@ -366,13 +368,13 @@ def footer(rel):
     <div><h4>Skin</h4><ul>{skin}</ul></div>
     <div><h4>Clinic</h4><ul>
       <li><a href="{rel}results/index.html">Results</a></li><li><a href="{rel}about/index.html">About</a></li><li><a href="{rel}about/team.html">Meet the team</a></li><li><a href="{rel}price-list.html">Price list</a></li>
-      <li><a href="{rel}shop/gift-vouchers.html">Gift vouchers</a></li><li><a href="{rel}book/index.html">Book a treatment</a></li><li><a href="{rel}book/online-consultation.html">Online consultation</a></li>
+      <li><a href="{rel}shop/gift-vouchers.html">Gift vouchers</a></li><li><a {BOOK}>Book a treatment</a></li><li><a href="{rel}book/online-consultation.html">Online consultation</a></li>
       <li><a href="{rel}contact.html">Contact</a></li><li><a href="{rel}blog/index.html">Blog</a></li></ul></div>
   </div>
   <div class="bottom"><span>© <span id="yr">2026</span> Balance Clinic · Spa · Beauty</span><span class="legal"><a href="{rel}terms.html">Terms &amp; refunds</a><a href="{rel}privacy.html">Privacy</a><a href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">4.9 ★ on Google</a></span></div>
   <div class="giant" aria-hidden="true">Balance</div>
 </footer>
-<a class="fab" id="fab" href="{rel}book/index.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</a>
+<a class="fab" id="fab" {BOOK}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</a>
 <div class="bk" id="basket" aria-hidden="true" data-lenis-prevent>
   <div class="scrim" data-basket-close></div>
   <aside class="panel" role="dialog" aria-modal="true" aria-labelledby="bk-title">
@@ -449,13 +451,13 @@ def visit(rel, title_html="Trimgate Street,<br><em>Navan.</em>", lead="Walk in f
       <p class="eyebrow">Visit us</p>
       <h2 data-split>{title_html}</h2>
       <p class="lead" data-reveal>{lead}</p>
-      <div class="ctas" data-reveal><a class="btn btn-lime" href="{rel}book/index.html">Book online {ARROW}</a><a class="btn btn-ghost-light" href="{MAPS}" target="_blank" rel="noopener">Get directions</a></div>
+      <div class="ctas" data-reveal><a class="btn btn-lime" {BOOK}>Book online {ARROW}</a><a class="btn btn-ghost-light" href="{MAPS}" target="_blank" rel="noopener">Get directions</a></div>
     </div>
     <div class="details" data-reveal>
       <div><span>Address</span><div><strong>8 Trimgate Street, Townparks</strong><small>Navan, Co. Meath, C15 DHE9</small></div></div>
       <div><span>Phone</span><div><strong>{PHONE}</strong><button class="copy" type="button" data-copy="046 906 0333">Copy</button><small>Call for today's opening hours</small></div></div>
       <div><span>Hours</span><div><strong>Late opening until 8pm</strong><small>Evening appointments available</small></div></div>
-      <div><span>Online</span><div><strong><a href="{rel}book/index.html">Book a treatment</a></strong><small>Or an online consultation</small></div></div>
+      <div><span>Online</span><div><strong><a {BOOK}>Book a treatment</a></strong><small>Or an online consultation</small></div></div>
     </div>
   </div>
 </section>
@@ -498,7 +500,7 @@ def home():
     </div>
     <div class="side">
       <p data-reveal>Medical-grade skin treatments and laser hair removal, non-surgical and consultation-led, by certified specialists. Then unwind in our holistic spa, because feeling good matters as much as looking it.</p>
-      <div class="ctas" data-reveal><a class="btn btn-lime" href="book/index.html">Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="treatments/index.html">Explore treatments</a></div>
+      <div class="ctas" data-reveal><a class="btn btn-lime" {BOOK}>Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="treatments/index.html">Explore treatments</a></div>
       <a class="rating" data-reveal href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener" aria-label="4.9 stars from over 800 Google reviews"><span class="g">G</span><span class="stars" aria-hidden="true">★★★★★</span><span><b>4.9</b> · 800+ Google reviews</span></a>
     </div>
   </div>
@@ -556,7 +558,7 @@ def home():
   <div class="stars" aria-hidden="true">{"".join('<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.7 1.3 6.8L12 17.7 5.9 21l1.3-6.8-5-4.7 6.8-.8z"/></svg>' for _ in range(5))}</div>
   <h2>Rated by <b data-count>0</b> clients on Google</h2>
   <p class="sub">The highest-rated clinic of its kind in Meath, built review by review. Read what people say in their own words.</p>
-  <div class="ctas"><a class="btn btn-moss" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read the reviews</a><a class="btn btn-ghost" href="book/index.html">Book now</a></div>
+  <div class="ctas"><a class="btn btn-moss" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read the reviews</a><a class="btn btn-ghost" {BOOK}>Book now</a></div>
   <div class="pillars">
     <div class="pillar" data-reveal><div class="ic"><svg viewBox="0 0 48 48"><path d="M10 38C14 18 26 10 40 8c-2 14-10 26-30 30z"/><path d="M12 36c6-8 14-14 22-20"/></svg></div><h3>Relax</h3><p>Massage, warm towels and time that is only yours.</p></div>
     <div class="pillar" data-reveal><div class="ic"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="3.5"/><ellipse cx="24" cy="12" rx="4" ry="8"/><ellipse cx="24" cy="36" rx="4" ry="8"/><ellipse cx="12" cy="24" rx="8" ry="4"/><ellipse cx="36" cy="24" rx="8" ry="4"/></svg></div><h3>Rejuvenate</h3><p>Laser, peels and microneedling that work with your skin.</p></div>
@@ -574,7 +576,7 @@ def treatments_index():
         cards = "".join(tcard(rel, t) for t in T if t["group"] == key)
         groups += f'''<section class="tgroup" id="{key}"><div class="inner"><div><h2 data-split><small>{name}</small>{name.split()[0]} <em style="font-style:italic;color:var(--moss)">{" ".join(name.split()[1:])}</em></h2><p class="tp" data-reveal>{desc}</p></div><div class="tlist">{cards}</div></div></section>'''
     body = phero(rel, [("Home", "index.html")], "Treatments", "Sixteen treatments across body, skin and beauty, each starting with a consultation.", img="nonsurgical.jpg",
-                 ctas=f'<a class="btn btn-lime" href="{rel}book/index.html">Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="{rel}price-list.html">Price list</a>')
+                 ctas=f'<a class="btn btn-lime" {BOOK}>Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="{rel}price-list.html">Price list</a>')
     body += groups + visit(rel)
     return page(rel, "Treatments · Balance Clinic", "Laser, skin, body and beauty treatments at Balance Clinic Spa Beauty, Navan.", "treatments", body)
 
@@ -598,7 +600,7 @@ def treatment_page(t):
     if len(related) < 3: related += [x for x in T if x["group"] != t["group"]][:3 - len(related)]
     rel_cards = "".join(tcard(rel, x) for x in related)
     body = phero(rel, [("Home", "index.html"), ("Treatments", "treatments/index.html"), (gname, f"treatments/index.html#{t['group']}")], title, t["intro"], img=t.get("img"), word=t["em"],
-                 ctas=f'<a class="btn btn-lime" href="{rel}book/index.html">Book {t["title"].lower() if len(t["title"]) < 20 else "now"} {ARROW}</a><a class="btn btn-ghost-light" href="{rel}book/online-consultation.html">Ask a question</a>')
+                 ctas=f'<a class="btn btn-lime" {BOOK}>Book {t["title"].lower() if len(t["title"]) < 20 else "now"} {ARROW}</a><a class="btn btn-ghost-light" {BOOK}>Ask a question</a>')
     body += f'''<section class="tbody"><div class="inner">
   <div class="prose">
     <h2 data-split>About the treatment</h2>{prose}
@@ -606,7 +608,7 @@ def treatment_page(t):
     <h2 data-split>What to expect</h2><div class="steps" data-reveal>{steps}</div>
   </div>
   <aside class="aside">
-    <div class="box" data-reveal><h3>Book {t["title"].lower() if len(t["title"]) < 26 else "this treatment"}</h3><p>Every course starts with a consultation. Book online or call {PHONE}.</p><a class="btn btn-lime" href="{rel}book/index.html">Book now {ARROW}</a></div>
+    <div class="box" data-reveal><h3>Book {t["title"].lower() if len(t["title"]) < 26 else "this treatment"}</h3><p>Every course starts with a consultation. Book online or call {PHONE}.</p><a class="btn btn-lime" {BOOK}>Book now {ARROW}</a></div>
     <div class="facts" data-reveal>{facts}</div>
     {media}
   </aside>
@@ -621,7 +623,7 @@ def results():
     cards = "".join(ba(rel, k, c, i) for i, (k, c, _) in enumerate(RESULTS))
     reels = "".join(reel(rel, *r) for r in REELS)
     body = phero(rel, [("Home", "index.html")], "Real <em>results.</em>", "Clients of Balance, photographed in clinic before and after treatment. Drag the scan line across each photo, or open the full picture.", img="rosacea-after.jpg",
-                 ctas=f'<a class="btn btn-lime" href="{rel}book/index.html">Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="{rel}treatments/index.html">All treatments</a>')
+                 ctas=f'<a class="btn btn-lime" {BOOK}>Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="{rel}treatments/index.html">All treatments</a>')
     body += f'''<section class="sec"><div class="sec-head"><div><p class="eyebrow">Before &amp; after</p><h2 data-split>Drag the scan to compare.</h2></div><p data-reveal>Results vary from person to person. Every plan starts with a consultation so we can tell you what to expect.</p></div><div class="ba-grid wide">{cards}</div></section>
 <section class="sec sage"><div class="sec-head"><div><p class="eyebrow">In motion</p><h2 data-split>From the treatment rooms.</h2></div><p data-reveal>Tap any clip to watch it full size with sound.</p></div><div class="reel-row">{reels}</div></section>
 <section class="reviews"><div class="num">0.0</div><div class="stars" aria-hidden="true">{"".join('<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.7 1.3 6.8L12 17.7 5.9 21l1.3-6.8-5-4.7 6.8-.8z"/></svg>' for _ in range(5))}</div><h2>Rated by <b data-count>0</b> clients on Google</h2><p class="sub">Read what people say in their own words.</p><div class="ctas"><a class="btn btn-moss" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read the reviews</a></div></section>
@@ -665,7 +667,7 @@ def price_list():
     lg = "".join(f'<div class="pgroup" data-reveal><h3>{a["name"]} · {label.replace("For ", "").lower()}</h3>{ltable(a, label)}</div>' for gid, label, areas in LASER for a in areas)
     secs += f'<div class="psec" id="p-laser"><div class="psec-head"><h2 data-split>Laser hair removal</h2><span>1, 3, 6 or 10 sessions</span></div><div class="pgrid">{lg}</div></div>'
     body = phero(rel, [("Home", "index.html")], "Price <em>list.</em>", "Every treatment and price in one place. Search for a treatment, or tap a category above the list to see just those prices.", word="Prices",
-                 ctas=f'<a class="btn btn-lime" href="book/index.html">Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="shop/gift-vouchers.html">Gift vouchers</a>')
+                 ctas=f'<a class="btn btn-lime" {BOOK}>Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="shop/gift-vouchers.html">Gift vouchers</a>')
     body += f'''<section class="sec price-sec">
   <div class="pbar"><nav class="pchips" aria-label="Price list sections">{chips}</nav>
     <label class="psearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="price-search" type="search" placeholder="Search treatments" aria-label="Search treatments" autocomplete="off"></label></div>
@@ -704,7 +706,7 @@ def gift_vouchers():
 def january_sale():
     rel = "../"
     body = phero(rel, [("Home", "index.html"), ("Shop", "shop/index.html")], "January <em>sale.</em>", "Every January we take our biggest savings of the year off courses and packages. Start the year with skin you are glad to see.", word="Sale")
-    body += f'''<section class="sec"><div class="sale"><div><p class="eyebrow" style="color:var(--moss)">Limited time</p><h2 data-split>Courses, packages, savings.</h2><p class="lead" data-reveal style="color:var(--moss)">Laser courses, Venus Legacy packages, peel and microneedling courses and massage bundles. Offers run for the month of January, or while appointments last.</p><div class="ctas" data-reveal style="margin-top:28px"><a class="btn btn-moss" href="{rel}book/index.html">Book a sale treatment {ARROW}</a><a class="btn btn-white" href="{rel}contact.html">Ask about an offer</a></div></div><div class="big" aria-hidden="true">Jan</div></div></section>{visit(rel)}'''
+    body += f'''<section class="sec"><div class="sale"><div><p class="eyebrow" style="color:var(--moss)">Limited time</p><h2 data-split>Courses, packages, savings.</h2><p class="lead" data-reveal style="color:var(--moss)">Laser courses, Venus Legacy packages, peel and microneedling courses and massage bundles. Offers run for the month of January, or while appointments last.</p><div class="ctas" data-reveal style="margin-top:28px"><a class="btn btn-moss" {BOOK}>Book a sale treatment {ARROW}</a><a class="btn btn-white" href="{rel}contact.html">Ask about an offer</a></div></div><div class="big" aria-hidden="true">Jan</div></div></section>{visit(rel)}'''
     return page(rel, "January Sale · Balance Clinic", "January offers on courses and packages at Balance Clinic Spa Beauty.", "shop", body)
 
 def form(rel, kind):
@@ -738,7 +740,7 @@ def basket_page():
       <button class="btn btn-lime" type="button" data-checkout><span data-checkout-label>Continue to payment</span> {ARROW}</button>
       <p class="bk-secure"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Secure payment by card, Apple Pay or Google Pay</p>
       <p class="bk-err" data-checkout-err role="alert" hidden></p>
-      <div class="bk-pay" data-checkout-msg hidden><p>Online payment is being set up. For now, send your basket as a booking request and we will confirm your times and take payment at the clinic.</p><a class="btn btn-moss" href="{rel}book/index.html">Send as booking request {ARROW}</a></div>
+      <div class="bk-pay" data-checkout-msg hidden><p>Online payment is being set up. For now, book your appointment online and pay at the clinic, or send us your basket and we will arrange it with you.</p><a class="btn btn-moss" {BOOK}>Book online {ARROW}</a><a class="btn btn-ghost" href="{rel}book/index.html">Send as a request</a></div>
       <p class="bk-terms">By paying you agree to our <a href="{rel}terms.html">terms and refund policy</a>.</p>
       <a class="bk-more" href="{rel}price-list.html">Add more treatments</a>
     </aside>
@@ -757,8 +759,8 @@ def thank_you():
       <h2>Payment received.</h2>
       <p class="lead">Thank you<span data-order-name></span>. A receipt is on its way<span data-order-email></span>.</p>
       <div class="bk-card"><div class="bk-lines" data-order-lines></div><div class="bk-total"><span>Paid</span><b data-order-total></b></div></div>
-      <div class="steps"><div><div><b>We call you</b>Within one working day, to arrange a time that suits.</div></div><div><div><b>Consultation</b>Your therapist checks the treatment is right for you. Laser starts with a patch test.</div></div><div><div><b>Your treatment</b>Arrive a few minutes early and we will look after the rest.</div></div></div>
-      <div class="ctas"><a class="btn btn-moss" href="{rel}index.html">Back to home {ARROW}</a><a class="btn btn-ghost" href="{rel}contact.html">Contact us</a></div>
+      <div class="steps"><div><div><b>Book your time</b>Pick a slot in our online booking now, or we will call you within one working day to arrange it.</div></div><div><div><b>Consultation</b>Your therapist checks the treatment is right for you. Laser starts with a patch test.</div></div><div><div><b>Your treatment</b>Arrive a few minutes early and we will look after the rest.</div></div></div>
+      <div class="ctas"><a class="btn btn-moss" {BOOK}>Choose your time now {ARROW}</a><a class="btn btn-ghost" href="{rel}index.html">Back to home</a></div>
     </div>
     <div class="ty-no" data-order-no-pay hidden>
       <h2>We could not confirm a payment.</h2>
@@ -813,13 +815,14 @@ def privacy():
 
 def book():
     rel = "../"
-    body = phero(rel, [("Home", "index.html")], "Book a <em>treatment.</em>", "Tell us what you would like and when. We will confirm the slot and anything you need to know beforehand.", word="Book")
+    body = phero(rel, [("Home", "index.html")], "Book a <em>treatment.</em>", "Pick your treatment and a time that suits in our online booking. Or send us a request and we will find the slot for you.", word="Book",
+                 ctas=f'<a class="btn btn-lime" {BOOK}>Book online now {ARROW}</a><a class="btn btn-ghost-light" href="tel:+353469060333">Call {PHONE}</a>')
     body += f'''<section class="sec" style="padding-top:clamp(50px,6vw,80px)">
   <div class="book-opts">
-    <div class="opt on" data-type="treatment" data-reveal><span class="k">Option 01</span><h3>Book a treatment</h3><p>Choose from the menu and tell us a day that suits. Perfect if you already know what you want.</p></div>
+    <a class="opt on" {BOOK} data-reveal><span class="k">Option 01 · Instant</span><h3>Book online</h3><p>See live availability and confirm your appointment in a couple of minutes. Opens our booking page.</p><span class="link">Book now {ARROW}</span></a>
     <a class="opt" href="{rel}book/online-consultation.html" data-reveal><span class="k">Option 02</span><h3>Book an online consultation</h3><p>Not sure where to start? A short video call with a therapist to plan your treatment.</p></a>
   </div>
-  <div class="split" style="align-items:start"><div>{form(rel, "book")}</div>
+  <div class="split" style="align-items:start"><div><p class="eyebrow">Or send a request</p><h2 data-split style="margin:10px 0 26px">We'll call you back.</h2>{form(rel, "book")}</div>
   <aside class="aside"><div class="box" data-reveal><h3>Prefer to talk?</h3><p>Call the clinic on {PHONE}. Late opening until 8pm.</p><button class="btn btn-lime copy" type="button" data-copy="046 906 0333" style="margin:0">Copy number</button></div><div class="facts" data-reveal><div><span>Address</span><span>8 Trimgate St, Navan</span></div><div><span>Hours</span><span>Late opening until 8pm</span></div><div><span>Consult</span><span>Included with every course</span></div><div><span>Vouchers</span><span>Accepted on all treatments</span></div></div></aside></div>
 </section>{visit(rel)}'''
     return page(rel, "Book a Treatment · Balance Clinic", "Book a treatment at Balance Clinic Spa Beauty, Navan.", "book", body)
@@ -940,7 +943,7 @@ def price_cat_page(sid, title, groups):
     related = "".join(tcard(rel, TMAP[x]) for x in i["related"])
     rel_html = f'<section class="sec" style="padding-top:0"><div class="psec" style="margin-bottom:0"><div class="psec-head"><h2 data-split>Treatments explained</h2><span>Learn more</span></div><div class="tlist">{related}</div></div></section>' if related else ""
     body = phero(rel, [("Home", "index.html"), ("Price List", "price-list.html")], f"{t_esc} <em>prices.</em>", i["intro"], img=i["img"],
-                 ctas=f'<a class="btn btn-lime" href="{rel}book/index.html">Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="{rel}price-list.html">All prices</a>')
+                 ctas=f'<a class="btn btn-lime" {BOOK}>Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="{rel}price-list.html">All prices</a>')
     body += f'''<section class="sec price-sec">
   <div class="pbar"><nav class="pchips" aria-label="Price list sections">{chips}</nav>
     <label class="psearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="price-search" type="search" placeholder="Search {t_esc.lower()} treatments" aria-label="Search {t_esc.lower()} treatments" autocomplete="off"></label></div>
@@ -1010,7 +1013,7 @@ def lfrom(area):
 def laser_panels(rel):
     def pnl(pid, back_label, back_to, title, items):
         back = f'<button class="mback" type="button" data-back>{CHEV_L}{back_label}</button>'
-        return f'<div class="mpanel" id="{pid}" aria-hidden="true">{back}<p class="mtitle">{title}</p>{items}<a class="btn btn-lime mcta" href="{rel}book/online-consultation.html">Book a consultation</a></div>'
+        return f'<div class="mpanel" id="{pid}" aria-hidden="true">{back}<p class="mtitle">{title}</p>{items}<a class="btn btn-lime mcta" {BOOK}>Book a consultation</a></div>'
     top = (f'<a class="mlink" data-panel="mp-laser-women" href="{rel}laser/women/bikini.html">For Women{CHEV}</a>'
            f'<a class="mlink" data-panel="mp-laser-men" href="{rel}laser/men/face.html">For Men{CHEV}</a>'
            f'<a class="mlink" href="{rel}laser/index.html">Learn more</a><a class="mlink" href="{rel}laser/index.html#pricing">Pricing</a>')
@@ -1069,14 +1072,14 @@ def laser_hub():
         groups = "".join(f'<div class="pgroup" data-reveal><h3><a href="{rel}laser/{gid}/{a["slug"]}.html">{a["name"]}</a></h3>{ltable(a, label)}</div>' for a in areas)
         pricing += f'<div class="psec"><div class="psec-head"><h2 data-split>{label}</h2><span>{sum(len(a["rows"]) for a in areas)} areas</span></div><div class="pgrid">{groups}</div></div>'
     body = phero(rel, [("Home", "index.html"), ("Treatments", "treatments/index.html")], "Laser hair <em>removal.</em>", t["intro"], img="la-upper.jpg",
-                 ctas=f'<a class="btn btn-lime" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="#pricing">See prices</a>')
+                 ctas=f'<a class="btn btn-lime" {BOOK}>Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="#pricing">See prices</a>')
     search = '<label class="psearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="price-search" type="search" placeholder="Search laser areas" aria-label="Search laser areas" autocomplete="off"></label>'
     body += f'''<section class="sec price-sec lhub"><div class="pbar"><nav class="pchips" aria-label="Price list sections">{price_chips(rel, "laser")}</nav>{search}</div>
   <div class="sec-head"><div><p class="eyebrow">Choose an area</p><h2 data-split>Where would you like to be smooth?</h2></div>
   <div class="ltabs" role="tablist" data-tabs>{tabs}</div></div>{panels}
   <p class="pempty" hidden>No laser areas match that search. Try a shorter word, or see <a href="{rel}price-list.html">all prices</a>.</p></section>
 <section class="tbody"><div class="inner"><div class="prose"><h2 data-split>About laser hair removal</h2>{prose}<h2 data-split>Good for</h2><ul data-reveal>{benefits}</ul></div>
-  <aside class="aside"><div class="box" data-reveal><h3>Start with a patch test</h3><p>Every course begins with a consultation and patch test, so the settings suit your skin and hair. Call {PHONE} or book online.</p><a class="btn btn-lime" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a></div></aside></div></section>
+  <aside class="aside"><div class="box" data-reveal><h3>Start with a patch test</h3><p>Every course begins with a consultation and patch test, so the settings suit your skin and hair. Call {PHONE} or book online.</p><a class="btn btn-lime" {BOOK}>Book a consultation {ARROW}</a></div></aside></div></section>
 {laser_steps_faq(rel)}
 <section class="sec price-sec" id="pricing"><div class="sec-head"><div><p class="eyebrow">Pricing</p><h2 data-split>Laser prices by area.</h2></div><p data-reveal>Book a single session, or save with a course of 3, 6 or 10. Tap a price to add it to your basket.</p></div>{pricing}</section>
 {visit(rel)}'''
@@ -1093,7 +1096,7 @@ def laser_area(gid, label, areas, a):
     badge = f'<div class="lbadge"><small>From</small><b>{f}</b></div>' if f else '<div class="lbadge"><small>Course of</small><b>6–8</b><small>sessions</small></div>'
     others = "".join(lcard(rel, gid, x, label) for x in areas if x["slug"] != a["slug"])
     body = phero(rel, [("Home", "index.html"), ("Laser", "laser/index.html"), (label, f"laser/index.html#{gid}")], f'Laser hair removal <em>{label.lower()}</em>', a["intro"], img=a["img"],
-                 ctas=f'<a class="btn btn-lime" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="#prices">{a["name"]} prices</a>')
+                 ctas=f'<a class="btn btn-lime" {BOOK}>Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="#prices">{a["name"]} prices</a>')
     body += f'''<section class="sec lsec">
   <div class="pbar lbar"><nav class="lgender" aria-label="Women or men">{genders}</nav><nav class="pchips" aria-label="Areas">{chips}</nav></div>
   <div class="larea">
@@ -1101,7 +1104,7 @@ def laser_area(gid, label, areas, a):
     <div class="ltext" id="prices"><p class="eyebrow">{label}</p><h2 data-split>{a["name"]}</h2><p class="lead" data-reveal>{a["intro"]}</p>
       <div class="pgroup" data-reveal><h3>Areas &amp; prices</h3>{ltable(a, label)}</div>
       <p class="gnote" data-reveal>Choose a single session or save with a course of 3, 6 or 10. Most clients need 6 to 8 sessions, 4 to 8 weeks apart.</p>
-      <div class="ctas" data-reveal><a class="btn btn-moss" href="{rel}book/online-consultation.html">Book a consultation {ARROW}</a><a class="btn btn-ghost" href="{rel}laser/index.html#pricing">All laser prices</a></div></div>
+      <div class="ctas" data-reveal><a class="btn btn-moss" {BOOK}>Book a consultation {ARROW}</a><a class="btn btn-ghost" href="{rel}laser/index.html#pricing">All laser prices</a></div></div>
   </div>
 </section>
 {laser_steps_faq(rel)}

@@ -835,3 +835,4 @@ tr.inb .padd .ck{display:inline;stroke-dasharray:22;stroke-dashoffset:0}
 .policy a{color:var(--moss);border-bottom:1px solid var(--lime)}
 footer .bottom .legal{display:flex;gap:8px 22px;flex-wrap:wrap}
 @media (max-width:1000px){footer .bottom{padding-right:104px}}
+.bk-pay .btn{justify-content:center}
