@@ -64,6 +64,30 @@
 "n": "Pedicure: Shellac feet",
 "p": 2800
 },
+"bf-voucher-100": {
+"d": "Black Friday offer: €100 voucher for €75",
+"n": "Black Friday gift voucher, €100 value",
+"p": 7500,
+"s": 1
+},
+"bf-voucher-200": {
+"d": "Black Friday offer: €200 voucher for €150",
+"n": "Black Friday gift voucher, €200 value",
+"p": 15000,
+"s": 1
+},
+"bf-voucher-50": {
+"d": "Black Friday offer: €50 voucher for €39",
+"n": "Black Friday gift voucher, €50 value",
+"p": 3900,
+"s": 1
+},
+"bf-voucher-500": {
+"d": "Black Friday offer: €500 voucher for €350",
+"n": "Black Friday gift voucher, €500 value",
+"p": 35000,
+"s": 1
+},
 "body-contouring-venus-legacy-arms-course-of-10-445": {
 "d": "Body contouring · Course of 10: €445",
 "n": "Venus Legacy: Arms",

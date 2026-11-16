@@ -194,6 +194,7 @@
     var y = window.scrollY || document.documentElement.scrollTop;
     if (!lenis) { var now = performance.now(); scrollVel = (y - lastY) / Math.max(16, now - lastT) * 0.6; lastY = y; lastT = now; clearTimeout(onScroll._t); onScroll._t = setTimeout(function () { scrollVel = 0; }, 80); }
     if (head) head.classList.toggle('scrolled', y > 60);
+    document.documentElement.classList.toggle('scrolled', y > 60);   /* tucks the offer bar away */
     if (fab) fab.classList.toggle('show', y > 500);
   }
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();

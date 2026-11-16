@@ -288,7 +288,7 @@ PRICES = [   # (section id, section title, [(group, note, [(treatment, detail, p
 PRE = """<script>(function(){try{var d=document.documentElement;d.className=d.className.replace('no-js','');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('anim');if(sessionStorage.getItem('bc-pt')==='1')d.classList.add('pt-in');if(sessionStorage.getItem('bc-intro'))d.classList.add('intro-seen');setTimeout(function(){d.classList.remove('anim','pt-in')},3000)}catch(e){}})()</script>"""
 def head(title, desc, rel, extra=""):
     return f'''<!doctype html>
-<html lang="en" class="no-js">
+<html lang="en" class="no-js{" promo-on" if BLACK_FRIDAY else ""}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -323,10 +323,10 @@ def pt():
     return f'<div id="pt" aria-hidden="true"><svg class="plus" viewBox="0 0 64 64">{PLUS_PATH}</svg></div>\n'
 
 def header(rel, current):
-    nav = [("Treatments", "treatments/index.html", "treatments"), ("Laser", "laser/index.html", "laser"), ("Results", "results/index.html", "results"), ("About", "about/index.html", "about"), ("Price List", "price-list.html", "prices"), ("Shop", "shop/index.html", "shop"), ("Blog", "blog/index.html", "blog"), ("Contact", "contact.html", "contact")]
+    nav = [("Treatments", "treatments/index.html", "treatments"), ("Laser", "laser/index.html", "laser"), ("Results", "results/index.html", "results"), ("About", "about/index.html", "about"), ("Price List", "price-list.html", "prices"), ("Vouchers", "shop/gift-vouchers.html", "vouchers"), ("Shop", "shop/index.html", "shop"), ("Blog", "blog/index.html", "blog"), ("Contact", "contact.html", "contact")]
     links = "".join(f'<a href="{rel}{h}"{" aria-current=\"page\"" if k == current else ""}>{t}</a>' for t, h, k in nav)
     groups = "".join(f'<div><h4>{g[1]}</h4>' + "".join(f'<a href="{rel}{turl(t)}">{t["title"]}</a>' for t in T if t["group"] == g[0]) + "</div>" for g in GROUPS)
-    return f'''<header class="site-head" id="head">
+    return bf_bar(rel) + f'''<header class="site-head" id="head">
   <a class="brand" href="{rel}index.html" aria-label="Balance Clinic Spa Beauty, home"><img src="{rel}assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"></a>
   <nav class="site-nav" aria-label="Primary">{links}</nav>
   <div class="head-cta">
@@ -344,6 +344,7 @@ def header(rel, current):
       <a href="{rel}price-list.html" class="has-sub" data-panel="mp-prices">Price List{CHEV}</a>
       <a href="{rel}results/index.html">Results</a>
       <a href="{rel}about/index.html">About</a>
+      <a href="{rel}shop/gift-vouchers.html">Gift Vouchers{"<i>Black Friday</i>" if BLACK_FRIDAY else ""}</a>
       <a href="{rel}shop/index.html">Shop</a>
       <a {BOOK}>Book Now</a>
       <a href="{rel}contact.html">Contact</a>
@@ -508,6 +509,7 @@ def home():
 </section>
 
 <div class="marquee" aria-hidden="true"><div class="track">{marquee}</div></div>
+{bf_band("")}
 
 <section class="statement">
   <div class="inner">
@@ -680,6 +682,7 @@ def price_list():
 def shop():
     rel = "../"
     body = phero(rel, [("Home", "index.html")], "The <em>shop.</em>", "Gift vouchers, seasonal offers and the professional skincare we use in clinic.", word="Shop")
+    body += bf_band(rel, compact=True)
     body += f'''<section class="sec"><div class="shop-grid">
   <a class="voucher" href="{rel}shop/gift-vouchers.html" data-reveal><div><b>Gift vouchers</b><p>Any amount, any treatment. Posted or emailed the same day.</p></div><span class="link">Buy a voucher {ARROW}</span></a>
   <a class="voucher alt" href="{rel}shop/january-sale.html" data-reveal><div><b>January sale</b><p>Our biggest savings of the year on courses and packages.</p></div><span class="link">See the offers {ARROW}</span></a>
@@ -687,10 +690,52 @@ def shop():
 </div></section>{visit(rel)}'''
     return page(rel, "Shop · Balance Clinic", "Gift vouchers, offers and skincare from Balance Clinic Spa Beauty.", "shop", body)
 
+def bf_bar(rel):
+    if not BLACK_FRIDAY: return ""
+    lo = min(p for _, p in BF_DEALS)
+    return (f'<a class="promo" id="promo" href="{rel}shop/gift-vouchers.html#black-friday">'
+            f'<b>Black Friday</b><span class="pm-long">Gift vouchers up to {bf_off()}% off, from €{lo}</span><span class="pm-short">Vouchers up to {bf_off()}% off</span><u>Shop now</u></a>\n')
+
+def bf_band(rel, compact=False):
+    """Dark Black Friday banner for the home and shop pages."""
+    if not BLACK_FRIDAY: return ""
+    chips = "".join(f'<li><s>€{v}</s><b>€{p}</b></li>' for v, p in BF_DEALS)
+    return f'''<section class="bf-band{" compact" if compact else ""}" aria-labelledby="bf-band-h">
+  <div class="bf-glow" aria-hidden="true"></div>
+  <div class="inner">
+    <div><p class="eyebrow">Limited time · For that someone special</p><h2 id="bf-band-h" data-split>Black Friday<br><em>gift vouchers.</em></h2></div>
+    <div class="bf-side" data-reveal>
+      <p>Up to {bf_off()}% off gift vouchers for any treatment at Balance. Treat someone, or treat yourself.</p>
+      <ul class="bf-chips" aria-label="Black Friday prices">{chips}</ul>
+      <a class="btn btn-lime" href="{rel}shop/gift-vouchers.html#black-friday">Shop Black Friday vouchers {ARROW}</a>
+    </div>
+  </div>
+</section>'''
+
+def bf_cards(rel):
+    if not BLACK_FRIDAY: return ""
+    logo = f'<img src="{rel}assets/img/logo-white.png" alt="" loading="lazy">'
+    cards = ""
+    for v, p in BF_DEALS:
+        cards += (f'<article class="bf-card" data-reveal><div class="bf-face">'
+                  f'<b class="bf-val">€{v}</b><span class="bf-k">Gift voucher</span><span class="bf-bf">Black<br>Friday</span>'
+                  f'<span class="bf-price">€{p}</span><span class="bf-only">Only</span><span class="bf-logo">{logo}</span></div>'
+                  f'<div class="bf-foot"><span>Save €{v - p}</span>'
+                  f'<button class="bf-add" type="button" data-item="bf-voucher-{v}" data-name="€{v} gift voucher (Black Friday)" data-group="" data-section="Gift vouchers" data-detail="Black Friday offer" data-price="{p}" aria-pressed="false" aria-label="Add a €{v} Black Friday gift voucher for €{p} to basket">'
+                  f'<span class="a">Add to basket</span><span class="d">In basket</span></button></div></article>')
+    return f'''<section class="sec bf-sec" id="black-friday">
+  <div class="sec-head"><div><p class="eyebrow">For that someone special</p><h2 data-split>Black <em>Friday.</em></h2></div><p data-reveal>Our biggest voucher offer of the year: up to {bf_off()}% off, for any treatment. Each voucher carries its full value, and we post or email it to you.</p></div>
+  <div class="bf-grid">{cards}</div>
+  <div class="bf-more" data-reveal><button class="btn btn-moss" type="button" data-basket-open>View basket {ARROW}</button><p class="gnote">Vouchers carry their full face value and are good for any treatment.</p></div>
+</section>'''
+
 def gift_vouchers():
     rel = "../"
     vopts = "".join(f'<button class="vopt" type="button" data-item="gift-voucher-{v}" data-name="Gift voucher €{v}" data-group="" data-section="Gift vouchers" data-detail="" data-price="{v}" aria-pressed="false" aria-label="Add a €{v} gift voucher to basket"><b>€{v}</b></button>' for v in VOUCHERS)
-    body = phero(rel, [("Home", "index.html"), ("Shop", "shop/index.html")], "Gift <em>vouchers.</em>", "The present that is never the wrong size. Choose an amount or a specific treatment and we will do the rest.", word="Gift")
+    lead = (f"Black Friday: up to {bf_off()}% off gift vouchers. " if BLACK_FRIDAY else "") + "The present that is never the wrong size. Choose an amount or a specific treatment and we will do the rest."
+    body = phero(rel, [("Home", "index.html"), ("Shop", "shop/index.html")], "Gift <em>vouchers.</em>", lead, word="Gift",
+                 ctas=f'<a class="btn btn-lime" href="#black-friday">See Black Friday offers {ARROW}</a>' if BLACK_FRIDAY else "")
+    body += bf_cards(rel)
     body += f'''<section class="sec"><div class="split">
   <div><p class="eyebrow">How it works</p><h2 data-split>Give someone an hour that is only theirs.</h2><p class="lead" data-reveal>Vouchers can be for any value or any treatment on the menu, from a massage to a course of laser. We post them in a gift wallet or email them within the hour.</p>
     <div class="steps" data-reveal><div><div><b>Choose</b>An amount below, or a treatment from the price list.</div></div><div><div><b>Order</b>Add it to your basket and pay online, call {PHONE} or drop into the clinic.</div></div><div><div><b>Deliver</b>Posted, emailed or collected, ready to give.</div></div></div>
@@ -701,7 +746,7 @@ def gift_vouchers():
     <div class="voucher alt" data-reveal><div><b>A treatment</b><p>Massage, facial, laser, lashes. You name it.</p></div></div>
   </div>
 </div></section>{visit(rel)}'''
-    return page(rel, "Gift Vouchers · Balance Clinic", "Gift vouchers for any treatment at Balance Clinic Spa Beauty, Navan.", "shop", body)
+    return page(rel, "Gift Vouchers · Balance Clinic", ("Black Friday: up to %d%% off gift vouchers. " % bf_off() if BLACK_FRIDAY else "") + "Gift vouchers for any treatment at Balance Clinic Spa Beauty, Navan.", "vouchers", body)
 
 def january_sale():
     rel = "../"
@@ -789,7 +834,8 @@ def terms():
         ("Refunds", ["You can cancel an online order within 14 days of buying it and receive a full refund, as long as the treatment has not been carried out. If you have started a course, the sessions you have already had are charged at the single-session price and the balance is refunded.",
                      "Refunds are made to the card you paid with, normally within 5 to 10 working days. To ask for one, call us or use the contact page and quote your order number."]),
         ("Courses", ["Courses of 3, 6 or 10 sessions are for one person and one treatment area. Sessions are spaced as your therapist recommends, and a course should be used within 18 months of purchase."]),
-        ("Gift vouchers", ["Gift vouchers are valid for five years from the date of purchase and can be used against any treatment. They cannot be exchanged for cash. Please treat a voucher like cash: we cannot replace one that is lost."]),
+        ("Gift vouchers", ["Gift vouchers are valid for five years from the date of purchase and can be used against any treatment. They cannot be exchanged for cash. Please treat a voucher like cash: we cannot replace one that is lost.",
+                           "Vouchers bought in a sale, such as Black Friday, are sold at the offer price while the offer runs and carry their full face value."]),
         ("Results", ["Everybody responds differently to treatment, so results vary from person to person and cannot be guaranteed. Your therapist will tell you honestly what to expect at your consultation."]),
         ("Questions", [f"Call {PHONE} or send a message from the <a href=\"{rel}contact.html\">contact page</a>. Nothing in these terms affects your rights as a consumer under Irish and EU law."]),
     ]
@@ -896,6 +942,11 @@ def pfrom(groups): return min(p for _, _, rows in groups for _, _, p in rows)
 def pcount(groups): return sum(len(rows) for _, _, rows in groups)
 BAG_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>'
 ADD_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="pl" d="M12 5v14M5 12h14"/><path class="ck" d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+
+# Black Friday: (voucher value, sale price). Set BLACK_FRIDAY = False and rebuild to take the offer down everywhere.
+BLACK_FRIDAY = True
+BF_DEALS = ((50, 39), (100, 75), (200, 150), (500, 350))
+def bf_off(): return max(round((v - p) / v * 100) for v, p in BF_DEALS)
 
 OFFLINE_SECTIONS = {"Injectables"}   # need a consultation first, so they are not sold online
 VOUCHERS = (25, 50, 75, 100, 150, 200)
@@ -1142,6 +1193,9 @@ def catalog():
                     add(item_id("laser", group, n, sess), f"Laser: {n} ({who}, {sess})", round(p * 100), f"Laser hair removal · {a['name']}")
     for v in VOUCHERS:
         add(f"gift-voucher-{v}", f"Gift voucher €{v}", v * 100, "Balance Clinic gift voucher", send=True)
+    if BLACK_FRIDAY:
+        for v, p in BF_DEALS:
+            add(f"bf-voucher-{v}", f"Black Friday gift voucher, €{v} value", p * 100, f"Black Friday offer: €{v} voucher for €{p}", send=True)
     return json.dumps(out, ensure_ascii=False, indent=0, sort_keys=True) + "\n"
 
 VERCEL = """{
