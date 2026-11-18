@@ -397,7 +397,7 @@ def footer(rel):
       <li><a href="{rel}shop/gift-vouchers.html">Gift vouchers</a></li><li><a {BOOK}>Book a treatment</a></li><li><a href="{rel}book/online-consultation.html">Online consultation</a></li>
       <li><a href="{rel}contact.html">Contact</a></li><li><a href="{rel}blog/index.html">Blog</a></li></ul></div>
   </div>
-  <div class="bottom"><span>© <span id="yr">2026</span> Balance Clinic · Spa · Beauty</span><span class="legal"><a href="{rel}terms.html">Terms &amp; refunds</a><a href="{rel}privacy.html">Privacy</a><a href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">4.9 ★ on Google</a></span></div>
+  <div class="bottom"><span>© <span id="yr">2026</span> Balance Clinic · Spa · Beauty · <a href="https://almlabmarketing.com" target="_blank" rel="noopener">Website by AlmLab</a></span><span class="legal"><a href="{rel}terms.html">Terms &amp; refunds</a><a href="{rel}privacy.html">Privacy</a><a href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">4.9 ★ on Google</a></span></div>
   <div class="giant" aria-hidden="true">Balance</div>
 </footer>
 <a class="fab" id="fab" {BOOK}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</a>
