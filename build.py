@@ -7,6 +7,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 PHONE = "(046) 906 0333"
 PHONE_INTL = "+353469060333"          # what a tap on the number dials
 EMAIL = "admin@balanceclinic.ie"
+SITE = "https://www.balanceclinic.ie"       # the one address search engines should index
 TEL = f'<a class="tel" href="tel:{PHONE_INTL}">{PHONE}</a>'
 MAIL = f'<a class="tel" href="mailto:{EMAIL}">{EMAIL}</a>'
 ADDRESS = "8 Trimgate Street, Townparks, Navan, Co. Meath, C15 DHE9"
@@ -290,9 +291,23 @@ PRICES = [   # (section id, section title, [(group, note, [(treatment, detail, p
 
 # ---------------------------------------------------------------- shared html
 PRE = """<script>(function(){try{var d=document.documentElement;d.className=d.className.replace('no-js','');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('anim');if(sessionStorage.getItem('bc-pt')==='1')d.classList.add('pt-in');if(sessionStorage.getItem('bc-intro'))d.classList.add('intro-seen');setTimeout(function(){d.classList.remove('anim','pt-in')},3000)}catch(e){}})()</script>"""
+def ld_clinic():
+    """The clinic's details in the format Google reads for local results."""
+    import json
+    d = {"@context": "https://schema.org", "@type": ["BeautySalon", "MedicalBusiness"], "@id": SITE + "/#clinic",
+         "name": "Balance Clinic Spa Beauty", "alternateName": "Balance Clinic Navan", "url": SITE + "/",
+         "description": "Medical aesthetic clinic, spa and beauty salon in Navan, Co. Meath: laser hair removal, skin treatments, body contouring, massage, waxing and beauty.",
+         "image": SITE + "/assets/img/hero-poster.jpg", "logo": SITE + "/assets/img/favicon.svg",
+         "telephone": "+353 46 906 0333", "email": EMAIL, "priceRange": "€€", "currenciesAccepted": "EUR",
+         "address": {"@type": "PostalAddress", "streetAddress": "8 Trimgate Street, Townparks", "addressLocality": "Navan", "addressRegion": "Co. Meath", "postalCode": "C15 DHE9", "addressCountry": "IE"},
+         "areaServed": [{"@type": "City", "name": "Navan"}, {"@type": "AdministrativeArea", "name": "County Meath"}],
+         "hasMap": MAPS, "sameAs": [u for _, u, _ in SOCIAL]}
+    return '<script type="application/ld+json">' + json.dumps(d, ensure_ascii=False, separators=(",", ":")) + '</script>'
+LD_CLINIC = ld_clinic()
+
 def head(title, desc, rel, extra=""):
     return f'''<!doctype html>
-<html lang="en" class="no-js{" promo-on" if BLACK_FRIDAY else ""}">
+<html lang="en-IE" class="no-js{" promo-on" if BLACK_FRIDAY else ""}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -301,7 +316,13 @@ def head(title, desc, rel, extra=""):
 <meta name="theme-color" content="#1C3A2A">
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(desc)}">
-<meta property="og:image" content="{rel}assets/img/hero-poster.jpg">
+<meta property="og:image" content="{SITE}/assets/img/hero-poster.jpg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Balance Clinic Spa Beauty">
+<meta property="og:locale" content="en_IE">
+<meta name="twitter:card" content="summary_large_image">
+%%SEO%%
+{LD_CLINIC}
 <link rel="icon" href="{rel}assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -574,7 +595,7 @@ def home():
   </div>
 </section>
 {visit(rel)}'''
-    return page(rel, "Balance Clinic Spa Beauty · Medical Aesthetic Clinic & Holistic Spa, Navan", "Medical aesthetic clinic in Navan, Co. Meath. Medical-grade, non-surgical skin treatments and laser hair removal, with a holistic spa for everyday stress. Rated 4.9 by over 800 Google reviewers.", "home", body, show_intro=True)
+    return page(rel, "Balance Clinic Navan | Laser Hair Removal, Skin & Beauty Clinic", "Beauty and medical aesthetic clinic in Navan, Co. Meath. Medical-grade laser hair removal, skin treatments, body contouring, massage and beauty. Rated 4.9 by over 800 Google reviewers.", "home", body, show_intro=True)
 
 def treatments_index():
     rel = "../"
@@ -585,7 +606,7 @@ def treatments_index():
     body = phero(rel, [("Home", "index.html")], "Treatments", "Sixteen treatments across body, skin and beauty, each starting with a consultation.", img="nonsurgical.jpg",
                  ctas=f'<a class="btn btn-lime" {BOOK}>Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="{rel}price-list.html">Price list</a>')
     body += groups + visit(rel)
-    return page(rel, "Treatments · Balance Clinic", "Laser, skin, body and beauty treatments at Balance Clinic Spa Beauty, Navan.", "treatments", body)
+    return page(rel, "Beauty, Skin & Laser Treatments in Navan | Balance Clinic", "Laser hair removal, skin, body and beauty treatments at Balance Clinic Spa Beauty, Trimgate Street, Navan, Co. Meath.", "treatments", body)
 
 def treatment_page(t):
     rel = "../"
@@ -623,7 +644,7 @@ def treatment_page(t):
 <section class="sec" style="padding-top:0"><div class="faq"><h2 data-split>Questions, answered.</h2><div data-reveal>{faqs}</div></div></section>
 <section class="related"><div class="inner"><h2 data-split>You may also like</h2><div class="row">{rel_cards}</div></div></section>
 {visit(rel)}'''
-    return page(rel, f"{t['name']} · Balance Clinic", t["name"] + ". " + html.unescape(t["short"]), "treatments", body)
+    return page(rel, (f"{t['name']} | Balance Clinic Navan" if t["name"].endswith("?") else f"{t['name']} in Navan | Balance Clinic Spa Beauty"), t["name"].rstrip("?") + " at Balance Clinic, Navan, Co. Meath. " + html.unescape(t["short"]), "treatments", body)
 
 def results():
     rel = "../"
@@ -635,7 +656,7 @@ def results():
 <section class="sec sage"><div class="sec-head"><div><p class="eyebrow">In motion</p><h2 data-split>From the treatment rooms.</h2></div><p data-reveal>Tap any clip to watch it full size with sound.</p></div><div class="reel-row">{reels}</div></section>
 <section class="reviews"><div class="num">0.0</div><div class="stars" aria-hidden="true">{"".join('<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.7 1.3 6.8L12 17.7 5.9 21l1.3-6.8-5-4.7 6.8-.8z"/></svg>' for _ in range(5))}</div><h2>Rated by <b data-count>0</b> clients on Google</h2><p class="sub">Read what people say in their own words.</p><div class="ctas"><a class="btn btn-moss" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read the reviews</a></div></section>
 {visit(rel)}'''
-    return page(rel, "Results · Balance Clinic", "Before and after photos from Balance Clinic Spa Beauty, Navan.", "results", body)
+    return page(rel, "Before & After Results | Balance Clinic Navan", "Real before and after photos of skin, laser and body treatments at Balance Clinic Spa Beauty in Navan, Co. Meath.", "results", body)
 
 def about():
     rel = "../"
@@ -654,7 +675,7 @@ def about():
   <div class="img reveal-img" style="aspect-ratio:4/3"><img src="{rel}assets/img/room.jpg" alt="A treatment room at Balance" loading="lazy"></div>
 </div></section>
 {visit(rel)}'''
-    return page(rel, "About · Balance Clinic", "The story of Balance Clinic Spa Beauty in Navan.", "about", body)
+    return page(rel, "About Us | Beauty Clinic & Spa in Navan | Balance Clinic", "Balance Clinic Spa Beauty on Trimgate Street, Navan: a medical aesthetic clinic and holistic spa, rated 4.9 by over 800 Google reviewers.", "about", body)
 
 def team():
     rel = "../"
@@ -662,7 +683,7 @@ def team():
     cards = "".join(f'<div class="member" data-reveal><div class="pic">{r.split()[0][0]}</div><div class="txt"><h3>{r}</h3><p>{d}</p></div></div>' for r, d in members)
     body = phero(rel, [("Home", "index.html"), ("About", "about/index.html")], "Meet the <em>team.</em>", "Trained, certified and genuinely kind. The people who make Balance what it is.", word="Team")
     body += f'<section class="sec"><div class="sec-head"><div><p class="eyebrow">Our people</p><h2 data-split>Expert hands.</h2></div><p data-reveal>Every therapist is certified on the technology they use and keeps training as it moves on.</p></div><div class="team">{cards}</div></section>{visit(rel)}'
-    return page(rel, "Meet the Team · Balance Clinic", "The therapists and specialists at Balance Clinic Spa Beauty, Navan.", "about", body)
+    return page(rel, "Meet the Team | Balance Clinic Navan", "The therapists and specialists at Balance Clinic Spa Beauty, Navan.", "about", body)
 
 def price_list():
     rel = ""
@@ -682,7 +703,7 @@ def price_list():
   <p class="pempty" hidden>No treatments match that search. Try a shorter word, or call {TEL}.</p>
   <div class="pnote">All prices are in euro. Prices are confirmed at booking and at consultation. Call {TEL} for a quote on a course or a package.</div>
 </section>{visit(rel)}'''
-    return page(rel, "Price List · Balance Clinic", "Treatment prices at Balance Clinic Spa Beauty, Navan.", "prices", body)
+    return page(rel, "Price List | Beauty Clinic Navan | Balance Clinic", "Prices for laser hair removal, skin treatments, body contouring, waxing, massage and beauty at Balance Clinic Spa Beauty, Navan, Co. Meath.", "prices", body)
 
 def shop():
     rel = "../"
@@ -693,7 +714,7 @@ def shop():
   <a class="voucher alt" href="{rel}shop/january-sale.html" data-reveal><div><b>January sale</b><p>Our biggest savings of the year on courses and packages.</p></div><span class="link">See the offers {ARROW}</span></a>
   <a class="voucher blush" href="https://balanceclinic.ie/" target="_blank" rel="noopener" data-reveal><div><b>Skincare</b><p>Alumier MD, Dermalogica and Elemis, available from the clinic.</p></div><span class="link">Shop skincare {ARROW}</span></a>
 </div></section>{visit(rel)}'''
-    return page(rel, "Shop · Balance Clinic", "Gift vouchers, offers and skincare from Balance Clinic Spa Beauty.", "shop", body)
+    return page(rel, "Shop & Gift Vouchers | Balance Clinic Navan", "Gift vouchers, offers and skincare from Balance Clinic Spa Beauty, Navan, Co. Meath.", "shop", body)
 
 def bf_bar(rel):
     if not BLACK_FRIDAY: return ""
@@ -751,13 +772,13 @@ def gift_vouchers():
     <div class="voucher alt" data-reveal><div><b>A treatment</b><p>Massage, facial, laser, lashes. You name it.</p></div></div>
   </div>
 </div></section>{visit(rel)}'''
-    return page(rel, "Gift Vouchers · Balance Clinic", ("Black Friday: up to %d%% off gift vouchers. " % bf_off() if BLACK_FRIDAY else "") + "Gift vouchers for any treatment at Balance Clinic Spa Beauty, Navan.", "vouchers", body)
+    return page(rel, "Gift Vouchers Navan | Balance Clinic Spa Beauty", ("Black Friday: up to %d%% off gift vouchers. " % bf_off() if BLACK_FRIDAY else "") + "Gift vouchers for any treatment at Balance Clinic Spa Beauty, Navan.", "vouchers", body)
 
 def january_sale():
     rel = "../"
     body = phero(rel, [("Home", "index.html"), ("Shop", "shop/index.html")], "January <em>sale.</em>", "Every January we take our biggest savings of the year off courses and packages. Start the year with skin you are glad to see.", word="Sale")
     body += f'''<section class="sec"><div class="sale"><div><p class="eyebrow" style="color:var(--moss)">Limited time</p><h2 data-split>Courses, packages, savings.</h2><p class="lead" data-reveal style="color:var(--moss)">Laser courses, Venus Legacy packages, peel and microneedling courses and massage bundles. Offers run for the month of January, or while appointments last.</p><div class="ctas" data-reveal style="margin-top:28px"><a class="btn btn-moss" {BOOK}>Book a sale treatment {ARROW}</a><a class="btn btn-white" href="{rel}contact.html">Ask about an offer</a></div></div><div class="big" aria-hidden="true">Jan</div></div></section>{visit(rel)}'''
-    return page(rel, "January Sale · Balance Clinic", "January offers on courses and packages at Balance Clinic Spa Beauty.", "shop", body)
+    return page(rel, "January Sale | Balance Clinic Navan", "January offers on courses and packages at Balance Clinic Spa Beauty, Navan.", "shop", body)
 
 def form(rel, kind):
     opts = "".join(f'<option>{t["title"]}</option>' for t in T)
@@ -796,7 +817,7 @@ def basket_page():
     </aside>
   </div>
 </section>'''
-    return page(rel, "Basket · Balance Clinic", "Your basket at Balance Clinic Spa Beauty, Navan.", "basket", body)
+    return page(rel, "Basket | Balance Clinic Navan", "Your basket at Balance Clinic Spa Beauty, Navan.", "basket", body)
 
 def thank_you():
     rel = ""
@@ -819,7 +840,7 @@ def thank_you():
     </div>
   </div>
 </section>'''
-    return page(rel, "Thank You · Balance Clinic", "Your order at Balance Clinic Spa Beauty, Navan.", "basket", body)
+    return page(rel, "Thank You | Balance Clinic Navan", "Your order at Balance Clinic Spa Beauty, Navan.", "basket", body)
 
 def policy(rel, title_html, lead, word, eyebrow, blocks, page_title, desc):
     body = phero(rel, [("Home", "index.html")], title_html, lead, word=word)
@@ -845,7 +866,7 @@ def terms():
         ("Questions", [f"Call {TEL}, email {MAIL} or send a message from the <a href=\"{rel}contact.html\">contact page</a>. Nothing in these terms affects your rights as a consumer under Irish and EU law."]),
     ]
     return policy(rel, "Terms &amp; <em>refunds.</em>", "How ordering, appointments, cancellations and refunds work when you buy online.", "Terms", "Terms of sale",
-                  blocks, "Terms & Refunds · Balance Clinic", "Terms of sale, cancellation and refund policy for Balance Clinic Spa Beauty, Navan.")
+                  blocks, "Terms & Refunds | Balance Clinic Navan", "Terms of sale, cancellation and refund policy for Balance Clinic Spa Beauty, Navan.")
 
 def privacy():
     rel = ""
@@ -862,7 +883,45 @@ def privacy():
         ("Your rights", [f"You can ask to see, correct or delete the information we hold about you, or object to how we use it. Call {TEL}, email {MAIL} or use the <a href=\"{rel}contact.html\">contact page</a>. You also have the right to complain to the Data Protection Commission at dataprotection.ie."]),
     ]
     return policy(rel, "Privacy <em>notice.</em>", "What we collect when you book or pay, why, and the choices you have.", "Privacy", "Your data",
-                  blocks, "Privacy · Balance Clinic", "Privacy notice for Balance Clinic Spa Beauty, Navan.")
+                  blocks, "Privacy | Balance Clinic Navan", "Privacy notice for Balance Clinic Spa Beauty, Navan.")
+
+def not_found():
+    """Shown for an address that does not exist (and cannot be matched to a page by api/lost.js)."""
+    rel = "/"
+    opts = [("Treatments", f'href="{rel}treatments/index.html"', "Skin, body and beauty treatments, each explained."),
+            ("Laser hair removal", f'href="{rel}laser/index.html"', "For women and men, with prices by area."),
+            ("Price list", f'href="{rel}price-list.html"', "Every treatment and price, with search."),
+            ("Gift vouchers", f'href="{rel}shop/gift-vouchers.html"', "Choose an amount and buy online."),
+            ("Book online", BOOK, "See live availability and book your appointment."),
+            ("Contact", f'href="{rel}contact.html"', f"Call {PHONE} or find us on Trimgate Street.")]
+    cards = "".join(f'<a class="opt" {h} data-reveal><h3>{t}</h3><p>{d}</p><span class="link">Open {ARROW}</span></a>' for t, h, d in opts)
+    body = phero(rel, [("Home", "index.html")], "This page has <em>moved.</em>", "We have a new website, so the page you were looking for has a new address. Everything is still here.", word="Moved",
+                 ctas=f'<a class="btn btn-lime" href="{rel}index.html">Go to the home page {ARROW}</a><a class="btn btn-ghost-light" href="tel:{PHONE_INTL}">Call {PHONE}</a>')
+    body += f'<section class="sec" style="padding-top:clamp(50px,6vw,80px)"><div class="book-opts nf">{cards}</div></section>'
+    return page(rel, "Page Not Found | Balance Clinic Navan", "This page has moved. Find treatments, prices and booking for Balance Clinic Spa Beauty, Navan.", "none", body)
+
+def sitemap():
+    import datetime
+    today = datetime.date.today().isoformat()
+    rows = "".join(f"<url><loc>{u}</loc><lastmod>{today}</lastmod></url>\n" for u in sorted(set(INDEXED), key=lambda u: (u.count("/"), u)))
+    return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{rows}</urlset>\n'
+
+ROBOTS = f"""User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /basket
+Disallow: /thank-you
+
+Sitemap: {SITE}/sitemap.xml
+"""
+
+def site_data():
+    """For api/lost.js: the pages that exist, and the not-found page it serves when an old address has no match."""
+    import json
+    paths = sorted(u[len(SITE):] or "/" for u in set(INDEXED))
+    return json.dumps({"paths": paths, "treatments": [t["slug"] for t in T if t["slug"] != "laser-hair-removal"], "posts": [p["slug"] for p in POSTS],
+                       "notFound": finalize("404.html", not_found())}, ensure_ascii=False) + "\n"
 
 def book():
     rel = "../"
@@ -876,7 +935,7 @@ def book():
   <div class="split" style="align-items:start"><div><p class="eyebrow">Or send a request</p><h2 data-split style="margin:10px 0 26px">We'll call you back.</h2>{form(rel, "book")}</div>
   <aside class="aside"><div class="box" data-reveal><h3>Prefer to talk?</h3><p>Call the clinic on {TEL}. Late opening until 8pm.</p><button class="btn btn-lime copy" type="button" data-copy="046 906 0333" style="margin:0">Copy number</button></div><div class="facts" data-reveal><div><span>Address</span><span>8 Trimgate St, Navan</span></div><div><span>Hours</span><span>Late opening until 8pm</span></div><div><span>Consult</span><span>Included with every course</span></div><div><span>Vouchers</span><span>Accepted on all treatments</span></div></div></aside></div>
 </section>{visit(rel)}'''
-    return page(rel, "Book a Treatment · Balance Clinic", "Book a treatment at Balance Clinic Spa Beauty, Navan.", "book", body)
+    return page(rel, "Book a Treatment | Balance Clinic Navan", "Book laser, skin, body and beauty treatments online at Balance Clinic Spa Beauty, 8 Trimgate Street, Navan, Co. Meath.", "book", body)
 
 def consultation():
     rel = "../"
@@ -887,7 +946,7 @@ def consultation():
     <div style="margin-top:36px">{form(rel, "consult")}</div></div>
   <aside class="aside"><div class="box" data-reveal><h3>Good for</h3><p>Skin concerns, laser suitability, body contouring plans, or simply choosing between two treatments.</p><a class="btn btn-lime" href="{rel}treatments/index.html">Browse treatments {ARROW}</a></div><div class="facts" data-reveal><div><span>Length</span><span>About 15 min</span></div><div><span>Format</span><span>Video call</span></div><div><span>Cost</span><span>Ask when booking</span></div></div></aside>
 </div></section>{visit(rel)}'''
-    return page(rel, "Online Consultation · Balance Clinic", "Book an online consultation with Balance Clinic Spa Beauty.", "book", body)
+    return page(rel, "Online Consultation | Balance Clinic Navan", "Book an online skin or laser consultation with Balance Clinic Spa Beauty, Navan.", "book", body)
 
 def contact():
     rel = ""
@@ -903,14 +962,14 @@ def contact():
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Find us</span><div><strong><a href="{MAPS}" target="_blank" rel="noopener" style="border-color:var(--line)">Open in Google Maps</a></strong><small style="color:var(--ink-2)">Town centre, minutes from parking</small></div></div>
   </div>
 </div></section>{visit(rel)}'''
-    return page(rel, "Contact · Balance Clinic", "Contact Balance Clinic Spa Beauty, 8 Trimgate Street, Navan.", "contact", body)
+    return page(rel, "Contact | Balance Clinic, 8 Trimgate Street, Navan", f"Call {PHONE} or email {EMAIL}. Balance Clinic Spa Beauty, 8 Trimgate Street, Navan, Co. Meath, C15 DHE9.", "contact", body)
 
 def blog_index():
     rel = "../"
     cards = "".join(f'''<a class="post" href="{rel}blog/{p["slug"]}.html" data-reveal><div class="pic"><img src="{rel}assets/img/{p["img"]}" alt="" loading="lazy">{'<span class="vid">Video</span>' if p.get("video") else ''}</div><div class="txt"><span class="meta">{p["date"]}</span><h3>{p["title"]}</h3><p>{p["summary"]}</p></div></a>''' for p in POSTS)
     body = phero(rel, [("Home", "index.html")], "The <em>journal.</em>", "Skin science, treatment explainers and what is new in the clinic.", word="Blog")
     body += f'<section class="sec"><div class="posts">{cards}</div></section>{visit(rel)}'
-    return page(rel, "Blog · Balance Clinic", "Skin and treatment articles from Balance Clinic Spa Beauty.", "blog", body)
+    return page(rel, "Skin & Beauty Blog | Balance Clinic Navan", "Skin and treatment advice from the therapists at Balance Clinic Spa Beauty, Navan.", "blog", body)
 
 def post_page(p):
     rel = "../"
@@ -923,7 +982,7 @@ def post_page(p):
         media += ba(rel, p["compare"], cap, 9)
     body = phero(rel, [("Home", "index.html"), ("Blog", "blog/index.html")], p["title"], p["summary"], img=p["img"])
     body += f'<section class="article"><div class="inner"><p class="eyebrow">{p["date"]}</p>{media}{"".join(p["body"])}</div></section>{visit(rel)}'
-    return page(rel, f"{p['title']} · Balance Clinic", p["summary"], "blog", body)
+    return page(rel, f"{p['title']} | Balance Clinic Navan", p["summary"], "blog", body)
 
 # ---------------------------------------------------------------- write
 # ---------------------------------------------------------------- price list pages
@@ -1010,7 +1069,7 @@ def price_cat_page(sid, title, groups):
 </section>
 {rel_html}
 {visit(rel)}'''
-    return page(rel, f"{title} Prices · Balance Clinic", f"{title} prices at Balance Clinic Spa Beauty, Navan.", "prices", body)
+    return page(rel, f"{title} Prices in Navan | Balance Clinic", f"{title} prices at Balance Clinic Spa Beauty, Trimgate Street, Navan, Co. Meath. Book online or call {PHONE}.", "prices", body)
 
 # ---------------------------------------------------------------- laser hair removal
 CHEV = '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>'
@@ -1140,7 +1199,7 @@ def laser_hub():
 {laser_steps_faq(rel)}
 <section class="sec price-sec" id="pricing"><div class="sec-head"><div><p class="eyebrow">Pricing</p><h2 data-split>Laser prices by area.</h2></div><p data-reveal>Book a single session, or save with a course of 3, 6 or 10. Tap a price to add it to your basket.</p></div>{pricing}</section>
 {visit(rel)}'''
-    return page(rel, "Laser Hair Removal · Balance Clinic", "Medical-grade laser hair removal for women and men at Balance Clinic Spa Beauty, Navan.", "laser", body)
+    return page(rel, "Laser Hair Removal Navan | Women & Men | Balance Clinic", "Medical-grade laser hair removal for women and men in Navan, Co. Meath. Single sessions or courses of 3, 6 or 10 at Balance Clinic Spa Beauty.", "laser", body)
 
 def laser_area(gid, label, areas, a):
     rel = "../../"
@@ -1167,9 +1226,8 @@ def laser_area(gid, label, areas, a):
 {laser_steps_faq(rel)}
 <section class="sec"><div class="sec-head"><div><p class="eyebrow">{label}</p><h2 data-split>Other areas.</h2></div></div><div class="lgrid">{others}</div></section>
 {visit(rel)}'''
-    return page(rel, f"Laser Hair Removal {label}: {a['name']} · Balance Clinic", f"{a['name']} laser hair removal {label.lower()} at Balance Clinic Spa Beauty, Navan.", "laser", body)
+    return page(rel, f"Laser Hair Removal {label} in Navan: {a['name']} | Balance Clinic", f"{a['name']} laser hair removal {label.lower()} in Navan, Co. Meath, from {lfrom(a)} a session. Balance Clinic Spa Beauty, Trimgate Street.", "laser", body)
 
-REDIRECT = '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Laser Hair Removal · Balance Clinic</title><meta http-equiv="refresh" content="0; url=../laser/index.html"><link rel="canonical" href="../laser/index.html"></head><body><a href="../laser/index.html">Laser hair removal</a></body></html>\\n'
 
 def catalog():
     """id -> name, price in cent, description. api/checkout.js prices every basket line from this."""
@@ -1207,6 +1265,13 @@ def catalog():
 VERCEL = """{
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/treatments/laser-hair-removal", "destination": "/laser", "permanent": true },
+    { "source": "/prices/laser-hair-removal", "destination": "/laser", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/((?!api/|assets/).*)", "destination": "/api/lost?p=$1" }
+  ],
   "headers": [
     {
       "source": "/admin(.*)",
@@ -1220,7 +1285,21 @@ VERCEL = """{
 }
 """
 
+NOINDEX = {"basket.html", "thank-you.html", "404.html"}
+INDEXED = []                                   # canonical URLs, for the sitemap
+def clean_url(path):
+    p = re.sub(r"(^|/)index\.html$", r"\1", path); p = re.sub(r"\.html$", "", p)
+    return SITE + "/" + p.rstrip("/")
+def finalize(path, content):
+    if "%%SEO%%" in content:
+        if path in NOINDEX: tags = '<meta name="robots" content="noindex,follow">'
+        else:
+            url = clean_url(path).rstrip("/") + ("/" if path == "index.html" else ""); INDEXED.append(url)
+            tags = f'<link rel="canonical" href="{url}">\n<meta property="og:url" content="{url}">'
+        content = content.replace("%%SEO%%", tags)
+    return content
 def write(path, content):
+    content = finalize(path, content)
     full = os.path.join(ROOT, path); os.makedirs(os.path.dirname(full), exist_ok=True)
     with open(full, "w", encoding="utf-8") as f: f.write(content)
 
@@ -1230,7 +1309,8 @@ if __name__ == "__main__":
     write("assets/img/favicon.svg", FAVICON)
     write("index.html", home())
     write("treatments/index.html", treatments_index())
-    for t in T: write(f"treatments/{t['slug']}.html", REDIRECT if t["slug"] == "laser-hair-removal" else treatment_page(t))
+    for t in T:
+        if t["slug"] != "laser-hair-removal": write(f"treatments/{t['slug']}.html", treatment_page(t))     # that one lives at /laser (redirected in vercel.json)
     write("laser/index.html", laser_hub())
     for gid, label, areas in LASER:
         for a in areas: write(f"laser/{gid}/{a['slug']}.html", laser_area(gid, label, areas, a))
@@ -1241,12 +1321,14 @@ if __name__ == "__main__":
     write("terms.html", terms()); write("privacy.html", privacy())
     write("api/_catalog.json", catalog())
     for sid, title, groups in PRICES: write(f"prices/{PINFO[sid]['slug']}.html", price_cat_page(sid, title, groups))
-    write("prices/laser-hair-removal.html", REDIRECT)
     write("shop/index.html", shop()); write("shop/gift-vouchers.html", gift_vouchers()); write("shop/january-sale.html", january_sale())
     write("book/index.html", book()); write("book/online-consultation.html", consultation())
     write("contact.html", contact())
     write("blog/index.html", blog_index())
     for p in POSTS: write(f"blog/{p['slug']}.html", post_page(p))
+    write("404.html", not_found())
+    write("sitemap.xml", sitemap()); write("robots.txt", ROBOTS)
+    write("api/_site.json", site_data())
     write("vercel.json", VERCEL)
     n = sum(1 for d, _, fs in os.walk(ROOT) if ".git" not in d for f in fs if f.endswith(".html"))
     print("built", n, "pages")

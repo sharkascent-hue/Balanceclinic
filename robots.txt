@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /basket
+Disallow: /thank-you
+
+Sitemap: https://www.balanceclinic.ie/sitemap.xml

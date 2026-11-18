@@ -952,3 +952,9 @@ a.tel:hover{text-decoration-color:currentColor}
 .menu .foot .reach a[href^="mailto"]{text-transform:none;letter-spacing:.04em;font-size:13px}
 footer .brand p a[href^="mailto"]{word-break:break-all}
 @media (max-width:900px){.menu .foot .reach{justify-items:start;text-align:left}}
+
+/* "page has moved" page */
+.book-opts.nf{grid-template-columns:repeat(3,minmax(0,1fr))}
+.book-opts.nf .opt h3{font-size:clamp(26px,2.4vw,34px)}
+@media (max-width:1000px){.book-opts.nf{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.book-opts.nf{grid-template-columns:1fr}.book-opts.nf .opt{padding:24px}}

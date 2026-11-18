@@ -1,6 +1,13 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/treatments/laser-hair-removal", "destination": "/laser", "permanent": true },
+    { "source": "/prices/laser-hair-removal", "destination": "/laser", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/((?!api/|assets/).*)", "destination": "/api/lost?p=$1" }
+  ],
   "headers": [
     {
       "source": "/admin(.*)",

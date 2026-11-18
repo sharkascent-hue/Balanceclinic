@@ -16,6 +16,8 @@ To switch on the booking and contact forms, create a free key at web3forms.com a
 - Two environment variables in Vercel switch it on (Settings → Environment Variables, then redeploy):
   - `STRIPE_SECRET_KEY`: from Stripe → Developers → API keys. `sk_test_…` for practice payments, `sk_live_…` for real ones.
   - Black Friday: `BLACK_FRIDAY` and `BF_DEALS` in `build.py` drive the offer bar, home and shop banners, the voucher cards and their prices. Set `BLACK_FRIDAY = False` and rebuild to take it down.
+  - Old addresses: anything that is not a file goes to `api/lost.js` (the `rewrites` rule), which 301s old-site addresses to the matching new page and serves `404.html` otherwise. Add known old addresses to `EXACT` there.
+  - SEO: `SITE` in `build.py` is the canonical address; `sitemap.xml`, `robots.txt`, canonical tags and the business JSON-LD are generated on build.
   - Booking buttons go to the clinic's Phorest page (`BOOK_URL` in `build.py`).
   - `ADMIN_PASSWORD`: your own password for `/admin`, at least 10 characters. Until it is set, a starter password works; only its one-way fingerprint is in `api/_lib.js`. Set your own before real orders arrive.
   - Optional `SITE_URL` (e.g. `https://www.example.ie`) if the site has more than one address.
