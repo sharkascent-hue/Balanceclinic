@@ -271,7 +271,9 @@
       done(); $('pw').value = ''; state.authed = true; enter();
     }).catch(function () { done('Could not sign in. Check your connection.'); });
   });
-  $('signout').addEventListener('click', function () { orders = []; api('POST', '', { action: 'logout' }).then(boot, boot); });
+  function signOut() { orders = []; api('POST', '', { action: 'logout' }).then(boot, boot); }
+  $('signout').addEventListener('click', signOut);
+  $('signout-m').addEventListener('click', signOut);
   $('refresh').addEventListener('click', function () { if (!sample) load(); });
   $('days').addEventListener('change', function () { if (!sample) load(); });
   $('q').addEventListener('input', renderOrders);

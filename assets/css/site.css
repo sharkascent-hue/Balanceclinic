@@ -101,7 +101,7 @@ html.anim .hero .bgv,html.anim .phero .bg{opacity:.4;transform:scale(1.12)}
 
 /* ---------- header ---------- */
 .site-head{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:120;padding:22px var(--gutter);display:flex;align-items:center;justify-content:space-between;transition:padding .5s var(--ease),background .5s,color .4s,box-shadow .5s;color:#fff}
-.site-head.scrolled{padding-block:12px;background:rgba(28,58,42,.97);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.08),0 18px 40px -28px rgba(10,22,15,.6)}
+.site-head.scrolled{padding-block:12px;background:rgba(28,58,42,.985);color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.08),0 18px 40px -28px rgba(10,22,15,.6)}
 .brand img{height:36px;width:auto;transition:filter .4s}
 .site-head.scrolled .head-cta .btn-moss{background:var(--lime);border-color:var(--lime);color:var(--moss)}
 .site-nav{display:flex;gap:clamp(18px,2.2vw,34px);font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:400}
@@ -600,7 +600,7 @@ footer .giant{position:absolute;left:50%;bottom:-.25em;transform:translateX(-50%
 .ltabs{display:inline-flex;padding:6px;border-radius:999px;background:rgba(255,255,255,.7);border:1px solid var(--line);gap:4px}
 .ltab{border:0;background:none;cursor:pointer;padding:12px 24px;border-radius:999px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:var(--moss);transition:background .35s,color .35s}
 .ltab.on{background:var(--moss);color:#fff}
-.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:clamp(14px,1.6vw,22px);max-width:1520px;margin-inline:auto;animation:lfade .7s var(--ease)}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,380px));gap:clamp(14px,1.6vw,22px);max-width:1520px;margin-inline:auto;animation:lfade .7s var(--ease)}
 .lgrid .hcard{width:auto}
 .lgrid .hcard h3{font-size:clamp(28px,2.4vw,38px)}
 .lc-k{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.78)!important;margin:0 0 6px!important}
@@ -840,12 +840,17 @@ footer .bottom .legal{display:flex;gap:8px 22px;flex-wrap:wrap}
 /* ---------- Black Friday ---------- */
 :root{--promo:0px}
 html.promo-on{--promo:36px}
-.promo{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:121;height:var(--promo);display:flex;align-items:center;justify-content:center;gap:12px;padding:0 16px;background:#0D1912;color:#fff;font-size:13px;letter-spacing:.04em;white-space:nowrap;overflow:hidden;transition:transform .5s var(--ease)}
+.promo{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:121;height:var(--promo);display:flex;align-items:center;justify-content:center;gap:12px;padding:0 16px;background:rgba(13,25,18,.985);color:#fff;font-size:13px;letter-spacing:.04em;white-space:nowrap}
 .promo b{color:var(--lime);font-weight:500;letter-spacing:.2em;text-transform:uppercase;font-size:11px}
 .promo u{text-decoration:none;border-bottom:1px solid var(--lime);font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding-bottom:1px}
 .promo:hover u{color:var(--lime)}
 .pm-short{display:none}
 @media (max-width:560px){.pm-long{display:none}.pm-short{display:inline}.promo{gap:10px;font-size:12.5px}}
+/* The bar and the scrolled header are a hair see-through and unclipped on purpose: a fully solid or clipped bar fixed at the
+   top makes some renderers shift the animated background and leave a dark strip at the bottom of the screen.
+   no overflow clipping on the bar: clipping a fixed bar makes some phone browsers mis-draw the animated background, so the text is sized to fit instead */
+@media (max-width:380px){.promo{gap:8px;font-size:12px;padding:0 10px}.promo b,.promo u{font-size:10px;letter-spacing:.14em}}
+@media (max-width:330px){.promo u{display:none}}
 html.promo-on .site-head{top:calc(env(safe-area-inset-top,0px) + var(--promo));transition:padding .5s var(--ease),background .5s,color .4s,box-shadow .5s,top .5s var(--ease)}
 /* the bar stays on screen, so everything that sticks to the top sits under it */
 html.promo-on .menu .inner{padding-top:calc(110px + var(--promo) + env(safe-area-inset-top,0px))}
@@ -929,3 +934,21 @@ html.promo-on .phero{padding-top:calc(150px + var(--promo) + env(safe-area-inset
 
 .menu-open .bkt{opacity:0;pointer-events:none}
 .lsec{overflow:visible}
+
+/* desktop menu: size the links to the screen height so the whole list is in view without scrolling */
+@media (min-width:901px){
+  .menu .inner{align-content:start;row-gap:28px}
+  .menu .primary a{font-size:clamp(30px,min(5vw,5.4vh),60px);line-height:1.08}
+  .menu .primary a i{font-size:11px;margin-left:10px}
+}
+
+/* tap-to-call and email links */
+a.tel{white-space:nowrap;text-decoration:underline;text-decoration-color:rgba(141,195,75,.75);text-decoration-thickness:1px;text-underline-offset:3px;transition:text-decoration-color .3s}
+a.tel:hover{text-decoration-color:currentColor}
+.details a.tel{border-bottom:0}
+.details strong.em{font-size:clamp(17px,4.6vw,22px);overflow-wrap:anywhere}
+.details strong.em a.tel{white-space:normal}
+.menu .foot .reach{display:grid;gap:4px;justify-items:end;text-align:right}
+.menu .foot .reach a[href^="mailto"]{text-transform:none;letter-spacing:.04em;font-size:13px}
+footer .brand p a[href^="mailto"]{word-break:break-all}
+@media (max-width:900px){.menu .foot .reach{justify-items:start;text-align:left}}

@@ -16,7 +16,7 @@
   (function bg() {
     var c = document.getElementById('bgfx'); if (!c) return;
     var gl = null;
-    try { gl = c.getContext('webgl', { antialias: false, alpha: false, depth: false, stencil: false, powerPreference: 'low-power' }) || c.getContext('experimental-webgl'); } catch (e) { gl = null; }
+    try { gl = c.getContext('webgl', { antialias: false, alpha: true, premultipliedAlpha: true, depth: false, stencil: false, powerPreference: 'low-power' })   /* see-through where nothing is drawn, so a renderer hiccup shows the page colour, never black */ || c.getContext('experimental-webgl'); } catch (e) { gl = null; }
     if (!gl) return;   /* body background (cream) shows instead */
     var VS = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
     var FS = [
@@ -501,14 +501,14 @@
       var key = f.querySelector('[name="access_key"]');
       if (!key || !key.value || key.value.indexOf('YOUR_') === 0) {
         msg.hidden = false; msg.classList.add('err');
-        msg.textContent = 'Online enquiries are not connected yet. Call (046) 906 0333 or email the clinic to book.';
+        msg.textContent = 'Online enquiries are not connected yet. Call (046) 906 0333 or email admin@balanceclinic.ie to book.';
         return;
       }
       var btn = f.querySelector('button[type="submit"]'); btn.disabled = true;
       fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } })
         .then(function (r) { return r.json(); })
-        .then(function (d) { msg.hidden = false; msg.classList.toggle('err', !d.success); msg.textContent = d.success ? 'Thank you. We have your request and will confirm your appointment shortly.' : 'Something went wrong. Please call (046) 906 0333.'; if (d.success) f.reset(); })
-        .catch(function () { msg.hidden = false; msg.classList.add('err'); msg.textContent = 'Could not send. Please call (046) 906 0333.'; })
+        .then(function (d) { msg.hidden = false; msg.classList.toggle('err', !d.success); msg.textContent = d.success ? 'Thank you. We have your request and will confirm your appointment shortly.' : 'Something went wrong. Please call (046) 906 0333 or email admin@balanceclinic.ie.'; if (d.success) f.reset(); })
+        .catch(function () { msg.hidden = false; msg.classList.add('err'); msg.textContent = 'Could not send. Please call (046) 906 0333 or email admin@balanceclinic.ie.'; })
         .then(function () { btn.disabled = false; });
     });
   });

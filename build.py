@@ -5,6 +5,10 @@ import os, re, html
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 PHONE = "(046) 906 0333"
+PHONE_INTL = "+353469060333"          # what a tap on the number dials
+EMAIL = "admin@balanceclinic.ie"
+TEL = f'<a class="tel" href="tel:{PHONE_INTL}">{PHONE}</a>'
+MAIL = f'<a class="tel" href="mailto:{EMAIL}">{EMAIL}</a>'
 ADDRESS = "8 Trimgate Street, Townparks, Navan, Co. Meath, C15 DHE9"
 MAPS = "https://www.google.com/maps/search/?api=1&query=Balance+Clinic+Spa+Beauty+8+Trimgate+St+Navan"
 GOOGLE_REVIEWS = "https://www.google.com/search?q=Balance+Clinic+Spa+Beauty+Navan+reviews"
@@ -351,7 +355,7 @@ def header(rel, current):
       <a href="{rel}blog/index.html">Blog</a>
     </nav>
     <div class="groups">{groups}</div>
-    <div class="foot"><span>{ADDRESS}</span>{social("social sm")}<span>{PHONE}</span></div>
+    <div class="foot"><span>{ADDRESS}</span>{social("social sm")}<span class="reach">{TEL}{MAIL}</span></div>
   </div>
   {laser_panels(rel)}
 </div>
@@ -364,7 +368,7 @@ def footer(rel):
     return f'''</div>
 <footer>
   <div class="inner">
-    <div class="brand"><img src="{rel}assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"><p>{ADDRESS}<br>{PHONE}</p>{social()}</div>
+    <div class="brand"><img src="{rel}assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"><p>{ADDRESS}<br>{TEL}<br>{MAIL}</p>{social()}</div>
     <div><h4>Body</h4><ul>{body}</ul></div>
     <div><h4>Skin</h4><ul>{skin}</ul></div>
     <div><h4>Clinic</h4><ul>
@@ -456,7 +460,8 @@ def visit(rel, title_html="Trimgate Street,<br><em>Navan.</em>", lead="Walk in f
     </div>
     <div class="details" data-reveal>
       <div><span>Address</span><div><strong>8 Trimgate Street, Townparks</strong><small>Navan, Co. Meath, C15 DHE9</small></div></div>
-      <div><span>Phone</span><div><strong>{PHONE}</strong><button class="copy" type="button" data-copy="046 906 0333">Copy</button><small>Call for today's opening hours</small></div></div>
+      <div><span>Phone</span><div><strong>{TEL}</strong><button class="copy" type="button" data-copy="046 906 0333">Copy</button><small>Call for today's opening hours</small></div></div>
+      <div><span>Email</span><div><strong class="em">{MAIL}</strong><small>For bookings and questions</small></div></div>
       <div><span>Hours</span><div><strong>Late opening until 8pm</strong><small>Evening appointments available</small></div></div>
       <div><span>Online</span><div><strong><a {BOOK}>Book a treatment</a></strong><small>Or an online consultation</small></div></div>
     </div>
@@ -610,7 +615,7 @@ def treatment_page(t):
     <h2 data-split>What to expect</h2><div class="steps" data-reveal>{steps}</div>
   </div>
   <aside class="aside">
-    <div class="box" data-reveal><h3>Book {t["title"].lower() if len(t["title"]) < 26 else "this treatment"}</h3><p>Every course starts with a consultation. Book online or call {PHONE}.</p><a class="btn btn-lime" {BOOK}>Book now {ARROW}</a></div>
+    <div class="box" data-reveal><h3>Book {t["title"].lower() if len(t["title"]) < 26 else "this treatment"}</h3><p>Every course starts with a consultation. Book online or call {TEL}.</p><a class="btn btn-lime" {BOOK}>Book now {ARROW}</a></div>
     <div class="facts" data-reveal>{facts}</div>
     {media}
   </aside>
@@ -674,8 +679,8 @@ def price_list():
   <div class="pbar"><nav class="pchips" aria-label="Price list sections">{chips}</nav>
     <label class="psearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="price-search" type="search" placeholder="Search treatments" aria-label="Search treatments" autocomplete="off"></label></div>
   {secs}
-  <p class="pempty" hidden>No treatments match that search. Try a shorter word, or call {PHONE}.</p>
-  <div class="pnote">All prices are in euro. Prices are confirmed at booking and at consultation. Call {PHONE} for a quote on a course or a package.</div>
+  <p class="pempty" hidden>No treatments match that search. Try a shorter word, or call {TEL}.</p>
+  <div class="pnote">All prices are in euro. Prices are confirmed at booking and at consultation. Call {TEL} for a quote on a course or a package.</div>
 </section>{visit(rel)}'''
     return page(rel, "Price List · Balance Clinic", "Treatment prices at Balance Clinic Spa Beauty, Navan.", "prices", body)
 
@@ -738,7 +743,7 @@ def gift_vouchers():
     body += bf_cards(rel)
     body += f'''<section class="sec"><div class="split">
   <div><p class="eyebrow">How it works</p><h2 data-split>Give someone an hour that is only theirs.</h2><p class="lead" data-reveal>Vouchers can be for any value or any treatment on the menu, from a massage to a course of laser. We post them in a gift wallet or email them within the hour.</p>
-    <div class="steps" data-reveal><div><div><b>Choose</b>An amount below, or a treatment from the price list.</div></div><div><div><b>Order</b>Add it to your basket and pay online, call {PHONE} or drop into the clinic.</div></div><div><div><b>Deliver</b>Posted, emailed or collected, ready to give.</div></div></div>
+    <div class="steps" data-reveal><div><div><b>Choose</b>An amount below, or a treatment from the price list.</div></div><div><div><b>Order</b>Add it to your basket and pay online, call {TEL} or drop into the clinic.</div></div><div><div><b>Deliver</b>Posted, emailed or collected, ready to give.</div></div></div>
     <div class="vbuy" data-reveal><p class="eyebrow">Choose an amount</p><div class="vopts">{vopts}</div><p class="gnote">Valid for five years and good for any treatment. Tell us who it is for at checkout.</p></div>
     <div class="ctas" data-reveal><button class="btn btn-lime" type="button" data-basket-open>View basket {ARROW}</button><a class="btn btn-ghost" href="{rel}contact.html">Ask us</a></div></div>
   <div class="shop-grid" style="grid-template-columns:1fr;max-width:420px">
@@ -768,7 +773,7 @@ def form(rel, kind):
   <label>Message<textarea name="message" id="f-msg" placeholder="{'Anything we should know, or questions about the treatment.' if kind=='book' else 'How can we help?'}"></textarea></label>
   <div class="msg" hidden></div>
   <button class="btn btn-moss" type="submit">{'Send booking request' if kind=='book' else 'Send message'} {ARROW}</button>
-  <p class="note">We confirm every request by phone or email. Or call {PHONE}.</p>
+  <p class="note">We confirm every request by phone or email. Or call {TEL}.</p>
 </form>'''
 
 def basket_page():
@@ -810,7 +815,7 @@ def thank_you():
     <div class="ty-no" data-order-no-pay hidden>
       <h2>We could not confirm a payment.</h2>
       <p class="lead">Nothing has been taken twice. If you completed a payment, your receipt email is your proof and we will be in touch. Otherwise your basket is still saved.</p>
-      <div class="ctas"><a class="btn btn-moss" href="{rel}basket.html">Back to basket {ARROW}</a><a class="btn btn-ghost" href="tel:+353469060333">Call {PHONE}</a></div>
+      <div class="ctas"><a class="btn btn-moss" href="{rel}basket.html">Back to basket {ARROW}</a><a class="btn btn-ghost" href="tel:{PHONE_INTL}">Call {PHONE}</a></div>
     </div>
   </div>
 </section>'''
@@ -825,19 +830,19 @@ def policy(rel, title_html, lead, word, eyebrow, blocks, page_title, desc):
 def terms():
     rel = ""
     blocks = [
-        ("Who you are buying from", [f"Balance Clinic Spa Beauty, {ADDRESS}. Phone {PHONE}. These terms cover treatments, courses and gift vouchers bought through this website."]),
+        ("Who you are buying from", [f"Balance Clinic Spa Beauty, {ADDRESS}. Phone {TEL}, email {MAIL}. These terms cover treatments, courses and gift vouchers bought through this website."]),
         ("Ordering and payment", ["Prices are in euro and include VAT where it applies. Payment is taken securely by Stripe when you place your order. We never see or store your card details.",
                                   "Once you have paid you will receive a receipt by email, and we will phone you within one working day to arrange your appointment."]),
         ("Consultation and suitability", ["Every treatment starts with a consultation, and laser hair removal starts with a patch test. If your therapist finds that a treatment is not suitable for you, we will offer an alternative or refund what you paid for it in full.",
                                           "Some treatments, including injectables, cannot be bought online because they need a consultation first."]),
         ("Changing or cancelling an appointment", ["Please give us at least 24 hours' notice if you need to move or cancel an appointment, so we can offer the time to someone else. Appointments missed without notice may be counted as taken."]),
         ("Refunds", ["You can cancel an online order within 14 days of buying it and receive a full refund, as long as the treatment has not been carried out. If you have started a course, the sessions you have already had are charged at the single-session price and the balance is refunded.",
-                     "Refunds are made to the card you paid with, normally within 5 to 10 working days. To ask for one, call us or use the contact page and quote your order number."]),
+                     f"Refunds are made to the card you paid with, normally within 5 to 10 working days. To ask for one, call us, email {EMAIL} or use the contact page and quote your order number."]),
         ("Courses", ["Courses of 3, 6 or 10 sessions are for one person and one treatment area. Sessions are spaced as your therapist recommends, and a course should be used within 18 months of purchase."]),
         ("Gift vouchers", ["Gift vouchers are valid for five years from the date of purchase and can be used against any treatment. They cannot be exchanged for cash. Please treat a voucher like cash: we cannot replace one that is lost.",
                            "Vouchers bought in a sale, such as Black Friday, are sold at the offer price while the offer runs and carry their full face value."]),
         ("Results", ["Everybody responds differently to treatment, so results vary from person to person and cannot be guaranteed. Your therapist will tell you honestly what to expect at your consultation."]),
-        ("Questions", [f"Call {PHONE} or send a message from the <a href=\"{rel}contact.html\">contact page</a>. Nothing in these terms affects your rights as a consumer under Irish and EU law."]),
+        ("Questions", [f"Call {TEL}, email {MAIL} or send a message from the <a href=\"{rel}contact.html\">contact page</a>. Nothing in these terms affects your rights as a consumer under Irish and EU law."]),
     ]
     return policy(rel, "Terms &amp; <em>refunds.</em>", "How ordering, appointments, cancellations and refunds work when you buy online.", "Terms", "Terms of sale",
                   blocks, "Terms & Refunds · Balance Clinic", "Terms of sale, cancellation and refund policy for Balance Clinic Spa Beauty, Navan.")
@@ -845,7 +850,7 @@ def terms():
 def privacy():
     rel = ""
     blocks = [
-        ("Who is responsible for your data", [f"Balance Clinic Spa Beauty, {ADDRESS}, is the data controller for information collected through this website. Phone {PHONE}."]),
+        ("Who is responsible for your data", [f"Balance Clinic Spa Beauty, {ADDRESS}, is the data controller for information collected through this website. Phone {TEL}, email {MAIL}."]),
         ("What we collect", ["When you send a booking request or message: your name, phone number, email address and what you tell us about the treatment you want.",
                              "When you pay online: your name, email address, phone number, billing details and what you bought. Card details go directly to Stripe, our payment provider. We never see or store them.",
                              "Your basket is saved in your own browser so it is still there when you come back. It is not sent to us until you order."]),
@@ -854,7 +859,7 @@ def privacy():
         ("Health information", ["Anything about your health that you share at a consultation is recorded in the clinic, kept confidential and used only to treat you safely. Please do not send medical details through the website forms."]),
         ("How long we keep it", ["Payment records are kept for six years, as tax law requires. Messages and booking requests are kept only for as long as we need them to look after you."]),
         ("Cookies", ["This site does not use advertising or tracking cookies. Stripe sets cookies on its own payment page to keep payments secure and prevent fraud."]),
-        ("Your rights", [f"You can ask to see, correct or delete the information we hold about you, or object to how we use it. Call {PHONE} or use the <a href=\"{rel}contact.html\">contact page</a>. You also have the right to complain to the Data Protection Commission at dataprotection.ie."]),
+        ("Your rights", [f"You can ask to see, correct or delete the information we hold about you, or object to how we use it. Call {TEL}, email {MAIL} or use the <a href=\"{rel}contact.html\">contact page</a>. You also have the right to complain to the Data Protection Commission at dataprotection.ie."]),
     ]
     return policy(rel, "Privacy <em>notice.</em>", "What we collect when you book or pay, why, and the choices you have.", "Privacy", "Your data",
                   blocks, "Privacy · Balance Clinic", "Privacy notice for Balance Clinic Spa Beauty, Navan.")
@@ -862,14 +867,14 @@ def privacy():
 def book():
     rel = "../"
     body = phero(rel, [("Home", "index.html")], "Book a <em>treatment.</em>", "Pick your treatment and a time that suits in our online booking. Or send us a request and we will find the slot for you.", word="Book",
-                 ctas=f'<a class="btn btn-lime" {BOOK}>Book online now {ARROW}</a><a class="btn btn-ghost-light" href="tel:+353469060333">Call {PHONE}</a>')
+                 ctas=f'<a class="btn btn-lime" {BOOK}>Book online now {ARROW}</a><a class="btn btn-ghost-light" href="tel:{PHONE_INTL}">Call {PHONE}</a>')
     body += f'''<section class="sec" style="padding-top:clamp(50px,6vw,80px)">
   <div class="book-opts">
     <a class="opt on" {BOOK} data-reveal><span class="k">Option 01 · Instant</span><h3>Book online</h3><p>See live availability and confirm your appointment in a couple of minutes. Opens our booking page.</p><span class="link">Book now {ARROW}</span></a>
     <a class="opt" href="{rel}book/online-consultation.html" data-reveal><span class="k">Option 02</span><h3>Book an online consultation</h3><p>Not sure where to start? A short video call with a therapist to plan your treatment.</p></a>
   </div>
   <div class="split" style="align-items:start"><div><p class="eyebrow">Or send a request</p><h2 data-split style="margin:10px 0 26px">We'll call you back.</h2>{form(rel, "book")}</div>
-  <aside class="aside"><div class="box" data-reveal><h3>Prefer to talk?</h3><p>Call the clinic on {PHONE}. Late opening until 8pm.</p><button class="btn btn-lime copy" type="button" data-copy="046 906 0333" style="margin:0">Copy number</button></div><div class="facts" data-reveal><div><span>Address</span><span>8 Trimgate St, Navan</span></div><div><span>Hours</span><span>Late opening until 8pm</span></div><div><span>Consult</span><span>Included with every course</span></div><div><span>Vouchers</span><span>Accepted on all treatments</span></div></div></aside></div>
+  <aside class="aside"><div class="box" data-reveal><h3>Prefer to talk?</h3><p>Call the clinic on {TEL}. Late opening until 8pm.</p><button class="btn btn-lime copy" type="button" data-copy="046 906 0333" style="margin:0">Copy number</button></div><div class="facts" data-reveal><div><span>Address</span><span>8 Trimgate St, Navan</span></div><div><span>Hours</span><span>Late opening until 8pm</span></div><div><span>Consult</span><span>Included with every course</span></div><div><span>Vouchers</span><span>Accepted on all treatments</span></div></div></aside></div>
 </section>{visit(rel)}'''
     return page(rel, "Book a Treatment · Balance Clinic", "Book a treatment at Balance Clinic Spa Beauty, Navan.", "book", body)
 
@@ -891,7 +896,8 @@ def contact():
   <div>{form(rel, "contact")}</div>
   <div class="details" data-reveal style="color:var(--ink)">
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Address</span><div><strong>8 Trimgate Street, Townparks</strong><small style="color:var(--ink-2)">Navan, Co. Meath, C15 DHE9</small></div></div>
-    <div style="border-color:var(--line)"><span style="color:var(--moss)">Phone</span><div><strong>{PHONE}</strong><button class="copy" type="button" data-copy="046 906 0333" style="color:var(--moss);border-color:var(--line)">Copy</button><small style="color:var(--ink-2)">Call for today's opening hours</small></div></div>
+    <div style="border-color:var(--line)"><span style="color:var(--moss)">Phone</span><div><strong>{TEL}</strong><button class="copy" type="button" data-copy="046 906 0333" style="color:var(--moss);border-color:var(--line)">Copy</button><small style="color:var(--ink-2)">Call for today's opening hours</small></div></div>
+    <div style="border-color:var(--line)"><span style="color:var(--moss)">Email</span><div><strong class="em">{MAIL}</strong><small style="color:var(--ink-2)">For bookings and questions</small></div></div>
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Hours</span><div><strong>Late opening until 8pm</strong><small style="color:var(--ink-2)">Evening appointments available</small></div></div>
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Follow</span><div>{social("social ink")}<small style="color:var(--ink-2)">Results, offers and behind the scenes</small></div></div>
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Find us</span><div><strong><a href="{MAPS}" target="_blank" rel="noopener" style="border-color:var(--line)">Open in Google Maps</a></strong><small style="color:var(--ink-2)">Town centre, minutes from parking</small></div></div>
@@ -1000,7 +1006,7 @@ def price_cat_page(sid, title, groups):
     <label class="psearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="price-search" type="search" placeholder="Search {t_esc.lower()} treatments" aria-label="Search {t_esc.lower()} treatments" autocomplete="off"></label></div>
   <div class="psec"><div class="psec-head"><h2 data-split>{t_esc}</h2><span>{pcount(groups)} treatments · from €{pfrom(groups)}</span></div><div class="pgrid{" one" if len(groups) == 1 else ""}">{pgroups_html(groups, title)}</div></div>
   <p class="pempty" hidden>No {t_esc.lower()} treatments match that search. Try a shorter word, or see <a href="{rel}price-list.html">all prices</a>.</p>
-  <div class="pnote">All prices are in euro and confirmed at booking. Call {PHONE} for a quote on a course or a package.</div>
+  <div class="pnote">All prices are in euro and confirmed at booking. Call {TEL} for a quote on a course or a package.</div>
 </section>
 {rel_html}
 {visit(rel)}'''
@@ -1130,7 +1136,7 @@ def laser_hub():
   <div class="ltabs" role="tablist" data-tabs>{tabs}</div></div>{panels}
   <p class="pempty" hidden>No laser areas match that search. Try a shorter word, or see <a href="{rel}price-list.html">all prices</a>.</p></section>
 <section class="tbody"><div class="inner"><div class="prose"><h2 data-split>About laser hair removal</h2>{prose}<h2 data-split>Good for</h2><ul data-reveal>{benefits}</ul></div>
-  <aside class="aside"><div class="box" data-reveal><h3>Start with a patch test</h3><p>Every course begins with a consultation and patch test, so the settings suit your skin and hair. Call {PHONE} or book online.</p><a class="btn btn-lime" {BOOK}>Book a consultation {ARROW}</a></div></aside></div></section>
+  <aside class="aside"><div class="box" data-reveal><h3>Start with a patch test</h3><p>Every course begins with a consultation and patch test, so the settings suit your skin and hair. Call {TEL} or book online.</p><a class="btn btn-lime" {BOOK}>Book a consultation {ARROW}</a></div></aside></div></section>
 {laser_steps_faq(rel)}
 <section class="sec price-sec" id="pricing"><div class="sec-head"><div><p class="eyebrow">Pricing</p><h2 data-split>Laser prices by area.</h2></div><p data-reveal>Book a single session, or save with a course of 3, 6 or 10. Tap a price to add it to your basket.</p></div>{pricing}</section>
 {visit(rel)}'''
