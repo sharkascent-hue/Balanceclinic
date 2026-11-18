@@ -1,8 +1,9 @@
 /* Old addresses.
    Any address that is not a file on this site lands here (see "rewrites" in vercel.json).
    The clinic's previous website used different addresses (/product/…, /services/, /contact-us/ …) and Google still links to
-   them, so each one is sent permanently (301) to the page that now covers the same thing. An address with no sensible match
-   gets the branded "page has moved" page with a real 404 status, so search engines drop it. */
+   them, so each one is sent permanently (301) to the page that now covers the same thing. A page address with no closer
+   match opens the home page: visitors always land on a real page. Only technical leftovers that no person visits
+   (WordPress system files, old image files, feeds) get a 404. */
 'use strict';
 const SITE = require('./_site.json');
 const PAGES = new Set(SITE.paths);
@@ -33,12 +34,32 @@ const EXACT = {
   'product/laser-hair-removal-full-leg-bikini-underarm': '/laser/women/full-body',
   'product/stomach-sculpt': '/treatments/body-contouring', 'product/bum-lift-sculpt': '/treatments/body-contouring',
   'product/front-of-thighs-sculpt': '/treatments/body-contouring', 'product/glow-up-package': '/prices/skin-face',
-  '2020/08/10/what-is-cellulite': '/treatments/what-is-cellulite'
+  'product/25-off-4x-aumier-peels': '/treatments/alumier-md-peels',
+  '2020/08/10/what-is-cellulite': '/treatments/what-is-cellulite',
+  '2021/06/29/do-you-suffer-from-cellulite': '/blog/what-cellulite-really-is',
+  '2021/09/02/micro-needling-skin-needling-non-surgical-therapy-skin-treatment-anti-aging-fine-lines-wrinkles': '/blog/why-microneedling-works',
+  '2021/10/30/do-i-need-photo-facial-rejuvenation': '/treatments/lumenis-stellar-m22-ipl',
+  '2020/10/28/what-is-peel-season': '/treatments/alumier-md-peels',
+  '2021/07/29/skin-care-tips-in-your-teens-20s-30s-40s-50s-60s': '/blog/your-skin-deserves-a-reset',
+  'team-members/marie-reilly': '/about/team', 'team-members/nathalie': '/about/team', 'team-members/shannen': '/about/team',
+  'team-members/lucy-mcalister': '/about/team', 'team-members': '/about/team', 'gs-team-specialty/brows': '/about/team'
 };
+
+/* Old blog posts we have no copy of: send each to the article or treatment on the same subject */
+const POST_RULES = [
+  [/cellulite/, '/blog/what-cellulite-really-is'],
+  [/micro-?needl|needling|collagen/, '/blog/why-microneedling-works'],
+  [/polynucleotide|under-eye|dark-circle|tired-eye/, '/blog/polynucleotides-for-tired-eyes'],
+  [/peel/, '/treatments/alumier-md-peels'],
+  [/photo-facial|rejuvenation|(^|[-\/])ipl([-\/]|$)|pigment|rosacea/, '/treatments/lumenis-stellar-m22-ipl'],
+  [/laser|hair-removal/, '/laser'],
+  [/skin|glow|acne|spf|sun/, '/blog/your-skin-deserves-a-reset']
+];
 
 /* 2. Anything else: go by the words in the address. First rule that matches wins, so specific ones come first. */
 const has = (w, re) => re.test(w);
 const RULES = [
+  [/^gs-team|team-member/, '/about/team'],
   [/voucher|gift/, '/shop/gift-vouchers'],
   [/laser|hair-removal|velocity/, function (w) {
     const men = /(^|-)(men|mens|male|man|beard|chest)(-|$)/.test(w), women = /women|womens|ladies|female|bikini|brazilian|hollywood/.test(w);
@@ -103,11 +124,14 @@ function target(raw) {
   if (TREATMENTS.has(last)) return '/treatments/' + last;                    /* the old site kept treatments at the top level */
   if (SITE.posts.indexOf(last) > -1) return '/blog/' + last;
   if (Object.prototype.hasOwnProperty.call(EXACT, last) && !/^product/.test(p)) return EXACT[last];
-  if (/^\d{4}\/\d{1,2}(\/|$)/.test(p)) return '/blog';                           /* an old dated blog post we do not have */
+  if (/^\d{4}\/\d{1,2}(\/|$)/.test(p)) {                                           /* an old dated blog post */
+    for (let i = 0; i < POST_RULES.length; i++) if (has(p, POST_RULES[i][0])) return POST_RULES[i][1];
+    return '/blog';
+  }
   for (let i = 0; i < RULES.length; i++) {
     if (has(p, RULES[i][0])) { const t = RULES[i][1]; return typeof t === 'function' ? t(p) : t; }
   }
-  return null;
+  return '/';                                                                       /* a page we cannot place: the home page, never an error */
 }
 
 module.exports = function handler(req, res) {
