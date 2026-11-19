@@ -51,6 +51,7 @@ module.exports = async function handler(req, res) {
     const pi = s.payment_intent || {}, charge = (pi && pi.latest_charge) || {};
     const refunded = !!charge.refunded || (charge.amount_refunded && charge.amount_refunded >= charge.amount);
     const field = function (key) { const f = (s.custom_fields || []).filter(function (x) { return x.key === key; })[0]; return (f && f.text && f.text.value) || ''; };
+    const hasField = function (key) { return (s.custom_fields || []).some(function (x) { return x.key === key; }); };
     const no = (s.metadata && s.metadata.order_no) || s.client_reference_id || '';
     const bought = new Date(s.created * 1000), until = new Date(bought); until.setFullYear(until.getFullYear() + YEARS_VALID);
 
@@ -59,8 +60,9 @@ module.exports = async function handler(req, res) {
       bought: bought.toISOString(),
       expires: until.toISOString(),
       from: (s.customer_details && s.customer_details.name) || '',
-      to: field('vfor'),
-      message: field('notes'),
+      /* orders from before the voucher name box existed asked "who a voucher is for" in the notes box */
+      to: hasField('vfor') ? field('vfor') : field('notes').slice(0, 60),
+      message: hasField('vfor') ? field('notes') : '',
       cancelled: refunded,
       test: s.livemode === false,
       vouchers: values.map(function (v, i) { return { code: values.length > 1 ? no + '-' + (i + 1) : no, value: v }; })
