@@ -31,7 +31,7 @@ PLAY = '<svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg>'
 
 # ---------------------------------------------------------------- treatments
 GROUPS = [
-    ("skin", "Skin Treatments", "Medical-grade skin work: peels, IPL and microneedling."),
+    ("skin", "Skin Treatments", "Medical-grade skin work: CACI facelifts, peels, IPL and microneedling."),
     ("body", "Body Treatments", "Laser, contouring, waxing and massage for the whole body."),
     ("skin-concerns", "Skin Concerns", "Understand what is happening and which treatment answers it."),
     ("beauty", "Beauty Treatments", "Nails, lashes and brows finished to a clinic standard."),
@@ -175,6 +175,20 @@ treatment(slug="lumenis-stellar-m22-ipl", group="skin", title="Lumenis Stellar M
     facts=[("Sessions", "5 recommended"), ("Time", "20 to 40 min"), ("Downtime", "Minimal"), ("Patch test", "Required")],
     faqs=[("Does IPL hurt?", "Each pulse feels like a warm flick. Cooling gel and the M22 sapphire tip keep it comfortable."), ("Can I have IPL with a tan?", "No. Skin must be free of tan, real or fake, for four weeks before treatment.")],
     compare="rosacea")
+
+treatment(slug="caci-non-surgical-facelift", group="skin", title="CACI Non-Surgical Facelift", em="CACI", img="ph-caci.jpg",
+    short="Microcurrent facial that lifts and tones the face, jaw and eyes, with no needles and no downtime.",
+    intro="A non-surgical facelift that works the way exercise works on the body. Gentle microcurrent lifts and tones the facial muscles, softening lines and redefining the jaw, cheeks and eyes, with no needles and no downtime.",
+    body=["CACI uses tiny, painless electrical impulses to re-educate the muscles of the face. Muscles that have dropped with age are lifted and firmed, and the skin above looks tighter, smoother and brighter. It is a non-invasive, cost-effective alternative to fillers.",
+          "Results build over a course of treatments, then a regular maintenance session keeps the face lifted. Your therapist plans the course with you at consultation.",
+          "<strong>Our CACI treatments.</strong> CACI Ultimate Anti-Ageing, our most complete lifting facial. CACI Healing Booster, to calm, hydrate and restore the skin. CACI Eye, for puffiness, dark circles and fine lines around the eyes. CACI Neck and Jowl Lift, to firm the jawline and neck."],
+    benefits=["Lifts and tones sagging facial muscles", "Softens fine lines and wrinkles", "Firms the jawline, jowls and neck", "Brightens and plumps tired skin", "Reduces puffiness around the eyes", "No needles, no downtime"],
+    steps=[("Consultation", "We look at your skin and the areas you want to lift, and choose the right CACI treatment."), ("Treatment", "Gentle microcurrent is worked over the face. Most clients find it relaxing, and many say it feels like a light tingle."), ("Results", "Skin looks lifted and fresher straight away, and the effect builds with every session in the course.")],
+    facts=[("Sessions", "Course recommended"), ("Downtime", "None"), ("Needles", "None"), ("Feels like", "A light tingle")],
+    faqs=[("How does CACI work?", "Microcurrent gently stimulates the facial muscles, much like exercise tones the body. Toned muscles sit higher, so the face looks lifted and firmer."),
+          ("Is CACI an alternative to fillers?", "For many clients, yes. CACI lifts and firms without needles, and suits anyone who wants a natural, gradual result."),
+          ("How many sessions will I need?", "A course gives the best result, followed by regular maintenance. We plan the number of sessions with you at consultation."),
+          ("Is there any downtime?", "None. You can go straight back to work or out for the evening.")])
 
 treatment(slug="microneedling", group="skin", title="Microneedling", em="Microneedling", img="ph-microneedling.jpg",
     short="Collagen induction for scarring, texture, pores and fine lines.",
@@ -534,16 +548,16 @@ def home():
     rel = ""
     cards = ""
     strip = [
-        ("Skin Treatments", "Alumier peels, IPL, microneedling and exosomes.", "ph-peel.jpg", "treatments/index.html#skin", ["Peels", "IPL", "Needling"]),
+        ("Skin Treatments", "CACI facelift, Alumier peels, IPL and microneedling.", "ph-peel.jpg", "treatments/index.html#skin", ["CACI", "Peels", "IPL"]),
         ("Medical Grade Laser", "Hair removal, rejuvenation and thread veins.", "ph-laser.jpg", "laser/index.html", ["Hair removal", "Thread veins"]),
         ("Body Treatments", "Venus Legacy contouring, cellulite and skin tightening.", "ph-contour.jpg", "treatments/body-contouring.html", ["Venus Legacy", "Cellulite"]),
-        ("Non Surgical", "Microneedling, Idenel and CACI for lift without surgery.", "ph-microneedling.jpg", "treatments/microneedling.html", ["Microneedling", "Idenel"]),
+        ("Non Surgical", "CACI facelift, microneedling and Idenel for lift without surgery.", "ph-caci.jpg", "treatments/caci-non-surgical-facelift.html", ["CACI", "Microneedling"]),
         ("Massage", "Swedish, deep tissue, hot stone, Indian head and pregnancy.", "ph-massage.jpg", "treatments/massage.html", ["Hot stone", "Deep tissue"]),
         ("Beauty", "Nails, lashes, brows, tanning and waxing.", "ph-beauty.jpg", "treatments/index.html#beauty", ["Lashes", "Brows", "Nails"]),
     ]
     for i, (t, d, img, href, tags) in enumerate(strip):
         cards += f'''<a class="hcard" href="{href}"><img src="assets/img/{img}" alt="" loading="lazy"><span class="n">0{i+1}</span><span class="arrow"><svg viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span><div><h3>{t}</h3><p>{d}</p><div class="tags">{"".join(f"<span>{x}</span>" for x in tags)}</div></div></a>'''
-    cards += '''<a class="hcard cta" href="treatments/index.html"><div><h3>All 16 treatments</h3><p>Browse the full menu and book online.</p><div class="tags" style="justify-content:center"><span>View all</span></div></div></a>'''
+    cards += '''<a class="hcard cta" href="treatments/index.html"><div><h3>All 17 treatments</h3><p>Browse the full menu and book online.</p><div class="tags" style="justify-content:center"><span>View all</span></div></div></a>'''
     marquee = "".join(f"<span>{x}</span>" for x in ["Laser Hair Removal", "Microneedling", "Venus Legacy", "Lumenis M22 IPL", "Hot Stone Massage", "Alumier MD Peels", "Idenel Liquid Microneedling", "Lashes & Brows", "Gift Vouchers"] * 2)
     results = "".join(ba(rel, k, c, i) for i, (k, c, _) in enumerate(RESULTS))
     reels = "".join(reel(rel, *r) for r in REELS)
@@ -633,7 +647,7 @@ def treatments_index():
     for key, name, desc in GROUPS:
         cards = "".join(tcard(rel, t) for t in T if t["group"] == key)
         groups += f'''<section class="tgroup" id="{key}"><div class="inner"><div><h2 data-split><small>{name}</small>{name.split()[0]} <em style="font-style:italic;color:var(--moss)">{" ".join(name.split()[1:])}</em></h2><p class="tp" data-reveal>{desc}</p></div><div class="tlist">{cards}</div></div></section>'''
-    body = phero(rel, [("Home", "index.html")], "Treatments", "Sixteen treatments across body, skin and beauty, each starting with a consultation.", img="ph-facial.jpg",
+    body = phero(rel, [("Home", "index.html")], "Treatments", "Seventeen treatments across body, skin and beauty, each starting with a consultation.", img="ph-facial.jpg",
                  ctas=f'<a class="btn btn-lime" {BOOK}>Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="{rel}price-list.html">Price list</a>')
     body += groups + visit(rel)
     return page(rel, "Beauty, Skin & Laser Treatments in Navan | Balance Clinic", "Laser hair removal, skin, body and beauty treatments at Balance Clinic Spa Beauty, Trimgate Street, Navan, Co. Meath.", "treatments", body)
