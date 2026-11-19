@@ -799,26 +799,25 @@ def bf_cards(rel):
                   f'<b class="bf-val">€{v}</b><span class="bf-k">Gift voucher</span><span class="bf-bf">Black<br>Friday</span>'
                   f'<span class="bf-price">€{p}</span><span class="bf-only">Only</span><span class="bf-logo">{logo}</span></div>'
                   f'<div class="bf-foot"><span>Save €{v - p}</span>'
-                  f'<button class="bf-add" type="button" data-item="bf-voucher-{v}" data-name="€{v} gift voucher (Black Friday)" data-group="" data-section="Gift vouchers" data-detail="Black Friday offer" data-price="{p}" aria-pressed="false" aria-label="Add a €{v} Black Friday gift voucher for €{p} to basket">'
-                  f'<span class="a">Add to basket</span><span class="d">In basket</span></button></div></article>')
+                  f'<a class="bf-add" {VSTORE} aria-label="Buy a €{v} Black Friday gift voucher for €{p}"><span class="a">Buy voucher</span></a></div></article>')
     return f'''<section class="sec bf-sec" id="black-friday">
-  <div class="sec-head"><div><p class="eyebrow">For that someone special</p><h2 data-split>Black <em>Friday.</em></h2></div><p data-reveal>Our biggest voucher offer of the year: up to {bf_off()}% off, for any treatment. Each voucher carries its full value, and we post or email it to you.</p></div>
+  <div class="sec-head"><div><p class="eyebrow">For that someone special</p><h2 data-split>Black <em>Friday.</em></h2></div><p data-reveal>Our biggest voucher offer of the year: up to {bf_off()}% off, for any treatment. Each voucher carries its full value and is emailed to you instantly, ready to print or forward.</p></div>
   <div class="bf-grid">{cards}</div>
-  <div class="bf-more" data-reveal><button class="btn btn-moss" type="button" data-basket-open>View basket {ARROW}</button><p class="gnote">Vouchers carry their full face value and are good for any treatment.</p></div>
+  <div class="bf-more" data-reveal><a class="btn btn-moss" {VSTORE}>Buy gift vouchers {ARROW}</a><p class="gnote">Vouchers carry their full face value and are good for any treatment. You buy them on our secure voucher store, and they are emailed to you straight away.</p></div>
 </section>'''
 
 def gift_vouchers():
     rel = "../"
-    vopts = "".join(f'<button class="vopt" type="button" data-item="gift-voucher-{v}" data-name="Gift voucher €{v}" data-group="" data-section="Gift vouchers" data-detail="" data-price="{v}" aria-pressed="false" aria-label="Add a €{v} gift voucher to basket"><b>€{v}</b></button>' for v in VOUCHERS)
+    vopts = "".join(f'<a class="vopt" {VSTORE} aria-label="Buy a €{v} gift voucher"><b>€{v}</b></a>' for v in VOUCHERS)
     lead = (f"Black Friday: up to {bf_off()}% off gift vouchers. " if BLACK_FRIDAY else "") + "The present that is never the wrong size. Choose an amount or a specific treatment and we will do the rest."
     body = phero(rel, [("Home", "index.html"), ("Shop", "shop/index.html")], "Gift <em>vouchers.</em>", lead, word="Gift",
                  ctas=f'<a class="btn btn-lime" href="#black-friday">See Black Friday offers {ARROW}</a>' if BLACK_FRIDAY else "")
     body += bf_cards(rel)
     body += f'''<section class="sec"><div class="split">
-  <div><p class="eyebrow">How it works</p><h2 data-split>Give someone an hour that is only theirs.</h2><p class="lead" data-reveal>Vouchers can be for any value or any treatment on the menu, from a massage to a course of laser. We post them in a gift wallet or email them within the hour.</p>
-    <div class="steps" data-reveal><div><div><b>Choose</b>An amount below, or a treatment from the price list.</div></div><div><div><b>Order</b>Add it to your basket and pay online, call {TEL} or drop into the clinic.</div></div><div><div><b>Deliver</b>Posted, emailed or collected, ready to give.</div></div></div>
-    <div class="vbuy" data-reveal><p class="eyebrow">Choose an amount</p><div class="vopts">{vopts}</div><p class="gnote">Valid for five years and good for any treatment. Tell us who it is for at checkout.</p></div>
-    <div class="ctas" data-reveal><button class="btn btn-lime" type="button" data-basket-open>View basket {ARROW}</button><a class="btn btn-ghost" href="{rel}contact.html">Ask us</a></div></div>
+  <div><p class="eyebrow">How it works</p><h2 data-split>Give someone an hour that is only theirs.</h2><p class="lead" data-reveal>Vouchers can be for any value or any treatment on the menu, from a massage to a course of laser. Buy online and the voucher is emailed to you straight away, ready to print or forward. Prefer a gift wallet? Call or drop in.</p>
+    <div class="steps" data-reveal><div><div><b>Choose</b>An amount below, or a treatment from the price list.</div></div><div><div><b>Order</b>Pay securely on our voucher store, call {TEL} or drop into the clinic.</div></div><div><div><b>Deliver</b>Emailed to you instantly, or collected from the clinic, ready to give.</div></div></div>
+    <div class="vbuy" data-reveal><p class="eyebrow">Choose an amount</p><div class="vopts">{vopts}</div><p class="gnote">Valid for five years and good for any treatment. Opens our secure voucher store.</p></div>
+    <div class="ctas" data-reveal><a class="btn btn-lime" {VSTORE}>Buy a gift voucher {ARROW}</a><a class="btn btn-ghost" href="{rel}contact.html">Ask us</a></div></div>
   <div class="shop-grid" style="grid-template-columns:1fr;max-width:420px">
     <div class="voucher" data-reveal><div><b>Any amount</b><p>From a treat to a full course.</p></div></div>
     <div class="voucher alt" data-reveal><div><b>A treatment</b><p>Massage, facial, laser, lashes. You name it.</p></div></div>
@@ -1104,6 +1103,8 @@ ADD_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="pl" d="M12 5
 
 # Black Friday: (voucher value, sale price). Set BLACK_FRIDAY = False and rebuild to take the offer down everywhere.
 BLACK_FRIDAY = True
+VOUCHER_STORE = "https://balanceclinic.voucherconnect.com"   # VoucherConnect sells the vouchers and emails them to the buyer
+VSTORE = f'href="{VOUCHER_STORE}" target="_blank" rel="noopener"'
 BF_DEALS = ((50, 39), (100, 75), (200, 150), (500, 350))
 def bf_off(): return max(round((v - p) / v * 100) for v, p in BF_DEALS)
 
@@ -1350,9 +1351,9 @@ def catalog():
                     sess = f'{k} session{"s" if k > 1 else ""}'
                     who = label.replace("For ", "").lower()
                     add(item_id("laser", group, n, sess), f"Laser: {n} ({who}, {sess})", round(p * 100), f"Laser hair removal · {a['name']}")
-    for v in VOUCHERS:
+    for v in ():   # gift vouchers are sold on VoucherConnect (VOUCHER_STORE), not through the basket
         add(f"gift-voucher-{v}", f"Gift voucher €{v}", v * 100, "Balance Clinic gift voucher", send=True, value=v)
-    if BLACK_FRIDAY:
+    if False:   # Black Friday vouchers are sold on VoucherConnect too
         for v, p in BF_DEALS:
             add(f"bf-voucher-{v}", f"Black Friday gift voucher, €{v} value", p * 100, f"Black Friday offer: €{v} voucher for €{p}", send=True, value=v)
     return json.dumps(out, ensure_ascii=False, indent=0, sort_keys=True) + "\n"

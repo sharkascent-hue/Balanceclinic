@@ -1044,3 +1044,4 @@ footer .brand .hrs li.today{color:#fff}
   .gv{break-inside:avoid;box-shadow:none;border-radius:6mm}
   @page{margin:12mm}
 }
+a.bf-add,a.vopt{display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none}

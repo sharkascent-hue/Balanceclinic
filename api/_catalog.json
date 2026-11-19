@@ -64,34 +64,6 @@
 "n": "Pedicure: Shellac feet",
 "p": 2800
 },
-"bf-voucher-100": {
-"d": "Black Friday offer: €100 voucher for €75",
-"n": "Black Friday gift voucher, €100 value",
-"p": 7500,
-"s": 1,
-"v": 100
-},
-"bf-voucher-200": {
-"d": "Black Friday offer: €200 voucher for €150",
-"n": "Black Friday gift voucher, €200 value",
-"p": 15000,
-"s": 1,
-"v": 200
-},
-"bf-voucher-50": {
-"d": "Black Friday offer: €50 voucher for €39",
-"n": "Black Friday gift voucher, €50 value",
-"p": 3900,
-"s": 1,
-"v": 50
-},
-"bf-voucher-500": {
-"d": "Black Friday offer: €500 voucher for €350",
-"n": "Black Friday gift voucher, €500 value",
-"p": 35000,
-"s": 1,
-"v": 500
-},
 "body-contouring-venus-legacy-arms-course-of-10-445": {
 "d": "Body contouring · Course of 10: €445",
 "n": "Venus Legacy: Arms",
@@ -146,48 +118,6 @@
 "d": "Body contouring · Course of 10: €1,100",
 "n": "Venus Legacy: Thighs",
 "p": 22000
-},
-"gift-voucher-100": {
-"d": "Balance Clinic gift voucher",
-"n": "Gift voucher €100",
-"p": 10000,
-"s": 1,
-"v": 100
-},
-"gift-voucher-150": {
-"d": "Balance Clinic gift voucher",
-"n": "Gift voucher €150",
-"p": 15000,
-"s": 1,
-"v": 150
-},
-"gift-voucher-200": {
-"d": "Balance Clinic gift voucher",
-"n": "Gift voucher €200",
-"p": 20000,
-"s": 1,
-"v": 200
-},
-"gift-voucher-25": {
-"d": "Balance Clinic gift voucher",
-"n": "Gift voucher €25",
-"p": 2500,
-"s": 1,
-"v": 25
-},
-"gift-voucher-50": {
-"d": "Balance Clinic gift voucher",
-"n": "Gift voucher €50",
-"p": 5000,
-"s": 1,
-"v": 50
-},
-"gift-voucher-75": {
-"d": "Balance Clinic gift voucher",
-"n": "Gift voucher €75",
-"p": 7500,
-"s": 1,
-"v": 75
 },
 "laser-bikini-women-any-bikini-1-session": {
 "d": "Laser hair removal · Bikini",
