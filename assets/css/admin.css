@@ -223,3 +223,4 @@ textarea{min-height:84px;resize:vertical}
   #days{order:2;flex:1 1 auto;min-width:0;height:42px}
   #refresh{order:3}
 }
+.vlinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}

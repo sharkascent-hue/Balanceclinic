@@ -663,6 +663,7 @@
           q('[data-order-email]').textContent = d.email ? ' to ' + d.email : '';
           q('[data-order-lines]').innerHTML = (d.items || []).map(function (it) { return '<div><span>' + esc(it.name) + (it.qty > 1 ? ' × ' + it.qty : '') + '</span><span>' + euro(it.amount / 100) + '</span></div>'; }).join('');
           q('[data-order-total]').textContent = euro(d.total / 100);
+          if (d.voucher) { q('[data-order-voucher-link]').href = new URL(d.voucher.replace(/^\//, ''), apiUrl('').replace(/api\/$/, '')).href; q('[data-order-voucher]').hidden = false; }
           items = []; save(); show(true);
         }).catch(function () { show(false); });
       })();

@@ -30,7 +30,8 @@ module.exports = async function handler(req, res) {
         total: s.amount_total, currency: s.currency,
         email: (s.customer_details && s.customer_details.email) || '',
         name: (s.customer_details && s.customer_details.name) || '',
-        items: ((s.line_items && s.line_items.data) || []).map(function (li) { return { name: li.description, qty: li.quantity, amount: li.amount_total }; })
+        items: ((s.line_items && s.line_items.data) || []).map(function (li) { return { name: li.description, qty: li.quantity, amount: li.amount_total }; }),
+        voucher: s.payment_status === 'paid' && s.metadata && s.metadata.vtok ? '/voucher?s=' + sid : ''
       });
     }
     if (req.method !== 'POST') { res.setHeader('Allow', 'GET, POST'); return send(res, 405, { error: 'method' }); }
@@ -56,6 +57,13 @@ module.exports = async function handler(req, res) {
     const toSend = lines.filter(function (l) { return l.c.s; }).map(function (l) { return l.qty + ' × ' + l.c.n; }).join('; ');
     const meta = { order_no: no, summary: summary.slice(0, 480), bc_status: 'new' };
     if (toSend) meta.to_send = toSend.slice(0, 480);
+    /* Gift vouchers: the buyer gets a printable voucher straight away. Its private link goes in the receipt as well. */
+    const hasVoucher = lines.some(function (l) { return l.c.v; });
+    let voucherUrl = '';
+    if (hasVoucher) { meta.vtok = crypto.randomBytes(9).toString('hex'); voucherUrl = base + '/voucher?o=' + no + '&t=' + meta.vtok; }
+    const fields = [{ key: 'eircode', type: 'text', label: { type: 'custom', custom: 'Eircode' }, text: { maximum_length: 10 } }];
+    if (hasVoucher) fields.push({ key: 'vfor', type: 'text', optional: true, label: { type: 'custom', custom: 'Name to print on the voucher' }, text: { maximum_length: 60 } });
+    fields.push({ key: 'notes', type: 'text', optional: true, label: { type: 'custom', custom: hasVoucher ? 'A message, or preferred times' : 'Preferred times, or who a voucher is for' } });
     const session = await stripe('POST', '/v1/checkout/sessions', {
       mode: 'payment',
       adaptive_pricing: { enabled: false },              /* always charge and show euro, wherever the visitor is */
@@ -70,13 +78,10 @@ module.exports = async function handler(req, res) {
       }),
       phone_number_collection: { enabled: true },
       billing_address_collection: 'auto',
-      custom_fields: [
-        { key: 'eircode', type: 'text', label: { type: 'custom', custom: 'Eircode' }, text: { maximum_length: 10 } },
-        { key: 'notes', type: 'text', optional: true, label: { type: 'custom', custom: 'Preferred times, or who a voucher is for' } }
-      ],
-      custom_text: { submit: { message: 'We will call you to arrange your appointment. Laser courses start with a patch test.' } },
+      custom_fields: fields,
+      custom_text: { submit: { message: hasVoucher ? 'Your gift voucher is ready to print or save as soon as you pay.' : 'We will call you to arrange your appointment. Laser courses start with a patch test.' } },
       metadata: meta,
-      payment_intent_data: { description: 'Balance Clinic order ' + no, metadata: meta }
+      payment_intent_data: { description: 'Balance Clinic order ' + no + (voucherUrl ? '. Your gift voucher: ' + voucherUrl : ''), metadata: meta }
     });
     return send(res, 200, { url: session.url });
   } catch (e) {

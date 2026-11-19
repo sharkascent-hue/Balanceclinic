@@ -1002,3 +1002,45 @@ footer .brand .hrs li.today{color:#fff}
   .phero.has-reel .content{max-width:none}
   .only-phone{display:inline-flex}
 }
+
+/* ---------- Gift voucher the buyer receives (voucher.html) ---------- */
+.vpage{max-width:900px;margin-inline:auto}
+.v-wait{display:grid;justify-items:center;gap:16px;padding:60px 0;color:var(--ink-2)}
+.v-bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:24px}
+.v-bar .btn{margin:0}
+.v-tip{flex-basis:100%;font-size:13px;color:var(--ink-2)}
+.v-note{padding:12px 16px;border-radius:12px;background:#f6e2dd;color:#7a2c1c;margin-bottom:18px;font-size:15px}
+.v-list{display:grid;gap:28px}
+.v-none h2{font-family:var(--display);font-weight:400;font-size:clamp(30px,4vw,44px)}
+.gv{position:relative;overflow:hidden;color:#fff;border-radius:22px;padding:clamp(24px,4vw,44px);display:grid;gap:clamp(14px,2vw,22px);
+  background:radial-gradient(70% 90% at 100% 0%,rgba(141,195,75,.35),transparent 60%),radial-gradient(60% 70% at 0% 100%,rgba(227,122,100,.18),transparent 60%),linear-gradient(135deg,#1C3A2A,#11241a);
+  box-shadow:0 40px 80px -40px rgba(28,58,42,.6);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.gv::after{content:"Balance";position:absolute;right:-1.5%;bottom:-8%;font-family:var(--display);font-style:italic;font-size:clamp(90px,17vw,170px);line-height:1;color:rgba(255,255,255,.05);pointer-events:none}
+.gv-top{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.gv-top img{height:clamp(28px,4vw,38px);width:auto}
+.gv-top span{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--lime)}
+.gv-val{font-family:var(--display);font-size:clamp(84px,14vw,140px);line-height:.9;font-weight:400}
+.gv-val small{font-size:.45em;vertical-align:.75em;margin-right:4px;color:var(--lime)}
+.gv-who{display:flex;flex-wrap:wrap;gap:10px 36px}
+.gv-who p{margin:0;font-family:var(--display);font-size:clamp(22px,3vw,28px)}
+.gv-who span,.gv-foot span{display:block;font-family:var(--sans);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:2px}
+.gv-msg{margin:0;font-style:italic;font-family:var(--display);font-size:clamp(18px,2.4vw,22px);color:rgba(255,255,255,.85);max-width:46ch}
+.gv-foot{display:flex;flex-wrap:wrap;gap:12px 36px;padding-top:16px;border-top:1px solid rgba(255,255,255,.18)}
+.gv-foot b{font-weight:500;font-size:15px;letter-spacing:.04em}
+.gv-foot div:first-child b{font-size:18px;letter-spacing:.12em;color:var(--lime)}
+.gv-terms{margin:0;font-size:11.5px;line-height:1.5;color:rgba(255,255,255,.55);max-width:70ch;position:relative;z-index:1}
+.gv.void{filter:grayscale(1);opacity:.6}
+/* thank-you page: voucher ready */
+.ty-voucher{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;border-radius:var(--r);background:var(--moss);color:#fff}
+.ty-voucher b{display:block;font-family:var(--display);font-weight:400;font-size:26px}
+.ty-voucher span{font-size:14px;color:rgba(255,255,255,.75)}
+.ty-voucher .btn{margin:0}
+@media print{
+  html.promo-on{--promo:0px}
+  .promo,.site-head,.phero,footer,.fab,.v-bar,.v-tip,.pt,#basket,.bk,#lb,#bgfx{display:none!important}
+  body{background:#fff!important}
+  .sec.vpage{padding:0!important;max-width:none}
+  .v-list{gap:10mm}
+  .gv{break-inside:avoid;box-shadow:none;border-radius:6mm}
+  @page{margin:12mm}
+}

@@ -201,8 +201,16 @@
   function statusButtons() { $('o-status').innerHTML = STATUSES.map(function (s) { return '<button type="button" data-s="' + s[0] + '" class="' + (pick === s[0] ? 'on' : '') + '" aria-pressed="' + (pick === s[0]) + '">' + s[1] + '</button>'; }).join(''); }
   function delivery() {
     var o = current, what = $('o-deliv-what'), st = $('o-deliv-state'), btn = $('o-sent');
-    if (!o.toSend) { what.textContent = 'Nothing to post or email. This order is for an appointment.'; st.hidden = true; btn.hidden = true; return; }
+    if (!o.toSend) { what.textContent = 'Nothing to post or email. This order is for an appointment.'; st.hidden = true; btn.hidden = true; $('o-vlinks').hidden = true; return; }
     what.textContent = 'To send: ' + o.toSend; st.hidden = false; btn.hidden = false;
+    /* gift vouchers: the printable voucher the buyer already received, to reprint or email again */
+    var isV = /voucher/i.test(o.toSend) && !sample && /^cs_/.test(o.id || ''), vl = $('o-vlinks'); vl.hidden = !isV;
+    if (isV) {
+      var url = location.origin + '/voucher?s=' + encodeURIComponent(o.id), first = (o.name || '').split(' ')[0];
+      $('o-vopen').href = url;
+      $('o-vmail').href = 'mailto:' + encodeURIComponent(o.email || '') + '?subject=' + encodeURIComponent('Your Balance Clinic gift voucher (' + o.no + ')') +
+        '&body=' + encodeURIComponent('Hi' + (first ? ' ' + first : '') + ',\n\nThank you for your order. Your gift voucher is ready to print or save here:\n' + url + '\n\nQuote the code ' + o.no + ' when you book.\n\nBalance Clinic Spa Beauty\n(046) 906 0333');
+    }
     st.className = 'd-state ' + (pickSent ? 'done' : 'wait');
     st.textContent = pickSent ? (o.sent ? 'Sent ' + when(o.sent) : 'Marked as sent. Save to keep it.') : 'Not sent yet';
     btn.textContent = pickSent ? 'Undo: not sent' : 'Mark as sent'; btn.className = 'btn sm' + (pickSent ? ' ghost' : '');

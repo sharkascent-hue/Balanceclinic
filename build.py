@@ -882,6 +882,7 @@ def thank_you():
       <h2>Payment received.</h2>
       <p class="lead">Thank you<span data-order-name></span>. A receipt is on its way<span data-order-email></span>.</p>
       <div class="bk-card"><div class="bk-lines" data-order-lines></div><div class="bk-total"><span>Paid</span><b data-order-total></b></div></div>
+      <div class="ty-voucher" data-order-voucher hidden><div><b>Your gift voucher is ready.</b><span>Print it, save it as a PDF or forward it. The link is also in your receipt email.</span></div><a class="btn btn-lime" data-order-voucher-link href="voucher.html">Open your voucher {ARROW}</a></div>
       <div class="steps"><div><div><b>Book your time</b>Pick a slot in our online booking now, or we will call you within one working day to arrange it.</div></div><div><div><b>Consultation</b>Your therapist checks the treatment is right for you. Laser starts with a patch test.</div></div><div><div><b>Your treatment</b>Arrive a few minutes early and we will look after the rest.</div></div></div>
       <div class="ctas"><a class="btn btn-moss" {BOOK}>Choose your time now {ARROW}</a><a class="btn btn-ghost" href="{rel}index.html">Back to home</a></div>
     </div>
@@ -893,6 +894,47 @@ def thank_you():
   </div>
 </section>'''
     return page(rel, "Thank You | Balance Clinic Navan", "Your order at Balance Clinic Spa Beauty, Navan.", "basket", body)
+
+def voucher_page():
+    """The gift voucher a buyer receives: /voucher?s=… or the private link in their receipt. Filled in by the script below."""
+    rel = ""
+    body = phero(rel, [("Home", "index.html"), ("Gift vouchers", "shop/gift-vouchers.html")], "Your gift <em>voucher.</em>", "Print it, save it as a PDF, or forward this page. Show the code at the clinic to use it.", word="Gift")
+    body += f'''<section class="sec vpage">
+  <div class="v-wait" data-v-wait><span class="spin" aria-hidden="true"></span><p>Getting your voucher…</p></div>
+  <div class="v-bar" data-v-bar hidden><button class="btn btn-moss" type="button" data-v-print>Print or save as PDF</button><button class="btn btn-ghost" type="button" data-v-share hidden>Share</button><span class="v-tip">To save on a phone: Print, then pinch out the preview and choose Save to Files or Share.</span></div>
+  <p class="v-note" data-v-note hidden></p>
+  <div class="v-list" data-v-list></div>
+  <div class="v-none" data-v-none hidden><h2>We could not find this voucher.</h2><p class="lead">Check the link in your receipt email, or call us on {TEL} and we will send it again.</p></div>
+</section>
+<script>
+(function () {{
+  var root = document.querySelector('.vpage'), q = function (s) {{ return root.querySelector(s); }};
+  var a = document.querySelector('.site-head .brand'), base = a ? a.href.replace(/index\\.html$/, '') : location.origin + '/';
+  var p = new URLSearchParams(location.search), qs = p.get('s') ? 's=' + encodeURIComponent(p.get('s')) : 'o=' + encodeURIComponent(p.get('o') || '') + '&t=' + encodeURIComponent(p.get('t') || '');
+  var esc = function (x) {{ return String(x).replace(/[&<>"']/g, function (c) {{ return {{ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }}[c]; }}); }};
+  var day = function (iso) {{ return new Date(iso).toLocaleDateString('en-IE', {{ day: 'numeric', month: 'long', year: 'numeric' }}); }};
+  function none() {{ q('[data-v-wait]').hidden = true; q('[data-v-none]').hidden = false; }}
+  fetch(new URL('api/voucher?' + qs, base).href).then(function (r) {{ return r.ok ? r.json() : Promise.reject(); }}).then(function (d) {{
+    q('[data-v-wait]').hidden = true; q('[data-v-bar]').hidden = false;
+    if (navigator.share) {{ var sh = q('[data-v-share]'); sh.hidden = false; sh.onclick = function () {{ navigator.share({{ title: 'Balance Clinic gift voucher', url: location.href }}).catch(function () {{}}); }}; }}
+    q('[data-v-print]').onclick = function () {{ window.print(); }};
+    var note = q('[data-v-note]');
+    if (d.cancelled) {{ note.hidden = false; note.textContent = 'This voucher was refunded and can no longer be used.'; }}
+    else if (d.test) {{ note.hidden = false; note.textContent = 'Test order: this voucher is a sample and cannot be used.'; }}
+    q('[data-v-list]').innerHTML = d.vouchers.map(function (v) {{
+      return '<article class="gv' + (d.cancelled || d.test ? ' void' : '') + '">' +
+        '<div class="gv-top"><img src="' + base + 'assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"><span>Gift voucher</span></div>' +
+        '<div class="gv-val"><small>€</small>' + v.value + '</div>' +
+        '<div class="gv-who">' + (d.to ? '<p><span>For</span>' + esc(d.to) + '</p>' : '') + (d.from ? '<p><span>From</span>' + esc(d.from) + '</p>' : '') + '</div>' +
+        (d.message ? '<p class="gv-msg">' + esc(d.message) + '</p>' : '') +
+        '<div class="gv-foot"><div><span>Code</span><b>' + esc(v.code) + '</b></div><div><span>Valid until</span><b>' + day(d.expires) + '</b></div><div><span>Book</span><b>{PHONE} · balanceclinic.ie</b></div></div>' +
+        '<p class="gv-terms">Good for any treatment at Balance Clinic, 8 Trimgate Street, Navan. Quote the code when you book. Not exchangeable for cash; treat it like cash.</p>' +
+      '</article>';
+    }}).join('');
+  }}).catch(none);
+}})();
+</script>'''
+    return page(rel, "Your Gift Voucher | Balance Clinic Navan", "Your Balance Clinic gift voucher.", "shop", body)
 
 def policy(rel, title_html, lead, word, eyebrow, blocks, page_title, desc):
     body = phero(rel, [("Home", "index.html")], title_html, lead, word=word)
@@ -1285,10 +1327,11 @@ def catalog():
     """id -> name, price in cent, description. api/checkout.js prices every basket line from this."""
     import json
     out = {}
-    def add(iid, name, cents, desc, send=False):
+    def add(iid, name, cents, desc, send=False, value=None):
         assert iid not in out, f"duplicate basket id: {iid}"
         out[iid] = {"n": name, "p": cents, "d": desc}
         if send: out[iid]["s"] = 1     # something the clinic posts or emails, so the order shows as "to send"
+        if value: out[iid]["v"] = value  # a gift voucher: its face value in euro, printed on the voucher the buyer receives
     for sid, title, groups in PRICES:
         if title in OFFLINE_SECTIONS: continue
         for g, _, rows in groups:
@@ -1308,10 +1351,10 @@ def catalog():
                     who = label.replace("For ", "").lower()
                     add(item_id("laser", group, n, sess), f"Laser: {n} ({who}, {sess})", round(p * 100), f"Laser hair removal · {a['name']}")
     for v in VOUCHERS:
-        add(f"gift-voucher-{v}", f"Gift voucher €{v}", v * 100, "Balance Clinic gift voucher", send=True)
+        add(f"gift-voucher-{v}", f"Gift voucher €{v}", v * 100, "Balance Clinic gift voucher", send=True, value=v)
     if BLACK_FRIDAY:
         for v, p in BF_DEALS:
-            add(f"bf-voucher-{v}", f"Black Friday gift voucher, €{v} value", p * 100, f"Black Friday offer: €{v} voucher for €{p}", send=True)
+            add(f"bf-voucher-{v}", f"Black Friday gift voucher, €{v} value", p * 100, f"Black Friday offer: €{v} voucher for €{p}", send=True, value=v)
     return json.dumps(out, ensure_ascii=False, indent=0, sort_keys=True) + "\n"
 
 VERCEL = """{
@@ -1337,7 +1380,7 @@ VERCEL = """{
 }
 """
 
-NOINDEX = {"basket.html", "thank-you.html", "404.html"}
+NOINDEX = {"basket.html", "thank-you.html", "voucher.html", "404.html"}
 INDEXED = []                                   # canonical URLs, for the sitemap
 def clean_url(path):
     p = re.sub(r"(^|/)index\.html$", r"\1", path); p = re.sub(r"\.html$", "", p)
@@ -1369,7 +1412,7 @@ if __name__ == "__main__":
     write("results/index.html", results())
     write("about/index.html", about()); write("about/team.html", team())
     write("price-list.html", price_list())
-    write("basket.html", basket_page()); write("thank-you.html", thank_you())
+    write("basket.html", basket_page()); write("thank-you.html", thank_you()); write("voucher.html", voucher_page())
     write("terms.html", terms()); write("privacy.html", privacy())
     write("api/_catalog.json", catalog())
     for sid, title, groups in PRICES: write(f"prices/{PINFO[sid]['slug']}.html", price_cat_page(sid, title, groups))
