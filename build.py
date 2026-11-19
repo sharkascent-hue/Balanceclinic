@@ -62,14 +62,21 @@ treatment(slug="body-contouring", group="body", title="Body Contouring", em="Con
     faqs=[("When do results show?", "Skin often looks smoother after the first few sessions, with the full effect developing over the 3 months that follow a course."), ("Is it safe?", "Venus Legacy is a non-invasive, clinically established technology. We check your medical history at consultation."), ("Can I exercise afterwards?", "Yes. Drink plenty of water and carry on as normal.")],
     compare="jaw")
 
-treatment(slug="waxing", group="body", title="Waxing", em="Waxing", img="beauty.jpg",
-    short="Fast, clean waxing with gentle hot and strip wax.",
-    intro="Hot wax for sensitive areas, strip wax for larger ones, and therapists who do this every day. Clean, quick and as comfortable as waxing can be.",
-    body=["We use a low-temperature hot wax for the face, underarms and bikini, which grips the hair rather than the skin, and strip wax for legs, arms and back."],
-    benefits=["Full face, brow and lip", "Underarm, bikini, Hollywood and Brazilian", "Half and full leg, arms, back and chest", "Soothing aftercare included"],
-    steps=[("Grow it", "Hair should be about 5 mm, roughly two weeks of growth."), ("Wax", "Most appointments take 15 to 45 minutes."), ("Aftercare", "Keep the area cool and avoid heat, tanning and tight clothing for 24 hours.")],
-    facts=[("Time", "15 to 45 min"), ("Regrowth", "3 to 5 weeks"), ("Downtime", "None"), ("Wax", "Hot and strip")],
-    faqs=[("Can I wax if I use retinol?", "Stop retinol products on the area for a week before a facial wax, and tell your therapist about any skin medication."), ("Does it get easier?", "Yes. Regular waxing weakens the follicle, so hair returns finer and less dense.")])
+treatment(slug="waxing", group="body", title="Lycon Waxing", em="Lycon", img="beauty.jpg",
+    short="Premium Lycon hot wax, including Lycon Advanced for short, stubborn hair.",
+    intro="Premium Lycon wax, the professional's choice for sensitive skin. It grips the hair, not the skin, so waxing is gentler, quicker and cleaner, and it lifts hair as short as 1 mm.",
+    brand=dict(name="LYCON", line="Precision Waxing", note="Premium professional wax, made in Australia since 1978. Balance is a Lycon waxing salon.", logo="lycon-logo"),
+    body=["Lycon is one of the best-known names in professional waxing. Its low-temperature hot waxes shrink-wrap each hair and lift it from the root without sticking to the skin, so there is less pulling, less redness and a smoother finish than with ordinary strip wax.",
+          "<strong>Lycon waxing.</strong> Our everyday service, with Lycon hot wax for the face, underarms and bikini line, and Lycon strip wax for larger areas like legs, arms and back.",
+          "<strong>Lycon Advanced waxing.</strong> Uses LYCOJET, Lycon's advanced stripless hot wax. It goes on in a thin layer, about a third of the thickness of regular hot wax, and at a low temperature, and it removes hair as short as 1 mm. It is ideal for short, coarse or stubborn hair and for the most delicate areas: brows, lip, underarms, Brazilian and Hollywood. It is gentle enough to be re-applied several times on just-waxed skin to catch every last hair."],
+    benefits=["Lycon waxing for face and body", "Lycon Advanced (LYCOJET) for short, stubborn hair", "Brazilian, Hollywood, bikini and underarm", "Brow, lip and chin", "Half and full leg, arms, back and chest", "Men's waxing"],
+    steps=[("Grow it", "Lycon grips hair from 1 mm, but for your first wax let it grow for about two weeks after shaving."), ("Wax", "Skin is cleansed and prepared, then waxed with Lycon. Most appointments take 10 to 45 minutes."), ("Aftercare", "For 12 to 24 hours avoid hot showers and baths, pools, saunas, sunbeds, tanning and tight clothing.")],
+    facts=[("Wax", "Lycon"), ("Hair length", "From 1 mm"), ("Time", "10 to 45 min"), ("Regrowth", "3 to 5 weeks")],
+    faqs=[("What is Lycon?", "Lycon is a premium professional wax brand from Australia. Its hot waxes work at a low temperature and grip the hair rather than the skin, which makes them kinder to sensitive areas."),
+          ("Lycon or Lycon Advanced?", "Lycon waxing suits most areas and most hair. Lycon Advanced uses LYCOJET stripless wax for very short, coarse or stubborn hair and the most delicate areas. Not sure? Ask at your appointment and your therapist will choose."),
+          ("Does Lycon hurt less?", "Most clients find it noticeably more comfortable. Because the wax does not stick to the skin, there is less pulling and less redness afterwards."),
+          ("Can I wax if I use retinol?", "Stop retinol products on the area for a week before a facial wax, and tell your therapist about any skin medication."),
+          ("Does it get easier?", "Yes. Regular waxing weakens the follicle, so hair returns finer and less dense.")])
 
 treatment(slug="massage", group="body", title="Massage", em="Massage", img="massage.jpg",
     short="Swedish, deep tissue, Indian head, hot stone and pregnancy massage.",
@@ -622,6 +629,14 @@ def treatments_index():
     body += groups + visit(rel)
     return page(rel, "Beauty, Skin & Laser Treatments in Navan | Balance Clinic", "Laser hair removal, skin, body and beauty treatments at Balance Clinic Spa Beauty, Trimgate Street, Navan, Co. Meath.", "treatments", body)
 
+def brand_block(rel, b):
+    """A product brand panel on a treatment page. Shows the brand's logo file if one is in assets/img, otherwise its name set in type."""
+    if not b: return ""
+    import glob
+    f = sorted(glob.glob(f"assets/img/{b['logo']}.*"))
+    mark = f'<img src="{rel}{f[0]}" alt="{b["name"]}">' if f else f'<b>{b["name"]}</b>'
+    return f'<div class="brandbox" data-reveal><div class="mk">{mark}<span>{b["line"]}</span></div><p>{b["note"]}</p></div>'
+
 def treatment_page(t):
     rel = "../"
     gname = dict((g[0], g[1]) for g in GROUPS)[t["group"]]
@@ -642,15 +657,15 @@ def treatment_page(t):
     if len(related) < 3: related += [x for x in T if x["group"] != t["group"]][:3 - len(related)]
     rel_cards = "".join(tcard(rel, x) for x in related)
     body = phero(rel, [("Home", "index.html"), ("Treatments", "treatments/index.html"), (gname, f"treatments/index.html#{t['group']}")], title, t["intro"], img=t.get("img"), word=t["em"],
-                 ctas=f'<a class="btn btn-lime" {BOOK}>Book {t["title"].lower() if len(t["title"]) < 20 else "now"} {ARROW}</a><a class="btn btn-ghost-light" {BOOK}>Ask a question</a>')
+                 ctas=f'<a class="btn btn-lime" {BOOK}>Book {(t["title"] if t.get("brand") else t["title"].lower()) if len(t["title"]) < 20 else "now"} {ARROW}</a><a class="btn btn-ghost-light" {BOOK}>Ask a question</a>')
     body += f'''<section class="tbody"><div class="inner">
   <div class="prose">
-    <h2 data-split>About the treatment</h2>{prose}
+    {brand_block(rel, t.get("brand"))}<h2 data-split>About the treatment</h2>{prose}
     <h2 data-split>Good for</h2><ul data-reveal>{benefits}</ul>
     <h2 data-split>What to expect</h2><div class="steps" data-reveal>{steps}</div>
   </div>
   <aside class="aside">
-    <div class="box" data-reveal><h3>Book {t["title"].lower() if len(t["title"]) < 26 else "this treatment"}</h3><p>Every course starts with a consultation. Book online or call {TEL}.</p><a class="btn btn-lime" {BOOK}>Book now {ARROW}</a></div>
+    <div class="box" data-reveal><h3>Book {(t["title"] if t.get("brand") else t["title"].lower()) if len(t["title"]) < 26 else "this treatment"}</h3><p>Every course starts with a consultation. Book online or call {TEL}.</p><a class="btn btn-lime" {BOOK}>Book now {ARROW}</a></div>
     <div class="facts" data-reveal>{facts}</div>
     {media}
   </aside>
