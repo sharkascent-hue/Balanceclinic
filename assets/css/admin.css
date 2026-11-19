@@ -213,3 +213,13 @@ textarea{min-height:84px;resize:vertical}
   .only-phone{display:grid}
 }
 @media (prefers-reduced-motion:reduce){*{transition-duration:.001ms!important;animation-duration:.001ms!important}}
+
+/* Phones: title and sign-out on the first line, period and refresh on a full-width line below */
+@media (max-width:600px){
+  .bar{flex-wrap:wrap;gap:12px 10px}
+  .bar-actions{display:contents}
+  .bar h1{order:0;flex:1 1 calc(100% - 60px);min-width:0}
+  #signout-m{order:1}
+  #days{order:2;flex:1 1 auto;min-width:0;height:42px}
+  #refresh{order:3}
+}
