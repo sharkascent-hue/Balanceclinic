@@ -958,3 +958,19 @@ footer .brand p a[href^="mailto"]{word-break:break-all}
 .book-opts.nf .opt h3{font-size:clamp(26px,2.4vw,34px)}
 @media (max-width:1000px){.book-opts.nf{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.book-opts.nf{grid-template-columns:1fr}.book-opts.nf .opt{padding:24px}}
+
+/* Opening hours list (visit block, contact page, footer). site.js adds .today to the current day. */
+.hrs{list-style:none;margin:2px 0 0;padding:0;display:grid;gap:3px;max-width:340px}
+.hrs li{display:flex;justify-content:space-between;gap:16px;font-size:15px;line-height:1.5;color:rgba(255,255,255,.78)}
+.hrs b{font-weight:400}
+.hrs em{font-style:normal;font-variant-numeric:tabular-nums;white-space:nowrap}
+.hrs li.today{color:#fff}
+.hrs li.today b{font-weight:500}
+.hrs li.today b::after{content:"Today";margin-left:8px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);vertical-align:2px}
+.hrs.ink li{color:var(--ink-2)}
+.hrs.ink li.today{color:var(--ink)}
+.hrs.ink li.today b::after{color:var(--moss)}
+.details .hrs + small{margin-top:10px}
+footer .brand .hrs{margin:18px 0 0;max-width:260px}
+footer .brand .hrs li{font-size:13px;color:rgba(255,255,255,.6)}
+footer .brand .hrs li.today{color:#fff}

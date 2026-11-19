@@ -311,6 +311,12 @@
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeMenu(); closeLb(); } });
   var yr = document.getElementById('yr'); if (yr) yr.textContent = new Date().getFullYear();
+  /* opening hours: mark today's row, by Irish time */
+  (function () {
+    var d; try { d = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(new Intl.DateTimeFormat('en-IE', { timeZone: 'Europe/Dublin', weekday: 'short' }).format(new Date())); } catch (e) { d = -1; }
+    if (d < 0) d = new Date().getDay();
+    document.querySelectorAll('.hrs li[data-dow="' + d + '"]').forEach(function (li) { li.classList.add('today'); });
+  })();
 
   /* ---------- text splitting ---------- */
   function splitText(scope) { scope.querySelectorAll('[data-split]').forEach(function (el) {

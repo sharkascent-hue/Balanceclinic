@@ -291,6 +291,18 @@ PRICES = [   # (section id, section title, [(group, note, [(treatment, detail, p
 
 # ---------------------------------------------------------------- shared html
 PRE = """<script>(function(){try{var d=document.documentElement;d.className=d.className.replace('no-js','');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('anim');if(sessionStorage.getItem('bc-pt')==='1')d.classList.add('pt-in');if(sessionStorage.getItem('bc-intro'))d.classList.add('intro-seen');setTimeout(function(){d.classList.remove('anim','pt-in')},3000)}catch(e){}})()</script>"""
+# Opening hours, Monday first. None = closed. Times are 24h "HH:MM".
+HOURS = (("Monday", None), ("Tuesday", ("10:00", "18:00")), ("Wednesday", ("10:00", "18:00")), ("Thursday", ("10:00", "21:00")),
+         ("Friday", ("10:00", "20:00")), ("Saturday", ("09:00", "18:00")), ("Sunday", ("12:00", "19:00")))
+def _t(x):
+    h, m = int(x[:2]), x[3:]
+    return f"{h % 12 or 12}{'' if m == '00' else ':' + m}{'am' if h < 12 else 'pm'}"
+def hours_list(cls="hrs"):
+    """The week's opening hours. site.js marks today's row."""
+    rows = "".join(f'<li data-dow="{(i + 1) % 7}"><b>{d}</b><em>{_t(h[0]) + " – " + _t(h[1]) if h else "Closed"}</em></li>' for i, (d, h) in enumerate(HOURS))
+    return f'<ul class="{cls}">{rows}</ul>'
+HOURS_SHORT = "Open late until 9pm Thursdays and 8pm Fridays"
+
 def ld_clinic():
     """The clinic's details in the format Google reads for local results."""
     import json
@@ -301,8 +313,10 @@ def ld_clinic():
          "telephone": "+353 46 906 0333", "email": EMAIL, "priceRange": "€€", "currenciesAccepted": "EUR",
          "address": {"@type": "PostalAddress", "streetAddress": "8 Trimgate Street, Townparks", "addressLocality": "Navan", "addressRegion": "Co. Meath", "postalCode": "C15 DHE9", "addressCountry": "IE"},
          "areaServed": [{"@type": "City", "name": "Navan"}, {"@type": "AdministrativeArea", "name": "County Meath"}],
+         "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": d, "opens": h[0], "closes": h[1]} for d, h in HOURS if h],
          "hasMap": MAPS, "sameAs": [u for _, u, _ in SOCIAL]}
     return '<script type="application/ld+json">' + json.dumps(d, ensure_ascii=False, separators=(",", ":")) + '</script>'
+
 LD_CLINIC = ld_clinic()
 
 def head(title, desc, rel, extra=""):
@@ -389,7 +403,7 @@ def footer(rel):
     return f'''</div>
 <footer>
   <div class="inner">
-    <div class="brand"><img src="{rel}assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"><p>{ADDRESS}<br>{TEL}<br>{MAIL}</p>{social()}</div>
+    <div class="brand"><img src="{rel}assets/img/logo-white.png" alt="Balance Clinic · Spa · Beauty"><p>{ADDRESS}<br>{TEL}<br>{MAIL}</p>{hours_list("hrs foot-hrs")}{social()}</div>
     <div><h4>Body</h4><ul>{body}</ul></div>
     <div><h4>Skin</h4><ul>{skin}</ul></div>
     <div><h4>Clinic</h4><ul>
@@ -481,9 +495,9 @@ def visit(rel, title_html="Trimgate Street,<br><em>Navan.</em>", lead="Walk in f
     </div>
     <div class="details" data-reveal>
       <div><span>Address</span><div><strong>8 Trimgate Street, Townparks</strong><small>Navan, Co. Meath, C15 DHE9</small></div></div>
-      <div><span>Phone</span><div><strong>{TEL}</strong><button class="copy" type="button" data-copy="046 906 0333">Copy</button><small>Call for today's opening hours</small></div></div>
+      <div><span>Phone</span><div><strong>{TEL}</strong><button class="copy" type="button" data-copy="046 906 0333">Copy</button><small>Call, or book online any time</small></div></div>
       <div><span>Email</span><div><strong class="em">{MAIL}</strong><small>For bookings and questions</small></div></div>
-      <div><span>Hours</span><div><strong>Late opening until 8pm</strong><small>Evening appointments available</small></div></div>
+      <div><span>Hours</span><div>{hours_list()}<small>Closed Mondays. Late evenings Thursday and Friday</small></div></div>
       <div><span>Online</span><div><strong><a {BOOK}>Book a treatment</a></strong><small>Or an online consultation</small></div></div>
     </div>
   </div>
@@ -933,7 +947,7 @@ def book():
     <a class="opt" href="{rel}book/online-consultation.html" data-reveal><span class="k">Option 02</span><h3>Book an online consultation</h3><p>Not sure where to start? A short video call with a therapist to plan your treatment.</p></a>
   </div>
   <div class="split" style="align-items:start"><div><p class="eyebrow">Or send a request</p><h2 data-split style="margin:10px 0 26px">We'll call you back.</h2>{form(rel, "book")}</div>
-  <aside class="aside"><div class="box" data-reveal><h3>Prefer to talk?</h3><p>Call the clinic on {TEL}. Late opening until 8pm.</p><button class="btn btn-lime copy" type="button" data-copy="046 906 0333" style="margin:0">Copy number</button></div><div class="facts" data-reveal><div><span>Address</span><span>8 Trimgate St, Navan</span></div><div><span>Hours</span><span>Late opening until 8pm</span></div><div><span>Consult</span><span>Included with every course</span></div><div><span>Vouchers</span><span>Accepted on all treatments</span></div></div></aside></div>
+  <aside class="aside"><div class="box" data-reveal><h3>Prefer to talk?</h3><p>Call the clinic on {TEL}. {HOURS_SHORT}.</p><button class="btn btn-lime copy" type="button" data-copy="046 906 0333" style="margin:0">Copy number</button></div><div class="facts" data-reveal><div><span>Address</span><span>8 Trimgate St, Navan</span></div><div><span>Hours</span><span>Tue to Sun, closed Mon</span></div><div><span>Consult</span><span>Included with every course</span></div><div><span>Vouchers</span><span>Accepted on all treatments</span></div></div></aside></div>
 </section>{visit(rel)}'''
     return page(rel, "Book a Treatment | Balance Clinic Navan", "Book laser, skin, body and beauty treatments online at Balance Clinic Spa Beauty, 8 Trimgate Street, Navan, Co. Meath.", "book", body)
 
@@ -955,9 +969,9 @@ def contact():
   <div>{form(rel, "contact")}</div>
   <div class="details" data-reveal style="color:var(--ink)">
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Address</span><div><strong>8 Trimgate Street, Townparks</strong><small style="color:var(--ink-2)">Navan, Co. Meath, C15 DHE9</small></div></div>
-    <div style="border-color:var(--line)"><span style="color:var(--moss)">Phone</span><div><strong>{TEL}</strong><button class="copy" type="button" data-copy="046 906 0333" style="color:var(--moss);border-color:var(--line)">Copy</button><small style="color:var(--ink-2)">Call for today's opening hours</small></div></div>
+    <div style="border-color:var(--line)"><span style="color:var(--moss)">Phone</span><div><strong>{TEL}</strong><button class="copy" type="button" data-copy="046 906 0333" style="color:var(--moss);border-color:var(--line)">Copy</button><small style="color:var(--ink-2)">Call, or book online any time</small></div></div>
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Email</span><div><strong class="em">{MAIL}</strong><small style="color:var(--ink-2)">For bookings and questions</small></div></div>
-    <div style="border-color:var(--line)"><span style="color:var(--moss)">Hours</span><div><strong>Late opening until 8pm</strong><small style="color:var(--ink-2)">Evening appointments available</small></div></div>
+    <div style="border-color:var(--line)"><span style="color:var(--moss)">Hours</span><div>{hours_list("hrs ink")}<small style="color:var(--ink-2)">Closed Mondays. Late evenings Thursday and Friday</small></div></div>
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Follow</span><div>{social("social ink")}<small style="color:var(--ink-2)">Results, offers and behind the scenes</small></div></div>
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Find us</span><div><strong><a href="{MAPS}" target="_blank" rel="noopener" style="border-color:var(--line)">Open in Google Maps</a></strong><small style="color:var(--ink-2)">Town centre, minutes from parking</small></div></div>
   </div>
