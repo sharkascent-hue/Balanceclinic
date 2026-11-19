@@ -165,6 +165,7 @@ treatment(slug="dermalogica-treatments", group="skin", title="Dermalogica Treatm
     faqs=[("Which facial should I book?", "ProSkin 60 for a first visit. It gives time for a full analysis and treatment."), ("Is it suitable for sensitive skin?", "Yes. The treatment adapts to what Face Mapping shows.")])
 
 treatment(slug="lumenis-stellar-m22-ipl", group="skin", title="Lumenis Stellar M22 IPL", em="IPL", img="rosacea-after.jpg",
+    hero_video=("stellar-m22.mp4", "stellar-m22-poster.jpg", "Lumenis Stellar M22: from the company that invented IPL"),
     short="Intense pulsed light for redness, rosacea, pigmentation and thread veins.",
     intro="The Lumenis Stellar M22 is a medical-grade IPL platform. Filtered light is absorbed by redness, pigment and broken capillaries, which fade over the weeks after treatment while the surrounding skin is unharmed.",
     body=["It is our treatment of choice for rosacea and facial redness, sun spots and pigmentation, thread veins on the face and legs, and overall photo-rejuvenation.",
@@ -227,6 +228,7 @@ REELS = [
     ("microneedling.mp4", "microneedling-poster.jpg", "Why microneedling works", "It is all about collagen. Tiny channels tell the skin to rebuild itself."),
     ("lumadoc.mp4", "lumadoc-poster.jpg", "Polynucleotides for tired eyes", "Dark circles and crepey skin under the eye, treated with LumaDoc."),
     ("reset.mp4", "reset-poster.jpg", "Your skin deserves a reset", "Dull skin, uneven texture, stubborn pigmentation and post-breakout marks."),
+    ("stellar-m22.mp4", "stellar-m22-poster.jpg", "Who invented IPL?", "Lumenis did, over 30 years ago. Their Stellar M22 treats more than 30 skin concerns, here in Navan."),
 ]
 POSTS = [
     dict(slug="why-microneedling-works", title="Why microneedling works", date="Skin · 4 min read", img="microneedling-poster.jpg", video=("microneedling.mp4", "microneedling-poster.jpg"),
@@ -454,15 +456,21 @@ def page(rel, title, desc, current, body, show_intro=False):
     out += pt()
     return out + header(rel, current) + body + footer(rel)
 
-def phero(rel, crumbs, title_html, lead, img=None, word=None, ctas=""):
-    if img:
+def phero(rel, crumbs, title_html, lead, img=None, word=None, ctas="", video=None):
+    side = ""
+    if video:
+        v, p, cap = video
+        bg = f'<div class="bg"><video autoplay muted loop playsinline preload="metadata" poster="{rel}assets/img/{p}" src="{rel}assets/video/{v}" data-reel></video></div>'
+        side = f'<div class="reel hero-reel" data-reveal><div class="phone" data-video="{rel}assets/video/{v}" data-poster="{rel}assets/img/{p}" data-title="{html.escape(cap)}" role="button" tabindex="0" aria-label="Play with sound: {html.escape(cap)}"><video muted loop playsinline preload="metadata" poster="{rel}assets/img/{p}" src="{rel}assets/video/{v}" data-reel></video><div class="ply"><span>{PLAY}</span><b>Watch with sound</b></div></div></div>'
+        ctas += f'<button class="btn btn-ghost-light only-phone" type="button" data-video="{rel}assets/video/{v}" data-poster="{rel}assets/img/{p}" data-title="{html.escape(cap)}">Watch the video</button>'
+    elif img:
         bg = f'<div class="bg"><img src="{rel}assets/img/{img}" alt=""></div>'
     else:
         bg = f'<div class="bg typo"><span>{word or ""}</span></div>'
     crumb = " ".join(f'<a href="{rel}{h}">{t}</a> <span>/</span>' for t, h in crumbs)
     here = re.sub(r"<[^>]+>", "", title_html)
-    return f'''<section class="phero grain">
-  {bg}
+    return f'''<section class="phero grain{' has-reel' if side else ''}">
+  {bg}{side}
   <div class="content">
     <div class="crumbs">{crumb} <span>{here}</span></div>
     <h1 data-split>{title_html}</h1>
@@ -657,7 +665,7 @@ def treatment_page(t):
     related = [x for x in T if x["group"] == t["group"] and x["slug"] != t["slug"]][:3]
     if len(related) < 3: related += [x for x in T if x["group"] != t["group"]][:3 - len(related)]
     rel_cards = "".join(tcard(rel, x) for x in related)
-    body = phero(rel, [("Home", "index.html"), ("Treatments", "treatments/index.html"), (gname, f"treatments/index.html#{t['group']}")], title, t["intro"], img=t.get("img"), word=t["em"],
+    body = phero(rel, [("Home", "index.html"), ("Treatments", "treatments/index.html"), (gname, f"treatments/index.html#{t['group']}")], title, t["intro"], img=t.get("img"), word=t["em"], video=t.get("hero_video"),
                  ctas=f'<a class="btn btn-lime" {BOOK}>Book {(t["title"] if t.get("brand") else t["title"].lower()) if len(t["title"]) < 20 else "now"} {ARROW}</a><a class="btn btn-ghost-light" {BOOK}>Ask a question</a>')
     body += f'''<section class="tbody"><div class="inner">
   <div class="prose">

@@ -983,3 +983,22 @@ footer .brand .hrs li.today{color:#fff}
 .brandbox .mk span{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-2)}
 .brandbox p{margin:0;font-size:15px;line-height:1.6;color:var(--ink-2)}
 @media (max-width:560px){.brandbox{flex-direction:column;text-align:center;gap:14px}}
+
+/* Four videos in a row */
+.reel-row{grid-template-columns:repeat(4,1fr);max-width:1320px}
+.reel:nth-child(4){transform:translateY(-40px)}
+.reel p b{font-size:clamp(21px,1.8vw,26px)}
+@media (max-width:1100px) and (min-width:801px){.reel-row{grid-template-columns:repeat(2,1fr);max-width:760px}.reel:nth-child(n){transform:none}}
+@media (max-width:800px){.reel:nth-child(4){transform:none}}
+
+/* A treatment hero with its own video: plays behind the text, and in a phone frame on the right (desktop) */
+.phero.has-reel .hero-reel{position:absolute;z-index:2;right:var(--gutter);bottom:clamp(40px,6vw,80px);width:clamp(200px,17vw,260px);gap:0}
+.phero.has-reel .hero-reel .phone{border-color:rgba(255,255,255,.18);box-shadow:0 40px 80px -30px rgba(0,0,0,.6)}
+.phero.has-reel .content{max-width:min(760px,calc(100% - 300px))}
+.phero.has-reel .bg video{opacity:.35}
+.only-phone{display:none}
+@media (max-width:900px){
+  .phero.has-reel .hero-reel{display:none}
+  .phero.has-reel .content{max-width:none}
+  .only-phone{display:inline-flex}
+}
