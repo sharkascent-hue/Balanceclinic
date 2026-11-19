@@ -666,7 +666,7 @@ def treatment_page(t):
     if len(related) < 3: related += [x for x in T if x["group"] != t["group"]][:3 - len(related)]
     rel_cards = "".join(tcard(rel, x) for x in related)
     body = phero(rel, [("Home", "index.html"), ("Treatments", "treatments/index.html"), (gname, f"treatments/index.html#{t['group']}")], title, t["intro"], img=t.get("img"), word=t["em"], video=t.get("hero_video"),
-                 ctas=f'<a class="btn btn-lime" {BOOK}>Book {(t["title"] if t.get("brand") else t["title"].lower()) if len(t["title"]) < 20 else "now"} {ARROW}</a><a class="btn btn-ghost-light" {BOOK}>Ask a question</a>')
+                 ctas=f'<a class="btn btn-lime" {BOOK}>Book {t["title"] if len(t["title"]) < 20 else "now"} {ARROW}</a><a class="btn btn-ghost-light" {BOOK}>Ask a question</a>')
     body += f'''<section class="tbody"><div class="inner">
   <div class="prose">
     {brand_block(rel, t.get("brand"))}<h2 data-split>About the treatment</h2>{prose}
@@ -674,7 +674,7 @@ def treatment_page(t):
     <h2 data-split>What to expect</h2><div class="steps" data-reveal>{steps}</div>
   </div>
   <aside class="aside">
-    <div class="box" data-reveal><h3>Book {(t["title"] if t.get("brand") else t["title"].lower()) if len(t["title"]) < 26 else "this treatment"}</h3><p>Every course starts with a consultation. Book online or call {TEL}.</p><a class="btn btn-lime" {BOOK}>Book now {ARROW}</a></div>
+    <div class="box" data-reveal><h3>Book {t["title"] if len(t["title"]) < 26 else "this treatment"}</h3><p>Every course starts with a consultation. Book online or call {TEL}.</p><a class="btn btn-lime" {BOOK}>Book now {ARROW}</a></div>
     <div class="facts" data-reveal>{facts}</div>
     {media}
   </aside>
@@ -999,7 +999,7 @@ def contact():
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Follow</span><div>{social("social ink")}<small style="color:var(--ink-2)">Results, offers and behind the scenes</small></div></div>
     <div style="border-color:var(--line)"><span style="color:var(--moss)">Find us</span><div><strong><a href="{MAPS}" target="_blank" rel="noopener" style="border-color:var(--line)">Open in Google Maps</a></strong><small style="color:var(--ink-2)">Town centre, minutes from parking</small></div></div>
   </div>
-</div></section>{visit(rel)}'''
+</div></section>'''
     return page(rel, "Contact | Balance Clinic, 8 Trimgate Street, Navan", f"Call {PHONE} or email {EMAIL}. Balance Clinic Spa Beauty, 8 Trimgate Street, Navan, Co. Meath, C15 DHE9.", "contact", body)
 
 def blog_index():
