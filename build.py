@@ -6,7 +6,7 @@ import os, re, html
 ROOT = os.path.dirname(os.path.abspath(__file__))
 PHONE = "(046) 906 0333"
 PHONE_INTL = "+353469060333"          # what a tap on the number dials
-EMAIL = "admin@balanceclinic.ie"
+EMAIL = "justask@balanceclinic.ie"
 SITE = "https://www.balanceclinic.ie"       # the one address search engines should index
 TEL = f'<a class="tel" href="tel:{PHONE_INTL}">{PHONE}</a>'
 MAIL = f'<a class="tel" href="mailto:{EMAIL}">{EMAIL}</a>'
