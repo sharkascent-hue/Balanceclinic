@@ -43,7 +43,9 @@ module.exports = async function handler(req, res) {
 
     const values = [];
     ((s.line_items && s.line_items.data) || []).forEach(function (li) {
-      const v = VALUE[li.description];
+      /* vouchers are now sold on VoucherConnect, so older site orders are read from the name: "Gift voucher €25", "Black Friday gift voucher, €50 value" */
+      const m = /voucher.*?€\s?(\d+)/i.exec(li.description || '');
+      const v = VALUE[li.description] || (m ? +m[1] : 0);
       if (v) for (let i = 0; i < li.quantity; i++) values.push(v);
     });
     if (!values.length) return send(res, 404, { error: 'no_voucher' });
