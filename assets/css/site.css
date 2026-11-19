@@ -857,7 +857,7 @@ html.promo-on .menu .inner{padding-top:calc(110px + var(--promo) + env(safe-area
 html.promo-on .mpanel{padding-top:calc(108px + var(--promo) + env(safe-area-inset-top,0px))}
 html.promo-on .pbar{top:calc(74px + var(--promo) + env(safe-area-inset-top,0px))}
 @media (min-width:901px){
-  html.promo-on .tgroup h2,html.promo-on .aside,html.promo-on .bk-card{top:calc(120px + var(--promo))}
+  html.promo-on .tgroup h2,html.promo-on .aside,html.promo-on .bkpage .bk-card{top:calc(120px + var(--promo))}
   html.promo-on .lpic{top:calc(170px + var(--promo))}
 }
 html.promo-on .psec{scroll-margin-top:calc(170px + var(--promo))}
