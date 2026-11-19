@@ -33,11 +33,12 @@ function encode(obj, prefix, out) {
   return out;
 }
 
-async function stripe(method, path, params) {
+async function stripe(method, path, params, version) {
   const key = stripeKey();
   if (!key) { const e = new Error('Stripe is not connected'); e.status = 503; throw e; }
   let url = STRIPE_BASE + path;
   const opts = { method: method, headers: { Authorization: 'Bearer ' + key } };
+  if (version) opts.headers['Stripe-Version'] = version;   /* the account default is old (2019); some calls need a newer API */
   const body = params ? encode(params).join('&') : '';
   if (method === 'GET') { if (body) url += (url.indexOf('?') > -1 ? '&' : '?') + body; }
   else { opts.headers['Content-Type'] = 'application/x-www-form-urlencoded'; opts.body = body; }

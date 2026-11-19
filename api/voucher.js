@@ -11,6 +11,7 @@ const CATALOG = require('./_catalog.json');
 const VALUE = {};
 Object.keys(CATALOG).forEach(function (id) { if (CATALOG[id].v) VALUE[CATALOG[id].n] = CATALOG[id].v; });
 const YEARS_VALID = 5;
+const API = '2024-06-20';   /* search and latest_charge need a current Stripe API; the account default is from 2019 */
 
 function same(a, b) {
   const x = Buffer.from(String(a)), y = Buffer.from(String(b));
@@ -21,13 +22,13 @@ async function sessionFor(q) {
   const expand = ['line_items', 'payment_intent.latest_charge'];
   if (q.s) {
     if (!/^cs_[A-Za-z0-9_]{10,200}$/.test(q.s)) return null;
-    return stripe('GET', '/v1/checkout/sessions/' + q.s, { expand: expand });
+    return stripe('GET', '/v1/checkout/sessions/' + q.s, { expand: expand }, API);
   }
   if (!/^BC-[A-Z0-9]{6}$/.test(q.o || '') || !/^[a-f0-9]{18}$/.test(q.t || '')) return null;
-  const found = await stripe('GET', '/v1/payment_intents/search', { query: "metadata['order_no']:'" + q.o + "'", limit: 1 });
+  const found = await stripe('GET', '/v1/payment_intents/search', { query: "metadata['order_no']:'" + q.o + "'", limit: 1 }, API);
   const pi = found.data && found.data[0];
   if (!pi || !pi.metadata || !same(pi.metadata.vtok || '', q.t)) return null;
-  const list = await stripe('GET', '/v1/checkout/sessions', { payment_intent: pi.id, limit: 1, expand: expand.map(function (e) { return 'data.' + e; }) });
+  const list = await stripe('GET', '/v1/checkout/sessions', { payment_intent: pi.id, limit: 1, expand: expand.map(function (e) { return 'data.' + e; }) }, API);
   return (list.data && list.data[0]) || null;
 }
 
