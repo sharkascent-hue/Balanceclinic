@@ -250,7 +250,7 @@ POSTS = [
                "<h2>Repair, not volume</h2><p>Polynucleotides are purified DNA fragments that signal the skin to repair itself. Injected in a series of tiny deposits, they improve hydration, thickness and elasticity, so darkness lifts and the crepey texture smooths. The LumaDoc protocol we use is designed for this delicate area.</p>",
                "<p>Most clients have two to three sessions, three weeks apart, and see the change build over two months.</p>",
                '<p><a class="link" ' + BOOK + '>Book an online consultation ' + ARROW + '</a></p>'], compare="undereye"),
-    dict(slug="what-cellulite-really-is", title="What cellulite really is", date="Body · 3 min read", img="contour.jpg",
+    dict(slug="what-cellulite-really-is", title="What cellulite really is", date="Body · 3 min read", img="ph-cellulite.jpg",
          summary="It is not about weight. It is about the bands under the skin, and radio frequency reaches them.",
          body=["<p>Cellulite affects around nine in ten women at every size. It appears when fat cells push up against the fibrous bands that anchor skin to muscle, puckering the surface between them.</p>",
                "<h2>Why creams fail</h2><p>The structure that causes cellulite sits well below where a cream can reach. Treatment has to warm the deeper tissue, stimulate collagen and improve circulation.</p>",
@@ -584,7 +584,7 @@ def home():
 
 <section class="sec dark" id="feature">
   <div class="split">
-    <div class="img reveal-img"><img src="assets/img/contour.jpg" alt="Venus Legacy radio-frequency treatment on the thigh" loading="lazy"></div>
+    <div class="img reveal-img"><img src="assets/img/ph-contour.jpg" alt="Venus Legacy radio-frequency treatment on the thigh" loading="lazy"></div>
     <div>
       <p class="eyebrow">Signature · Venus Legacy</p>
       <h2 data-split>Contour, tighten, <em>smooth.</em></h2>
@@ -698,7 +698,7 @@ def results():
 
 def about():
     rel = "../"
-    body = phero(rel, [("Home", "index.html")], "Clinic, spa and <em>beauty.</em>", "One address on Trimgate Street where medical-grade technology meets a spa that knows how to slow you down.", img="room.jpg")
+    body = phero(rel, [("Home", "index.html")], "Clinic, spa and <em>beauty.</em>", "One address on Trimgate Street where medical-grade technology meets a spa that knows how to slow you down.", img="ph-room.jpg")
     body += f'''<section class="statement"><div class="inner"><p class="eyebrow" style="margin-bottom:34px">Our story</p><p class="big">Balance started with a simple idea: treatments that <em>work</em>, delivered by people who <em>care</em>, in a room you never want to leave.</p></div></section>
 <section class="sec dark"><div class="sec-head"><div><p class="eyebrow">What we stand for</p><h2 data-split>Three promises.</h2></div></div>
   <div class="values">
@@ -1225,7 +1225,7 @@ def laser_hub():
     for gid, label, areas in LASER:
         groups = "".join(f'<div class="pgroup" data-reveal><h3><a href="{rel}laser/{gid}/{a["slug"]}.html">{a["name"]}</a></h3>{ltable(a, label)}</div>' for a in areas)
         pricing += f'<div class="psec"><div class="psec-head"><h2 data-split>{label}</h2><span>{sum(len(a["rows"]) for a in areas)} areas</span></div><div class="pgrid">{groups}</div></div>'
-    body = phero(rel, [("Home", "index.html"), ("Treatments", "treatments/index.html")], "Laser hair <em>removal.</em>", t["intro"], img="la-upper.jpg",
+    body = phero(rel, [("Home", "index.html"), ("Treatments", "treatments/index.html")], "Laser hair <em>removal.</em>", t["intro"], img="ph-la-full.jpg",
                  ctas=f'<a class="btn btn-lime" {BOOK}>Book a consultation {ARROW}</a><a class="btn btn-ghost-light" href="#pricing">See prices</a>')
     search = '<label class="psearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="price-search" type="search" placeholder="Search laser areas" aria-label="Search laser areas" autocomplete="off"></label>'
     body += f'''<section class="sec price-sec lhub"><div class="pbar"><nav class="pchips" aria-label="Price list sections">{price_chips(rel, "laser")}</nav>{search}</div>
