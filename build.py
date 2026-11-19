@@ -41,7 +41,7 @@ T = []
 def treatment(**k): T.append(k)
 def turl(t): return "laser/index.html" if t["slug"] == "laser-hair-removal" else f"treatments/{t['slug']}.html"
 
-treatment(slug="laser-hair-removal", group="body", title="Laser Hair Removal", em="Laser", img="laser.jpg",
+treatment(slug="laser-hair-removal", group="body", title="Laser Hair Removal", em="Laser", img="ph-laser.jpg",
     short="Medical-grade laser for smooth, lasting results on face and body.",
     intro="Medical-grade laser hair removal targets the hair follicle at the root. Over a course of sessions the hair grows back finer and sparser until most areas need only an occasional top-up.",
     body=["Our laser is a medical-grade system operated by trained therapists, with settings chosen for your skin tone and hair type after a patch test.",
@@ -51,7 +51,7 @@ treatment(slug="laser-hair-removal", group="body", title="Laser Hair Removal", e
     facts=[("Sessions", "6 to 8"), ("Time", "10 to 60 min"), ("Downtime", "None"), ("Patch test", "Required")],
     faqs=[("Does it hurt?", "Most people describe a quick warm flick, like an elastic band. The handpiece cools the skin as it works."), ("Can I shave between sessions?", "Yes. Shave the area 24 hours before each session, but avoid waxing or plucking during your course."), ("How soon will I see results?", "Hair sheds 1 to 3 weeks after each session. Regrowth becomes noticeably finer from the third session.")])
 
-treatment(slug="body-contouring", group="body", title="Body Contouring", em="Contouring", img="contour.jpg",
+treatment(slug="body-contouring", group="body", title="Body Contouring", em="Contouring", img="ph-contour.jpg",
     short="Venus Legacy radio-frequency to tighten skin and smooth cellulite.",
     intro="Venus Legacy combines multi-polar radio frequency with pulsed electromagnetic fields to warm the deeper layers of skin, stimulate collagen and reduce the look of cellulite. No needles, no downtime.",
     body=["Treatment feels like a warm, deep massage. The applicator glides over the area while the tissue is gently heated to the temperature at which collagen responds.",
@@ -62,7 +62,7 @@ treatment(slug="body-contouring", group="body", title="Body Contouring", em="Con
     faqs=[("When do results show?", "Skin often looks smoother after the first few sessions, with the full effect developing over the 3 months that follow a course."), ("Is it safe?", "Venus Legacy is a non-invasive, clinically established technology. We check your medical history at consultation."), ("Can I exercise afterwards?", "Yes. Drink plenty of water and carry on as normal.")],
     compare="jaw")
 
-treatment(slug="waxing", group="body", title="Lycon Waxing", em="Lycon", img="beauty.jpg",
+treatment(slug="waxing", group="body", title="Lycon Waxing", em="Lycon", img="ph-waxing.jpg",
     short="Premium Lycon hot wax, including Lycon Advanced for short, stubborn hair.",
     intro="Premium Lycon wax, the professional's choice for sensitive skin. It grips the hair, not the skin, so waxing is gentler, quicker and cleaner, and it lifts hair as short as 1 mm.",
     brand=dict(name="LYCON", line="Precision Waxing", note="Premium professional wax, made in Australia since 1978. Balance is a Lycon waxing salon.", logo="lycon-logo"),
@@ -78,7 +78,7 @@ treatment(slug="waxing", group="body", title="Lycon Waxing", em="Lycon", img="be
           ("Can I wax if I use retinol?", "Stop retinol products on the area for a week before a facial wax, and tell your therapist about any skin medication."),
           ("Does it get easier?", "Yes. Regular waxing weakens the follicle, so hair returns finer and less dense.")])
 
-treatment(slug="massage", group="body", title="Massage", em="Massage", img="massage.jpg",
+treatment(slug="massage", group="body", title="Massage", em="Massage", img="ph-massage.jpg",
     short="Swedish, deep tissue, Indian head, hot stone and pregnancy massage.",
     intro="A quiet room, warm towels and a therapist who reads what your body needs. Choose a style or tell us how you feel and we will tailor it.",
     body=["Swedish massage for relaxation and circulation. Deep tissue for stubborn knots and tension. Hot stone for warmth that reaches deep into the muscle. Indian head for the scalp, neck and shoulders. Pregnancy massage adapted for comfort in every trimester after the first."],
@@ -87,7 +87,7 @@ treatment(slug="massage", group="body", title="Massage", em="Massage", img="mass
     facts=[("Time", "30 to 90 min"), ("Pressure", "Your choice"), ("Downtime", "None"), ("Add on", "Hot stones")],
     faqs=[("Which massage should I book?", "If you are unsure, book a full body and tell your therapist what you want from it. They will blend styles."), ("Can I have a massage while pregnant?", "Yes, from the second trimester, with a therapist trained in pregnancy massage.")])
 
-treatment(slug="what-is-cellulite", group="skin-concerns", title="What Is Cellulite?", em="Cellulite", img="body.jpg",
+treatment(slug="what-is-cellulite", group="skin-concerns", title="What Is Cellulite?", em="Cellulite", img="ph-cellulite.jpg",
     short="What causes dimpled skin and which treatments actually help.",
     intro="Cellulite is the dimpled, uneven texture that appears when fat cells push against the connective bands under the skin. It affects most women, at every size, and it responds to the right treatment.",
     body=["The bands that anchor skin to muscle run vertically in women, so when fat cells enlarge or skin loses firmness the surface puckers between them. Hormones, genetics, circulation and skin thickness all play a part.",
@@ -97,7 +97,7 @@ treatment(slug="what-is-cellulite", group="skin-concerns", title="What Is Cellul
     facts=[("Treated with", "Venus Legacy"), ("Sessions", "6 to 8"), ("Downtime", "None"), ("Results", "Build over 3 months")],
     faqs=[("Will exercise remove it?", "Exercise helps tone the muscle underneath and improves circulation, but it rarely removes cellulite on its own."), ("Does the result last?", "With maintenance sessions and a steady weight, yes.")])
 
-treatment(slug="anti-ageing-hydration", group="skin-concerns", title="Anti-Ageing & Hydration", em="Hydration", img="skin.jpg",
+treatment(slug="anti-ageing-hydration", group="skin-concerns", title="Anti-Ageing & Hydration", em="Hydration", img="ph-hydration.jpg",
     short="Fine lines, dullness and dehydration, treated from the inside out.",
     intro="From our mid twenties we lose about one percent of collagen each year. Hydration drops, texture roughens and fine lines settle in. We rebuild from below with treatments chosen for your skin.",
     body=["Microneedling and peels prompt the skin to make new collagen. Elemis Biotec and CACI lift and firm with electrical currents and LED. Alumier MD and Dermalogica facials restore the barrier and lock in moisture.",
@@ -144,7 +144,7 @@ treatment(slug="expert-brows-lashes", group="beauty", title="Expert Brows & Lash
     facts=[("Time", "30 to 60 min"), ("Tint lasts", "4 to 6 weeks"), ("Lamination", "6 to 8 weeks"), ("Patch test", "Required for tint")],
     faqs=[("What is brow lamination?", "A treatment that sets brow hairs in place so they look fuller and more uniform for up to 8 weeks."), ("Will you change my shape?", "Only with you. Mapping shows the options before anything is removed.")])
 
-treatment(slug="alumier-md-peels", group="skin", title="Alumier MD Peels", em="Peels", img="hero-poster.jpg",
+treatment(slug="alumier-md-peels", group="skin", title="Alumier MD Peels", em="Peels", img="ph-peel.jpg",
     short="Medical-grade chemical peels for pigmentation, acne and texture.",
     intro="Alumier MD peels are medical-grade resurfacing treatments that lift away dull, damaged surface cells and prompt the skin to renew. Pigmentation fades, breakouts calm and texture smooths.",
     body=["Each peel is chosen for your concern: Glow Peel for radiance and tone, Lactic for dehydrated skin, Salicylic for oily and breakout-prone skin. Peels are only available from clinics with trained Alumier MD professionals.",
@@ -155,7 +155,7 @@ treatment(slug="alumier-md-peels", group="skin", title="Alumier MD Peels", em="P
     faqs=[("Will my skin peel visibly?", "Usually light flaking, like after a day in the sun. Not everyone flakes at all."), ("Can I have a peel in summer?", "Yes, with daily SPF. We use a lower strength if you are in the sun a lot.")],
     video=("reset.mp4", "reset-poster.jpg", "Your skin deserves a reset"))
 
-treatment(slug="dermalogica-treatments", group="skin", title="Dermalogica Treatments", em="Dermalogica", img="skin.jpg",
+treatment(slug="dermalogica-treatments", group="skin", title="Dermalogica Treatments", em="Dermalogica", img="ph-facial.jpg",
     short="Pro skin facials mapped to your skin, with professional-only actives.",
     intro="Dermalogica professional facials start with Face Mapping, a zone-by-zone analysis of your skin, then use professional-strength products to treat what it finds.",
     body=["ProSkin 30 is a targeted treatment for one concern. ProSkin 60 is the full experience: double cleanse, exfoliation, extraction if needed, massage, mask and professional actives. Both can include Pro Power Peel or Pro Bright add-ons."],
@@ -176,7 +176,7 @@ treatment(slug="lumenis-stellar-m22-ipl", group="skin", title="Lumenis Stellar M
     faqs=[("Does IPL hurt?", "Each pulse feels like a warm flick. Cooling gel and the M22 sapphire tip keep it comfortable."), ("Can I have IPL with a tan?", "No. Skin must be free of tan, real or fake, for four weeks before treatment.")],
     compare="rosacea")
 
-treatment(slug="microneedling", group="skin", title="Microneedling", em="Microneedling", img="nonsurgical.jpg",
+treatment(slug="microneedling", group="skin", title="Microneedling", em="Microneedling", img="ph-microneedling.jpg",
     short="Collagen induction for scarring, texture, pores and fine lines.",
     intro="Microneedling creates thousands of micro-channels in the skin, which triggers the repair process and new collagen. It is one of the most effective treatments we offer for acne scarring, texture and pores.",
     body=["We use a medical-grade pen with sterile, single-use cartridges. Numbing cream makes it comfortable, and the skin is treated with serums chosen for your concern as the channels are open.",
@@ -534,12 +534,12 @@ def home():
     rel = ""
     cards = ""
     strip = [
-        ("Medical Grade Laser", "Hair removal, rejuvenation and thread veins.", "laser.jpg", "laser/index.html", ["Hair removal", "Thread veins"]),
-        ("Body Treatments", "Venus Legacy contouring, cellulite and skin tightening.", "contour.jpg", "treatments/body-contouring.html", ["Venus Legacy", "Cellulite"]),
-        ("Skin Treatments", "Alumier peels, IPL, microneedling and exosomes.", "hero-poster.jpg", "treatments/alumier-md-peels.html", ["Peels", "IPL", "Needling"]),
-        ("Non Surgical", "Microneedling, Idenel and CACI for lift without surgery.", "nonsurgical.jpg", "treatments/microneedling.html", ["Microneedling", "Idenel"]),
-        ("Massage", "Swedish, deep tissue, hot stone, Indian head and pregnancy.", "massage.jpg", "treatments/massage.html", ["Hot stone", "Deep tissue"]),
-        ("Beauty", "Nails, lashes, brows, tanning and waxing.", "beauty.jpg", "treatments/index.html#beauty", ["Lashes", "Brows", "Nails"]),
+        ("Medical Grade Laser", "Hair removal, rejuvenation and thread veins.", "ph-laser.jpg", "laser/index.html", ["Hair removal", "Thread veins"]),
+        ("Body Treatments", "Venus Legacy contouring, cellulite and skin tightening.", "ph-contour.jpg", "treatments/body-contouring.html", ["Venus Legacy", "Cellulite"]),
+        ("Skin Treatments", "Alumier peels, IPL, microneedling and exosomes.", "ph-peel.jpg", "treatments/alumier-md-peels.html", ["Peels", "IPL", "Needling"]),
+        ("Non Surgical", "Microneedling, Idenel and CACI for lift without surgery.", "ph-microneedling.jpg", "treatments/microneedling.html", ["Microneedling", "Idenel"]),
+        ("Massage", "Swedish, deep tissue, hot stone, Indian head and pregnancy.", "ph-massage.jpg", "treatments/massage.html", ["Hot stone", "Deep tissue"]),
+        ("Beauty", "Nails, lashes, brows, tanning and waxing.", "ph-beauty.jpg", "treatments/index.html#beauty", ["Lashes", "Brows", "Nails"]),
     ]
     for i, (t, d, img, href, tags) in enumerate(strip):
         cards += f'''<a class="hcard" href="{href}"><img src="assets/img/{img}" alt="" loading="lazy"><span class="n">0{i+1}</span><span class="arrow"><svg viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span><div><h3>{t}</h3><p>{d}</p><div class="tags">{"".join(f"<span>{x}</span>" for x in tags)}</div></div></a>'''
@@ -633,7 +633,7 @@ def treatments_index():
     for key, name, desc in GROUPS:
         cards = "".join(tcard(rel, t) for t in T if t["group"] == key)
         groups += f'''<section class="tgroup" id="{key}"><div class="inner"><div><h2 data-split><small>{name}</small>{name.split()[0]} <em style="font-style:italic;color:var(--moss)">{" ".join(name.split()[1:])}</em></h2><p class="tp" data-reveal>{desc}</p></div><div class="tlist">{cards}</div></div></section>'''
-    body = phero(rel, [("Home", "index.html")], "Treatments", "Sixteen treatments across body, skin and beauty, each starting with a consultation.", img="nonsurgical.jpg",
+    body = phero(rel, [("Home", "index.html")], "Treatments", "Sixteen treatments across body, skin and beauty, each starting with a consultation.", img="ph-facial.jpg",
                  ctas=f'<a class="btn btn-lime" {BOOK}>Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="{rel}price-list.html">Price list</a>')
     body += groups + visit(rel)
     return page(rel, "Beauty, Skin & Laser Treatments in Navan | Balance Clinic", "Laser hair removal, skin, body and beauty treatments at Balance Clinic Spa Beauty, Trimgate Street, Navan, Co. Meath.", "treatments", body)
@@ -710,7 +710,7 @@ def about():
 </section>
 <section class="sec"><div class="split">
   <div><p class="eyebrow">By the numbers</p><h2 data-split>Rated <em>4.9</em> by more than 800 people.</h2><p class="lead" data-reveal>We are the highest-rated clinic of our kind in Meath, and every review was written by a client who sat in one of our rooms.</p><div class="ctas" data-reveal><a class="btn btn-moss" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read the reviews</a><a class="btn btn-ghost" href="{rel}about/team.html">Meet the team {ARROW}</a></div></div>
-  <div class="img reveal-img" style="aspect-ratio:4/3"><img src="{rel}assets/img/room.jpg" alt="A treatment room at Balance" loading="lazy"></div>
+  <div class="img reveal-img" style="aspect-ratio:4/3"><img src="{rel}assets/img/ph-room.jpg" alt="A treatment room at Balance" loading="lazy"></div>
 </div></section>
 {visit(rel)}'''
     return page(rel, "About Us | Beauty Clinic & Spa in Navan | Balance Clinic", "Balance Clinic Spa Beauty on Trimgate Street, Navan: a medical aesthetic clinic and holistic spa, rated 4.9 by over 800 Google reviewers.", "about", body)
@@ -1025,19 +1025,19 @@ def post_page(p):
 # ---------------------------------------------------------------- write
 # ---------------------------------------------------------------- price list pages
 PINFO = {
-    "skin": dict(slug="skin-face", img="la-face.jpg",
+    "skin": dict(slug="skin-face", img="ph-peel.jpg",
                  intro="Facials, peels, IPL and microneedling from trained skin therapists. Every course starts with a skin consultation so the plan fits your skin.",
                  related=["alumier-md-peels", "dermalogica-treatments", "lumenis-stellar-m22-ipl", "microneedling", "microneedling-with-exosomes", "idenel-liquid-microneedling"]),
-    "body": dict(slug="body-contouring", img="contour.jpg",
+    "body": dict(slug="body-contouring", img="ph-contour.jpg",
                  intro="Venus Legacy radio frequency for skin tightening, cellulite and contouring. Pay per session, or save with a course of 6 or 10.",
                  related=["body-contouring", "what-is-cellulite"]),
     "injectables": dict(slug="injectables", img="pc-injectables.jpg",
                         intro="Anti-wrinkle injections, lip filler and skin boosters. Every injectable treatment starts with a medical consultation.",
                         related=[]),
-    "beauty": dict(slug="beauty", img="la-lower.jpg",
+    "beauty": dict(slug="beauty", img="ph-beauty.jpg",
                    intro="Lashes, brows, manicures and Margaret Dabbs pedicures, finished to a clinic standard.",
                    related=["lashes", "expert-brows-lashes", "nails-manicure", "pedicure"]),
-    "waxing": dict(slug="waxing", img="la-bikini.jpg",
+    "waxing": dict(slug="waxing", img="ph-waxing.jpg",
                    intro="Hot wax for the face, underarms and bikini, strip wax for larger areas. Times shown are for each treatment.",
                    related=["waxing"]),
 }
@@ -1117,41 +1117,41 @@ LASER_SESSIONS = (1, 3, 6, 10)
 # Each area: (name, detail, (price for 1, 3, 6, 10 sessions) in euro). From the clinic's laser price list.
 LASER = [
     ("women", "For Women", [
-        dict(slug="bikini", name="Bikini", img="la-bikini.jpg",
+        dict(slug="bikini", name="Bikini", img="ph-la-bikini.jpg",
              intro="From a neat bikini line to a full Hollywood, laser keeps the bikini area smooth without the rash, ingrown hairs and regrowth that come with shaving and waxing.",
              rows=[("Any bikini", "Line, Brazilian or Hollywood", (73.95, 175, 290, 375)), ("Any bikini & underarms", "", (73.95, 175, 290, 375)),
                    ("Navel to pubic line", "", (38.95, 85.95, 149, 168))]),
-        dict(slug="face", name="Face", img="la-face.jpg",
+        dict(slug="face", name="Face", img="ph-la-face.jpg",
              intro="Upper lip, chin and the sides of the face are the most popular areas for women. Small areas mean short sessions, often under ten minutes.",
              rows=[("Lip", "", (46.95, 115.95, 199, 219)), ("Chin", "", (46.95, 115.95, 199, 219)), ("Lip & chin", "", (57, 155, 259, 329.5)),
                    ("Jawline & chin", "", (55.95, 155, 259, 319)), ("Centre brows", "", (38.95, 85.95, 149, 155)), ("Sides of face", "", (57, 105, 259, 329.5)),
                    ("Front of neck", "", (57, 105, 259, 329.5)), ("Full face", "", (89.95, 260, 319, 425)), ("Full face & front of neck", "", (110, 285, 369, 455))]),
-        dict(slug="upper-body", name="Upper Body", img="la-upper.jpg",
+        dict(slug="upper-body", name="Upper Body", img="ph-la-upper.jpg",
              intro="Underarms are the most requested area of all. Arms, stomach and lower back are treated with the same handpiece, which cools the skin with every pulse.",
              rows=[("Underarms", "", (48.95, 118, 159, 210)), ("Nipples", "", (48.95, 118, 159, 210)), ("Forearms", "", (68.95, 185, 325, 485)),
                    ("Full arms", "", (99.95, 275, 420, 580)), ("Stomach", "", (99.95, 240, 390, 559)), ("Lower back", "", (68.95, 185, 328, 485))]),
-        dict(slug="lower-body", name="Lower Body", img="la-lower.jpg",
+        dict(slug="lower-body", name="Lower Body", img="ph-la-lower.jpg",
              intro="Legs are the largest area most clients treat. Lower legs take around 20 minutes and full legs about 40, and the smooth finish lasts between maintenance visits.",
              rows=[("Lower legs", "", (68.95, 185, 328, 488)), ("Full legs", "", (129.95, 269.95, 529, 699.5)), ("Buttocks", "", (79.95, 229, 369, 580))]),
-        dict(slug="full-body", name="Full Body", img="la-full.jpg",
+        dict(slug="full-body", name="Full Body", img="ph-la-full.jpg",
              intro="Combine areas in one appointment and one course. Packages are the best value per area and save the most time over a year.",
              rows=[("Lower legs, any bikini & underarms", "Package", (120, 269, 478, 749.5)), ("Full legs, any bikini & underarms", "Package", (145, 299, 550, 799.5)),
                    ("Full body & full face", "", (249.95, 575, 895, 1350))]),
     ]),
     ("men", "For Men", [
-        dict(slug="face", name="Face", img="la-men-upper.jpg",
+        dict(slug="face", name="Face", img="ph-la-men.jpg",
              intro="Shape the beard line, clear the neck and stop shaving rash for good. Laser is ideal for ingrown hairs along the jaw and neck.",
              rows=[("Full beard", "", (79.95, 215, 365, 550)), ("Full beard & neck", "", (87.95, 230, 399, 529)), ("Front or back of neck", "", (57, 155, 255, 375)),
                    ("Centre brow", "", (31, 76, 125, 155)), ("Ears", "", (36, 99, 178, 216)), ("Nose", "", (58, 163, 274, 395))]),
-        dict(slug="upper-body", name="Upper Body", img="la-men-upper.jpg",
+        dict(slug="upper-body", name="Upper Body", img="ph-la-men.jpg",
              intro="Chest, stomach, back and shoulders are the areas men treat most. Large areas are covered quickly with a wide handpiece.",
              rows=[("Chest or stomach", "", (64.95, 179.85, 299.7, 495)), ("Chest & stomach", "", (73, 207, 349, 499)), ("Shoulders", "", (69.95, 195, 330, 499.5)),
                    ("Full back", "", (88, 230, 405, 640)), ("Full back & shoulders", "", (99.95, 268, 478, 699.95)), ("Lower back", "", (65, 168, 245, 365)),
                    ("Underarms", "", (58, 116, 208, 275)), ("Forearms", "", (89.95, 280, 370, 449.75)), ("Full arms", "", (108, 278, 399, 525))]),
-        dict(slug="lower-body", name="Lower Body", img="la-lower.jpg",
+        dict(slug="lower-body", name="Lower Body", img="ph-la-lower.jpg",
              intro="Smooth legs for sport, cycling or simply less upkeep. Lower legs or the full leg in one session.",
              rows=[("Lower legs", "", (125, 348, 599.95, 898.95)), ("Full legs", "", (133, 365, 635, 928))]),
-        dict(slug="full-body", name="Full Body", img="la-full.jpg",
+        dict(slug="full-body", name="Full Body", img="ph-la-full.jpg",
              intro="One course for everything below the neck, and the best value per area.",
              rows=[("Full body", "Excluding face", (276, 749, 1350, 1795))]),
     ]),
