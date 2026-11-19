@@ -65,6 +65,7 @@ module.exports = async function handler(req, res) {
       vouchers: values.map(function (v, i) { return { code: values.length > 1 ? no + '-' + (i + 1) : no, value: v }; })
     });
   } catch (e) {
-    return send(res, e.status === 503 ? 503 : 502, { error: e.status === 503 ? 'not_connected' : 'failed' });
+    if (e.stripe && e.stripe.code === 'resource_missing') return send(res, 404, { error: 'not_found' });
+    return send(res, e.status === 503 ? 503 : 502, { error: e.status === 503 ? 'not_connected' : 'failed', code: (e.stripe && (e.stripe.code || e.stripe.type)) || '', why: (e.stripe && e.stripe.message || '').slice(0, 160) });
   }
 };
