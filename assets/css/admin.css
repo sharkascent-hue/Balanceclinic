@@ -186,7 +186,7 @@ textarea{min-height:84px;resize:vertical}
   .shell{grid-template-columns:minmax(0,1fr)}
   .side{display:none}
   .main{padding:18px 16px calc(96px + env(safe-area-inset-bottom,0px))}
-  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(4,1fr);background:var(--moss);padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px))}
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(3,1fr);background:var(--moss);padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px))}
   .tabs a{position:relative;display:grid;justify-items:center;gap:3px;padding:6px 2px;border-radius:12px;color:rgba(255,255,255,.65);font-size:10.5px;letter-spacing:.06em}
   .tabs a.on{color:#fff;background:var(--moss-2)}
   .tabs b{position:absolute;top:0;left:calc(50% + 6px);min-width:18px;height:18px;line-height:18px;font-size:11px;padding:0 5px}
@@ -213,3 +213,13 @@ textarea{min-height:84px;resize:vertical}
   .only-phone{display:grid}
 }
 @media (prefers-reduced-motion:reduce){*{transition-duration:.001ms!important;animation-duration:.001ms!important}}
+
+/* Phones: title and sign-out on the first line, period and refresh on a full-width line below */
+@media (max-width:600px){
+  .bar{flex-wrap:wrap;gap:12px 10px}
+  .bar-actions{display:contents}
+  .bar h1{order:0;flex:1 1 calc(100% - 60px);min-width:0}
+  #signout-m{order:1}
+  #days{order:2;flex:1 1 auto;min-width:0;height:42px}
+  #refresh{order:3}
+}

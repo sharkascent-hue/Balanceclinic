@@ -4,7 +4,7 @@
   var API = '/api/admin';
   var STATUSES = [['new', 'To action'], ['contacted', 'Contacted'], ['booked', 'Booked'], ['completed', 'Completed'], ['cancelled', 'Cancelled']];
   var LABEL = {}; STATUSES.forEach(function (s) { LABEL[s[0]] = s[1]; });
-  var TITLES = { dashboard: 'Dashboard', orders: 'Orders', customers: 'Customers', setup: 'Set-up' };
+  var TITLES = { dashboard: 'Dashboard', orders: 'Orders', customers: 'Customers' };
   var $ = function (id) { return document.getElementById(id); };
   var orders = [], filter = 'all', sample = false, state = {}, current = null, pick = 'new', pickSent = false;
 
@@ -47,7 +47,7 @@
     if (!sample) return load();
     orders = sampleOrders();
     banner(state.offline ? 'Preview with sample orders. On the live site this page asks for the password and shows real orders.'
-      : 'Stripe is not connected yet, so these are sample orders to show how the page works. None are real, and changes are not saved. See Set-up.', false);
+      : 'Stripe is not connected yet, so these are sample orders to show how the page works. None are real, and changes are not saved.', false);
     route(); render();
   }
   function load() {
@@ -57,7 +57,7 @@
       if (r.status === 401) { state.authed = false; screen('v-login'); return; }
       if (!r.ok) { orders = []; banner('Could not load orders from Stripe. Check the Stripe key in Vercel, then refresh.', true); return render(); }
       orders = r.d.orders || [];
-      var warn = !!state.live && !!state.starter;
+      var warn = false;   /* the clinic chose to keep the starter password: no reminder */
       banner(r.d.truncated ? 'Showing the most recent ' + orders.length + ' orders. Choose a shorter period to see everything in it.'
         : warn ? 'You are signed in with the starter password. Set your own before real orders arrive: see Set-up.'
         : !state.live ? 'Stripe is in test mode: these are practice orders, and no real money has moved.' : '', warn);
@@ -105,7 +105,7 @@
 
     var n = orders.filter(todo).length;
     ['n-orders', 't-orders'].forEach(function (id) { $(id).textContent = n; $(id).hidden = !n; });
-    $('n-setup').hidden = !!state.stripe && state.starter === false;
+    $('n-setup').hidden = true;
 
     $('tiles').innerHTML =
       '<button type="button" class="tile hot" data-go="new"><span class="k">To action</span><b>' + tNew.length + '</b><small>' + (tNew.length === 1 ? 'order needs a call' : 'orders need a call') + '</small></button>' +

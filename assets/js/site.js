@@ -311,6 +311,12 @@
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeMenu(); closeLb(); } });
   var yr = document.getElementById('yr'); if (yr) yr.textContent = new Date().getFullYear();
+  /* opening hours: mark today's row, by Irish time */
+  (function () {
+    var d; try { d = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(new Intl.DateTimeFormat('en-IE', { timeZone: 'Europe/Dublin', weekday: 'short' }).format(new Date())); } catch (e) { d = -1; }
+    if (d < 0) d = new Date().getDay();
+    document.querySelectorAll('.hrs li[data-dow="' + d + '"]').forEach(function (li) { li.classList.add('today'); });
+  })();
 
   /* ---------- text splitting ---------- */
   function splitText(scope) { scope.querySelectorAll('[data-split]').forEach(function (el) {
@@ -501,14 +507,14 @@
       var key = f.querySelector('[name="access_key"]');
       if (!key || !key.value || key.value.indexOf('YOUR_') === 0) {
         msg.hidden = false; msg.classList.add('err');
-        msg.textContent = 'Online enquiries are not connected yet. Call (046) 906 0333 or email admin@balanceclinic.ie to book.';
+        msg.textContent = 'Online enquiries are not connected yet. Call (046) 906 0333 or email justask@balanceclinic.ie to book.';
         return;
       }
       var btn = f.querySelector('button[type="submit"]'); btn.disabled = true;
       fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } })
         .then(function (r) { return r.json(); })
-        .then(function (d) { msg.hidden = false; msg.classList.toggle('err', !d.success); msg.textContent = d.success ? 'Thank you. We have your request and will confirm your appointment shortly.' : 'Something went wrong. Please call (046) 906 0333 or email admin@balanceclinic.ie.'; if (d.success) f.reset(); })
-        .catch(function () { msg.hidden = false; msg.classList.add('err'); msg.textContent = 'Could not send. Please call (046) 906 0333 or email admin@balanceclinic.ie.'; })
+        .then(function (d) { msg.hidden = false; msg.classList.toggle('err', !d.success); msg.textContent = d.success ? 'Thank you. We have your request and will confirm your appointment shortly.' : 'Something went wrong. Please call (046) 906 0333 or email justask@balanceclinic.ie.'; if (d.success) f.reset(); })
+        .catch(function () { msg.hidden = false; msg.classList.add('err'); msg.textContent = 'Could not send. Please call (046) 906 0333 or email justask@balanceclinic.ie.'; })
         .then(function () { btn.disabled = false; });
     });
   });
