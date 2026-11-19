@@ -58,6 +58,8 @@ module.exports = async function handler(req, res) {
     if (toSend) meta.to_send = toSend.slice(0, 480);
     const session = await stripe('POST', '/v1/checkout/sessions', {
       mode: 'payment',
+      adaptive_pricing: { enabled: false },              /* always charge and show euro, wherever the visitor is */
+      locale: 'en',
       client_reference_id: no,
       success_url: base + '/thank-you?session_id={CHECKOUT_SESSION_ID}',
       cancel_url: base + '/basket?cancelled=1',
