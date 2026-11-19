@@ -31,10 +31,10 @@ PLAY = '<svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg>'
 
 # ---------------------------------------------------------------- treatments
 GROUPS = [
+    ("skin", "Skin Treatments", "Medical-grade skin work: peels, IPL and microneedling."),
     ("body", "Body Treatments", "Laser, contouring, waxing and massage for the whole body."),
     ("skin-concerns", "Skin Concerns", "Understand what is happening and which treatment answers it."),
     ("beauty", "Beauty Treatments", "Nails, lashes and brows finished to a clinic standard."),
-    ("skin", "Skin Treatments", "Medical-grade skin work: peels, IPL and microneedling."),
 ]
 
 T = []
@@ -169,10 +169,10 @@ treatment(slug="lumenis-stellar-m22-ipl", group="skin", title="Lumenis Stellar M
     short="Intense pulsed light for redness, rosacea, pigmentation and thread veins.",
     intro="The Lumenis Stellar M22 is a medical-grade IPL platform. Filtered light is absorbed by redness, pigment and broken capillaries, which fade over the weeks after treatment while the surrounding skin is unharmed.",
     body=["It is our treatment of choice for rosacea and facial redness, sun spots and pigmentation, thread veins on the face and legs, and overall photo-rejuvenation.",
-          "Many clients see a clear change after a single session. A course of three gives the most even, lasting result."],
+          "Many clients see a clear change after the first session. We recommend a course of five sessions for the most even, lasting result."],
     benefits=["Rosacea and facial redness", "Sun damage and age spots", "Thread veins and broken capillaries", "Skin rejuvenation and tone"],
     steps=[("Consultation and patch test", "We confirm suitability and test the settings."), ("Treatment", "20 to 40 minutes. Expect a warm snap with each pulse."), ("Fade", "Redness settles in hours, pigment darkens then flakes off within 1 to 2 weeks.")],
-    facts=[("Sessions", "1 to 3"), ("Time", "20 to 40 min"), ("Downtime", "Minimal"), ("Patch test", "Required")],
+    facts=[("Sessions", "5 recommended"), ("Time", "20 to 40 min"), ("Downtime", "Minimal"), ("Patch test", "Required")],
     faqs=[("Does IPL hurt?", "Each pulse feels like a warm flick. Cooling gel and the M22 sapphire tip keep it comfortable."), ("Can I have IPL with a tan?", "No. Skin must be free of tan, real or fake, for four weeks before treatment.")],
     compare="rosacea")
 
@@ -534,9 +534,9 @@ def home():
     rel = ""
     cards = ""
     strip = [
+        ("Skin Treatments", "Alumier peels, IPL, microneedling and exosomes.", "ph-peel.jpg", "treatments/index.html#skin", ["Peels", "IPL", "Needling"]),
         ("Medical Grade Laser", "Hair removal, rejuvenation and thread veins.", "ph-laser.jpg", "laser/index.html", ["Hair removal", "Thread veins"]),
         ("Body Treatments", "Venus Legacy contouring, cellulite and skin tightening.", "ph-contour.jpg", "treatments/body-contouring.html", ["Venus Legacy", "Cellulite"]),
-        ("Skin Treatments", "Alumier peels, IPL, microneedling and exosomes.", "ph-peel.jpg", "treatments/alumier-md-peels.html", ["Peels", "IPL", "Needling"]),
         ("Non Surgical", "Microneedling, Idenel and CACI for lift without surgery.", "ph-microneedling.jpg", "treatments/microneedling.html", ["Microneedling", "Idenel"]),
         ("Massage", "Swedish, deep tissue, hot stone, Indian head and pregnancy.", "ph-massage.jpg", "treatments/massage.html", ["Hot stone", "Deep tissue"]),
         ("Beauty", "Nails, lashes, brows, tanning and waxing.", "ph-beauty.jpg", "treatments/index.html#beauty", ["Lashes", "Brows", "Nails"]),
@@ -548,8 +548,8 @@ def home():
     results = "".join(ba(rel, k, c, i) for i, (k, c, _) in enumerate(RESULTS))
     reels = "".join(reel(rel, *r) for r in REELS)
     body = f'''<section class="hero grain">
-  <div class="bgv"><video autoplay muted loop playsinline preload="auto" poster="assets/img/stellar-m22-poster.jpg" src="assets/video/stellar-m22-hero.mp4" aria-label="The Lumenis Stellar M22 IPL in use"></video></div>
-  <div class="hero-frame" aria-hidden="true"><video muted loop playsinline preload="none" poster="assets/img/stellar-m22-poster.jpg" data-src="assets/video/stellar-m22-hero.mp4"></video></div>
+  <div class="bgv"><video autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster.jpg" src="assets/video/hero.mp4" aria-label="Inside the clinic: an Alumier peel being prepared"></video></div>
+  <div class="hero-frame" aria-hidden="true"><video muted loop playsinline preload="none" poster="assets/img/hero-poster.jpg" data-src="assets/video/hero.mp4"></video></div>
   <div class="content">
     <div>
       <p class="eyebrow">Medical aesthetic clinic · Navan</p>
