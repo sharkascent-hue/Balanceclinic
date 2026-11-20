@@ -24,7 +24,7 @@ def social(cls="social"):
     links = "".join(f'<a href="{u}" target="_blank" rel="noopener" aria-label="Balance Clinic on {n}"><svg viewBox="0 0 24 24" aria-hidden="true">{svg}</svg></a>' for n, u, svg in SOCIAL)
     return f'<div class="{cls}">{links}</div>'
 
-WEB3FORMS_KEY = "YOUR_WEB3FORMS_ACCESS_KEY"   # paste the key from web3forms.com to switch the forms on
+WEB3FORMS_KEY = "07321e17-9df7-4789-8a05-9bf5989e387a"   # Web3Forms access key: form messages go to the clinic Gmail
 
 ARROW = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h11M9 4l4 4-4 4"/></svg>'
 PLAY = '<svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg>'
@@ -836,7 +836,7 @@ def form(rel, kind):
     typ = '<option value="treatment">Book a treatment</option><option value="consultation">Online consultation</option>' if kind == "book" else ""
     return f'''<form class="form" id="bookform" data-form method="post" action="https://api.web3forms.com/submit" novalidate>
   <input type="hidden" name="access_key" value="{WEB3FORMS_KEY}"><input type="hidden" name="subject" value="Balance Clinic website: {('booking request' if kind=='book' else 'message')}">
-  <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+  <input type="hidden" name="from_name" value="Balance Clinic website"><input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
   {('<label>I would like to<select id="type" name="type">' + typ + '</select></label>') if typ else ''}
   <div class="row"><label>Name<input type="text" name="name" id="f-name" required autocomplete="name"></label><label>Phone<input type="tel" name="phone" id="f-phone" required autocomplete="tel"></label></div>
   <label>Email<input type="email" name="email" id="f-email" required autocomplete="email"></label>
