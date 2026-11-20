@@ -712,7 +712,7 @@ def results():
 
 def about():
     rel = "../"
-    body = phero(rel, [("Home", "index.html")], "Clinic, spa and <em>beauty.</em>", "One address on Trimgate Street where medical-grade technology meets a spa that knows how to slow you down.", img="ph-room.jpg")
+    body = phero(rel, [("Home", "index.html")], "Clinic, spa and <em>beauty.</em>", "One address on Trimgate Street where medical-grade technology meets a spa that knows how to slow you down.", img="clinic-room.jpg")
     body += f'''<section class="statement"><div class="inner"><p class="eyebrow" style="margin-bottom:34px">Our story</p><p class="big">Balance started with a simple idea: treatments that <em>work</em>, delivered by people who <em>care</em>, in a room you never want to leave.</p></div></section>
 <section class="sec dark"><div class="sec-head"><div><p class="eyebrow">What we stand for</p><h2 data-split>Three promises.</h2></div></div>
   <div class="values">
@@ -724,7 +724,7 @@ def about():
 </section>
 <section class="sec"><div class="split">
   <div><p class="eyebrow">By the numbers</p><h2 data-split>Rated <em>4.9</em> by more than 800 people.</h2><p class="lead" data-reveal>We are the highest-rated clinic of our kind in Meath, and every review was written by a client who sat in one of our rooms.</p><div class="ctas" data-reveal><a class="btn btn-moss" href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener">Read the reviews</a><a class="btn btn-ghost" href="{rel}about/team.html">Meet the team {ARROW}</a></div></div>
-  <div class="img reveal-img" style="aspect-ratio:4/3"><img src="{rel}assets/img/ph-room.jpg" alt="A treatment room at Balance" loading="lazy"></div>
+  <div class="img reveal-img" style="aspect-ratio:4/3"><img src="{rel}assets/img/clinic-room.jpg" alt="A treatment room at Balance Clinic, Navan" loading="lazy"></div>
 </div></section>
 {visit(rel)}'''
     return page(rel, "About Us | Beauty Clinic & Spa in Navan | Balance Clinic", "Balance Clinic Spa Beauty on Trimgate Street, Navan: a medical aesthetic clinic and holistic spa, rated 4.9 by over 800 Google reviewers.", "about", body)
