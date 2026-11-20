@@ -570,7 +570,7 @@ def home():
       <h1><span class="line"><span class="inner">Clinical results.</span></span><span class="line"><span class="inner"><em>Real confidence.</em></span></span></h1>
     </div>
     <div class="side">
-      <p data-reveal>Medical-grade skin treatments and laser hair removal, non-surgical and consultation-led, by certified specialists. Then unwind in our holistic spa, because feeling good matters as much as looking it.</p>
+      <p data-reveal>Medical-grade skin treatments and laser hair removal, non-surgical and consultation-led, by certified specialists. Then unwind in our holistic spa, because feeling good matters as much as looking good does.</p>
       <div class="ctas" data-reveal><a class="btn btn-lime" {BOOK}>Book a treatment {ARROW}</a><a class="btn btn-ghost-light" href="treatments/index.html">Explore treatments</a></div>
       <a class="rating" data-reveal href="{GOOGLE_REVIEWS}" target="_blank" rel="noopener" aria-label="4.9 stars from over 800 Google reviews"><span class="g">G</span><span class="stars" aria-hidden="true">★★★★★</span><span><b>4.9</b> · 800+ Google reviews</span></a>
     </div>
