@@ -71,6 +71,7 @@ module.exports = async function handler(req, res) {
     });
   } catch (e) {
     if (e.stripe && e.stripe.code === 'resource_missing') return send(res, 404, { error: 'not_found' });
-    return send(res, e.status === 503 ? 503 : 502, { error: e.status === 503 ? 'not_connected' : 'failed', code: (e.stripe && (e.stripe.code || e.stripe.type)) || '', why: (e.stripe && e.stripe.message || '').slice(0, 160) });
+    console.error('voucher lookup failed:', (e.stripe && e.stripe.message) || e.message);   /* details in the Vercel logs, not shown to visitors */
+    return send(res, e.status === 503 ? 503 : 502, { error: e.status === 503 ? 'not_connected' : 'failed' });
   }
 };
