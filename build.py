@@ -1183,7 +1183,7 @@ OFFERS = [
     ("alumier-advanced-peels-4", "alumier-advanced-peels-4", "Any 4 advanced Alumier peels", [("4 advanced peels", 399, 0)], ""),
     ("lymphatic-medicube", "lymphatic-medicube", "Full body lymphatic drainage massage & Medicube custom facial", [("", 120, 180)], ""),
     ("back-neck-indian-head", "back-neck-indian-head", "Back, neck & shoulder massage + Indian head massage", [("", 59, 0)], ""),
-    ("alumier-products", "alumier-products", "15% off Alumier products", [], "Ask in clinic or call {TEL} to order your Alumier products with 15% off."),
+    ("alumier-products", "alumier-products", "15% off Alumier products", [], 'Shop Alumier MD online through our clinic portal and get 15% off. <a class="of-shop" href="https://eu.alumiermd.com?code=661300D1" target="_blank" rel="noopener">Shop Alumier with 15% off →</a>'),
 ]
 
 VOUCHER_STORE = "https://balanceclinic.voucherconnect.com"   # VoucherConnect sells the vouchers and emails them to the buyer
