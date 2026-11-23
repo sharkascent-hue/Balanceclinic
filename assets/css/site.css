@@ -1065,3 +1065,8 @@ a.bf-add,a.vopt{display:flex;align-items:center;justify-content:center;text-alig
 .of-terms .btn{margin:0}
 .of-terms p{flex:1 1 420px;margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-2)}
 @media (max-width:560px){.of-grid{grid-template-columns:1fr}}
+
+/* Scan fixes: price heading label wraps on phones; related cards never wider than the screen */
+@media (max-width:560px){.psec-head{flex-wrap:wrap;align-items:flex-start}.psec-head > span{white-space:normal;padding-bottom:0}}
+.related .row{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.related .tcard{min-width:0}
