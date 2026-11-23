@@ -579,6 +579,7 @@ def home():
   <div class="cue" aria-hidden="true"><i></i>Scroll</div>
 </section>
 
+{live_band(rel)}
 <div class="marquee" aria-hidden="true"><div class="track">{marquee}</div></div>
 {bf_band("")}
 
@@ -773,6 +774,25 @@ def bf_bar(rel):
     if not BLACK_FRIDAY: return ""
     return (f'<a class="promo" id="promo" href="{rel}shop/offers.html">'
             f'<b>Black Friday</b><span class="pm-long">Up to 80% off laser, plus skin, body and spa offers</span><span class="pm-short">Up to 80% off laser</span><u>Shop now</u></a>\n')
+
+# "Black Friday offers NOW LIVE" story video on the home page. Removes itself at LIVE_UNTIL (Irish time; UTC in winter).
+LIVE_UNTIL = "2026-12-01T00:00:00Z"   # midnight at the end of Monday 30 November 2026
+def live_band(rel):
+    return f'''<section class="live" id="live" data-until="{LIVE_UNTIL}" aria-labelledby="live-h">
+  <script>(function(){{var s=document.getElementById('live');if(Date.now()>=Date.parse(s.getAttribute('data-until')))s.remove();}})()</script>
+  <div class="live-in">
+    <a class="live-vid" href="{rel}shop/offers.html" aria-label="Black Friday offers now live: see the offers">
+      <video autoplay muted loop playsinline preload="metadata" poster="{rel}assets/img/bf-live-poster.jpg" src="{rel}assets/video/bf-live.mp4"></video>
+      <span class="live-go">Shop the offers <b aria-hidden="true">→</b></span>
+    </a>
+    <div class="live-txt">
+      <span class="live-pill"><i></i>Now live</span>
+      <h2 id="live-h">Black Friday <em>offers.</em></h2>
+      <p>Up to 80% off laser hair removal, plus our best prices of the year on IPL, Venus Legacy, CACI, peels and spa treatments. Buy online today.</p>
+      <a class="live-btn" href="{rel}shop/offers.html">See all offers <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</section>'''
 
 def bf_band(rel, compact=False):
     """Dark Black Friday banner for the home and shop pages."""
