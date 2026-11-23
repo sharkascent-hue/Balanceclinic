@@ -846,7 +846,7 @@ def offers_page():
         if note.endswith("CALL"): note = (note[:-4].strip() + " " + call).strip()
         cards += (f'<article class="of-card" data-reveal><img src="{rel}assets/img/offers/{img}.jpg" alt="{html.escape(title)}" loading="lazy" width="800" height="1000">'
                   f'<div class="of-body"><h3>{html.escape(title)}</h3>{offer_buttons(oid, title, opts) if opts else ""}{f"<p class=of-note>{note}</p>" if note else ""}</div></article>')
-    body = phero(rel, [("Home", "index.html"), ("Shop", "shop/index.html")], "Black Friday <em>offers.</em>", "Up to 80% off laser hair removal, and our best prices of the year on skin, body and spa treatments. Buy online now and we will call you to book.", word="Offers",
+    body = phero(rel, [("Home", "index.html"), ("Shop", "shop/index.html")], "Black Friday <em>offers.</em>", "80% off medical-grade laser hair removal in Navan, and our best Black Friday prices of the year on skin, body and spa treatments. Buy online now and we will call you to book.", word="Offers",
                  ctas=f'<a class="btn btn-lime" href="#offers">See the offers {ARROW}</a><a class="btn btn-ghost-light" href="{rel}shop/gift-vouchers.html">Gift vouchers</a>')
     body += f'''<section class="sec" id="offers">
   <div class="sec-head"><div><p class="eyebrow">Black Friday</p><h2 data-split>Our best offers <em>of the year.</em></h2></div><p data-reveal>Add an offer to your basket and pay securely online. We will call you within one working day to book your first appointment.</p></div>
@@ -854,7 +854,14 @@ def offers_page():
   <div class="of-terms" data-reveal><button class="btn btn-moss" type="button" data-basket-open>View basket {ARROW}</button>
     <p><b>Terms.</b> Offers are for a limited time and paid in full online. Courses are valid for 12 months from purchase. Every treatment starts with a consultation, and laser starts with a patch test. Offers cannot be combined with other discounts. Questions? Call {TEL}.</p></div>
 </section>{visit(rel)}'''
-    return page(rel, "Black Friday Offers Navan | Laser, Skin & Spa | Balance Clinic", "Black Friday offers at Balance Clinic Navan: up to 80% off laser hair removal courses, Lumenis IPL, Venus Legacy, CACI, Alumier peels, microneedling and massage.", "offers", body)
+    import json
+    ld = {"@context": "https://schema.org", "@type": "OfferCatalog", "name": "Black Friday offers Navan: 80% off medical-grade laser hair removal",
+          "url": SITE + "/shop/offers", "seller": {"@id": SITE + "/#clinic"},
+          "itemListElement": [{"@type": "Offer", "name": t, "price": f"{p_:.2f}", "priceCurrency": "EUR", "availability": "https://schema.org/InStock", "url": SITE + "/shop/offers",
+                               "areaServed": "Navan, Co. Meath"} for _, _, t, opts, _ in OFFERS for _l, p_, _w in opts]}
+    body += '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False, separators=(",", ":")) + '</script>'
+    return page(rel, "Black Friday Offers Navan | 80% Off Medical-Grade Laser Hair Removal | Balance Clinic",
+                "Black Friday offers in Navan: 80% off medical-grade laser hair removal, full face course €399. Plus 50% off Lumenis IPL, Venus Legacy and CACI. Buy online at Balance Clinic, Trimgate St.", "offers", body)
 
 def gift_vouchers():
     rel = "../"
