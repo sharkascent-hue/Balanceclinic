@@ -385,7 +385,7 @@ def pt():
     return f'<div id="pt" aria-hidden="true"><svg class="plus" viewBox="0 0 64 64">{PLUS_PATH}</svg></div>\n'
 
 def header(rel, current):
-    nav = [("Treatments", "treatments/index.html", "treatments"), ("Laser", "laser/index.html", "laser"), ("Results", "results/index.html", "results"), ("About", "about/index.html", "about"), ("Price List", "price-list.html", "prices"), ("Vouchers", "shop/gift-vouchers.html", "vouchers"), ("Shop", "shop/index.html", "shop"), ("Blog", "blog/index.html", "blog"), ("Contact", "contact.html", "contact")]
+    nav = [("Treatments", "treatments/index.html", "treatments"), ("Laser", "laser/index.html", "laser"), ("Results", "results/index.html", "results"), ("About", "about/index.html", "about"), ("Price List", "price-list.html", "prices"), ("Vouchers", "shop/gift-vouchers.html", "vouchers"), ("Offers", "shop/offers.html", "offers"), ("Blog", "blog/index.html", "blog"), ("Contact", "contact.html", "contact")]
     links = "".join(f'<a href="{rel}{h}"{" aria-current=\"page\"" if k == current else ""}>{t}</a>' for t, h, k in nav)
     groups = "".join(f'<div><h4>{g[1]}</h4>' + "".join(f'<a href="{rel}{turl(t)}">{t["title"]}</a>' for t in T if t["group"] == g[0]) + "</div>" for g in GROUPS)
     return bf_bar(rel) + f'''<header class="site-head" id="head">
@@ -401,12 +401,13 @@ def header(rel, current):
   <div class="inner">
     <nav class="primary" aria-label="Menu">
       <a href="{rel}index.html">Home</a>
-      <a href="{rel}treatments/index.html">Treatments<i>16</i></a>
+      <a href="{rel}treatments/index.html">Treatments<i>{len(T)}</i></a>
       <a href="{rel}laser/index.html" class="has-sub" data-panel="mp-laser">Laser Hair Removal{CHEV}</a>
       <a href="{rel}price-list.html" class="has-sub" data-panel="mp-prices">Price List{CHEV}</a>
       <a href="{rel}results/index.html">Results</a>
       <a href="{rel}about/index.html">About</a>
       <a href="{rel}shop/gift-vouchers.html">Gift Vouchers{"<i>Black Friday</i>" if BLACK_FRIDAY else ""}</a>
+      <a href="{rel}shop/offers.html">Black Friday Offers{"<i>Up to 80% off</i>" if OFFERS_ON else ""}</a>
       <a href="{rel}shop/index.html">Shop</a>
       <a {BOOK}>Book Now</a>
       <a href="{rel}contact.html">Contact</a>
@@ -770,9 +771,8 @@ def shop():
 
 def bf_bar(rel):
     if not BLACK_FRIDAY: return ""
-    lo = min(p for _, p in BF_DEALS)
-    return (f'<a class="promo" id="promo" href="{rel}shop/gift-vouchers.html#black-friday">'
-            f'<b>Black Friday</b><span class="pm-long">Gift vouchers up to {bf_off()}% off, from €{lo}</span><span class="pm-short">Vouchers up to {bf_off()}% off</span><u>Shop now</u></a>\n')
+    return (f'<a class="promo" id="promo" href="{rel}shop/offers.html">'
+            f'<b>Black Friday</b><span class="pm-long">Up to 80% off laser, plus skin, body and spa offers</span><span class="pm-short">Up to 80% off laser</span><u>Shop now</u></a>\n')
 
 def bf_band(rel, compact=False):
     """Dark Black Friday banner for the home and shop pages."""
@@ -783,9 +783,9 @@ def bf_band(rel, compact=False):
   <div class="inner">
     <div><p class="eyebrow">Limited time · For that someone special</p><h2 id="bf-band-h" data-split>Black Friday<br><em>gift vouchers.</em></h2></div>
     <div class="bf-side" data-reveal>
-      <p>Up to {bf_off()}% off gift vouchers for any treatment at Balance. Treat someone, or treat yourself.</p>
+      <p>Up to 80% off laser hair removal courses, our best prices on IPL, Venus Legacy, CACI and peels, and up to {bf_off()}% off gift vouchers. Treat someone, or treat yourself.</p>
       <ul class="bf-chips" aria-label="Black Friday prices">{chips}</ul>
-      <a class="btn btn-lime" href="{rel}shop/gift-vouchers.html#black-friday">Shop Black Friday vouchers {ARROW}</a>
+      <div class="ctas" style="margin-top:0"><a class="btn btn-lime" href="{rel}shop/offers.html">See all Black Friday offers {ARROW}</a><a class="btn btn-ghost-light" href="{rel}shop/gift-vouchers.html#black-friday">Gift vouchers</a></div>
     </div>
   </div>
 </section>'''
@@ -805,6 +805,36 @@ def bf_cards(rel):
   <div class="bf-grid">{cards}</div>
   <div class="bf-more" data-reveal><a class="btn btn-moss" {VSTORE}>Buy gift vouchers {ARROW}</a><p class="gnote">Vouchers carry their full face value and are good for any treatment. You buy them on our secure voucher store, and they are emailed to you straight away.</p></div>
 </section>'''
+
+def offer_buttons(oid, title, opts):
+    """Add-to-basket buttons for one offer: one per option (Venus has two)."""
+    out = ""
+    for label, price, was in opts:
+        iid = f"offer-{oid}" + (f"-{item_id(label)}" if len(opts) > 1 else "")
+        name = (title.split(":")[0] + ": " + label.lower().replace("face", "face", 1)) if len(opts) > 1 else title
+        out += (f'<div class="of-buy"><div class="of-price">{"<small>" + html.escape(label) + "</small>" if len(opts) > 1 else ""}<b>€{price:,}</b>{f"<s>€{was:,}</s>" if was else ""}</div>'
+                f'<button class="bf-add" type="button" data-item="{iid}" data-name="{html.escape(name)}" data-group="" data-section="Black Friday offers" data-detail="{html.escape(label)}" data-price="{price}" aria-pressed="false" aria-label="Add {html.escape(name)} to basket">'
+                f'<span class="a">Add to basket</span><span class="d">In basket</span></button></div>')
+    return out
+
+def offers_page():
+    rel = "../"
+    call = OFFER_CALL.replace("{TEL}", TEL)
+    cards = ""
+    for oid, img, title, opts, note in OFFERS:
+        note = note.replace("{TEL}", TEL)
+        if note.endswith("CALL"): note = (note[:-4].strip() + " " + call).strip()
+        cards += (f'<article class="of-card" data-reveal><img src="{rel}assets/img/offers/{img}.jpg" alt="{html.escape(title)}" loading="lazy" width="800" height="1000">'
+                  f'<div class="of-body"><h3>{html.escape(title)}</h3>{offer_buttons(oid, title, opts) if opts else ""}{f"<p class=of-note>{note}</p>" if note else ""}</div></article>')
+    body = phero(rel, [("Home", "index.html"), ("Shop", "shop/index.html")], "Black Friday <em>offers.</em>", "Up to 80% off laser hair removal, and our best prices of the year on skin, body and spa treatments. Buy online now and we will call you to book.", word="Offers",
+                 ctas=f'<a class="btn btn-lime" href="#offers">See the offers {ARROW}</a><a class="btn btn-ghost-light" href="{rel}shop/gift-vouchers.html">Gift vouchers</a>')
+    body += f'''<section class="sec" id="offers">
+  <div class="sec-head"><div><p class="eyebrow">Black Friday</p><h2 data-split>Our best offers <em>of the year.</em></h2></div><p data-reveal>Add an offer to your basket and pay securely online. We will call you within one working day to book your first appointment.</p></div>
+  <div class="of-grid">{cards}</div>
+  <div class="of-terms" data-reveal><button class="btn btn-moss" type="button" data-basket-open>View basket {ARROW}</button>
+    <p><b>Terms.</b> Offers are for a limited time and paid in full online. Courses are valid for 12 months from purchase. Every treatment starts with a consultation, and laser starts with a patch test. Offers cannot be combined with other discounts. Questions? Call {TEL}.</p></div>
+</section>{visit(rel)}'''
+    return page(rel, "Black Friday Offers Navan | Laser, Skin & Spa | Balance Clinic", "Black Friday offers at Balance Clinic Navan: up to 80% off laser hair removal courses, Lumenis IPL, Venus Legacy, CACI, Alumier peels, microneedling and massage.", "offers", body)
 
 def gift_vouchers():
     rel = "../"
@@ -1103,6 +1133,32 @@ ADD_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="pl" d="M12 5
 
 # Black Friday: (voucher value, sale price). Set BLACK_FRIDAY = False and rebuild to take the offer down everywhere.
 BLACK_FRIDAY = True
+# Black Friday treatment offers (Pauline's flyers). Shown on shop/offers.html and bought through the basket.
+# Each offer: (id, flyer image, title, [ (button label, price in euro, was price or 0) ... ], note)
+# Laser courses are 10 sessions: 10 x the per-session price, in whole euros.
+OFFERS_ON = True
+OFFER_CALL = "All areas treated. Call the clinic on " + "{TEL}" + " for combinations and packages tailor-made for you."
+OFFERS = [
+    ("laser-full-face-10", "laser-face", "Laser hair removal: full face, 10 sessions", [("10 sessions", 399, 0)], "€39.99 per session for 10 sessions."),
+    ("laser-back-shoulders-10", "laser-back", "Laser hair removal: full back & shoulders, 10 sessions", [("10 sessions", 599, 0)], "€59.95 per session for 10 sessions."),
+    ("laser-lower-legs-bikini-underarms-10", "laser-lower-legs", "Laser hair removal: lower legs, any bikini & underarms, 10 sessions", [("10 sessions", 549, 0)], "€54.95 per session for 10 sessions."),
+    ("laser-full-legs-bikini-underarms-10", "laser-full-legs", "Laser hair removal: full legs, any bikini & underarms, 10 sessions", [("10 sessions", 699, 0)], "€69.95 per session for 10 sessions."),
+    ("ipl-face-5", "ipl-face-5", "Lumenis M22 IPL: face × 5", [("5 sessions", 499, 1060)], ""),
+    ("christmas-glow-stack", "christmas-glow-stack", "Christmas glow stack: Lumenis M22 IPL & Alumier Radiant peel", [("", 155, 370)], ""),
+    ("caci-booster-8", "caci-booster-8", "8 CACI booster facials", [("8 facials", 699, 0)], "Add 2 Venus face treatments or 2 Alumier peels at 30% off. CALL"),
+    ("anti-ageing-programme", "anti-ageing-programme", "Total anti-ageing programme: 10 CACI booster facials & 8 Venus Legacy neck & jowls", [("", 1250, 2050)], ""),
+    ("caci-alumier-christmas", "caci-alumier", "Christmas prep: CACI facial + Alumier peel", [("", 185, 0)], ""),
+    ("venus-face-neck-8", "venus-face-neck-8", "Venus Legacy: face × 8, or neck & jowls × 8", [("Face × 8", 499, 0), ("Neck & jowls × 8", 420, 0)], "CALL"),
+    ("venus-thighs-6", "venus-thighs-6", "Venus Legacy: thighs × 6", [("6 sessions", 480, 1320)], "CALL"),
+    ("dermapen-blue-light-ems", "dermapen", "Dermapen microneedling with blue light & EMS", [("", 499, 960)], ""),
+    ("idenel-glassifier", "idenel-glassifier", "The Glassifier: Idenel liquid microneedling", [("", 149, 239)], ""),
+    ("alumier-peels-4", "alumier-peels-4", "Any 4 Alumier peels", [("4 peels", 289, 0)], ""),
+    ("alumier-advanced-peels-4", "alumier-advanced-peels-4", "Any 4 advanced Alumier peels", [("4 advanced peels", 399, 0)], ""),
+    ("lymphatic-medicube", "lymphatic-medicube", "Full body lymphatic drainage massage & Medicube custom facial", [("", 120, 180)], ""),
+    ("back-neck-indian-head", "back-neck-indian-head", "Back, neck & shoulder massage + Indian head massage", [("", 59, 0)], ""),
+    ("alumier-products", "alumier-products", "15% off Alumier products", [], "Ask in clinic or call {TEL} to order your Alumier products with 15% off."),
+]
+
 VOUCHER_STORE = "https://balanceclinic.voucherconnect.com"   # VoucherConnect sells the vouchers and emails them to the buyer
 VSTORE = f'href="{VOUCHER_STORE}" target="_blank" rel="noopener"'
 BF_DEALS = ((50, 39), (100, 75), (200, 150), (500, 350))
@@ -1351,6 +1407,10 @@ def catalog():
                     sess = f'{k} session{"s" if k > 1 else ""}'
                     who = label.replace("For ", "").lower()
                     add(item_id("laser", group, n, sess), f"Laser: {n} ({who}, {sess})", round(p * 100), f"Laser hair removal · {a['name']}")
+    if OFFERS_ON:   # Black Friday treatment offers
+        for oid, img, title, opts, note in OFFERS:
+            for label, price, was in opts:
+                add(f"offer-{oid}" + (f"-{item_id(label)}" if len(opts) > 1 else ""), (title.split(":")[0] + ": " + label.lower()) if len(opts) > 1 else title, price * 100, "Black Friday offer" + (f" · was €{was:,}" if was else ""))
     for v in ():   # gift vouchers are sold on VoucherConnect (VOUCHER_STORE), not through the basket
         add(f"gift-voucher-{v}", f"Gift voucher €{v}", v * 100, "Balance Clinic gift voucher", send=True, value=v)
     if False:   # Black Friday vouchers are sold on VoucherConnect too
@@ -1417,7 +1477,7 @@ if __name__ == "__main__":
     write("terms.html", terms()); write("privacy.html", privacy())
     write("api/_catalog.json", catalog())
     for sid, title, groups in PRICES: write(f"prices/{PINFO[sid]['slug']}.html", price_cat_page(sid, title, groups))
-    write("shop/index.html", shop()); write("shop/gift-vouchers.html", gift_vouchers()); write("shop/january-sale.html", january_sale())
+    write("shop/index.html", shop()); write("shop/offers.html", offers_page()); write("shop/gift-vouchers.html", gift_vouchers()); write("shop/january-sale.html", january_sale())
     write("book/index.html", book()); write("book/online-consultation.html", consultation())
     write("contact.html", contact())
     write("blog/index.html", blog_index())

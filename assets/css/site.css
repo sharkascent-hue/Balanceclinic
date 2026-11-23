@@ -1045,3 +1045,23 @@ footer .brand .hrs li.today{color:#fff}
   @page{margin:12mm}
 }
 a.bf-add,a.vopt{display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none}
+
+/* ---------- Black Friday offers (shop/offers.html) ---------- */
+.of-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:clamp(16px,2vw,26px);max-width:1320px;margin-inline:auto}
+.of-card{display:flex;flex-direction:column;border-radius:22px;overflow:hidden;background:var(--paper);border:1px solid var(--line);box-shadow:0 30px 60px -40px rgba(28,58,42,.45)}
+.of-card>img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover}
+.of-body{display:flex;flex-direction:column;gap:12px;padding:18px 18px 20px;flex:1}
+.of-body h3{font-family:var(--display);font-weight:400;font-size:22px;line-height:1.2;margin:0}
+.of-buy{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.of-price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.of-price small{flex-basis:100%;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2)}
+.of-price b{font-family:var(--display);font-weight:400;font-size:32px;line-height:1;color:var(--moss)}
+.of-price s{font-size:14px;color:var(--ink-2)}
+.of-note{margin:0;font-size:14px;line-height:1.55;color:var(--ink-2)}
+.of-note a{color:var(--moss);border-bottom:1px solid currentColor}
+.of-body .of-buy:last-of-type,.of-body .of-note{margin-top:auto}
+.of-body .of-buy+.of-buy{margin-top:0}
+.of-terms{max-width:1320px;margin:clamp(28px,4vw,44px) auto 0;display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px}
+.of-terms .btn{margin:0}
+.of-terms p{flex:1 1 420px;margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-2)}
+@media (max-width:560px){.of-grid{grid-template-columns:1fr}}
